@@ -1,10 +1,104 @@
 import ol = require("openlayers");
+import $ = require("jquery");
 import { Button } from "ol3-draw/ol3-draw/ol3-button";
 import { Delete } from "ol3-draw/ol3-draw/ol3-delete";
 import { Draw } from "ol3-draw/ol3-draw/ol3-draw";
 import { Modify } from "ol3-draw/ol3-draw/ol3-edit";
 import { Translate } from "ol3-draw/ol3-draw/ol3-translate";
 import { Select } from "ol3-draw/ol3-draw/ol3-select";
+import { WfsSync } from "ol3-draw/ol3-draw/services/wfs-sync";
+
+const WFS_INFO = {
+    srsName: "EPSG:3857",
+    wfsUrl: "http://localhost:8080/geoserver/cite/wfs",
+    featureNS: "http://www.opengeospatial.net/cite",
+    featurePrefix: "cite",
+};
+
+function stopControl(map: ol.Map, type: any) {
+    map.getControls()
+        .getArray()
+        .filter(i => i.get("active"))
+        .filter(i => i instanceof type)
+        .forEach(t => t.set("active", false));
+}
+
+function stopOtherControls(map: ol.Map, control: ol.control.Control) {
+    map.getControls()
+        .getArray()
+        .filter(i => i.get("active"))
+        .filter(i => typeof i === typeof control)
+        .forEach(t => t !== control && t.set("active", false));
+}
+
+function loadAndWatch(options: {
+    map?: ol.Map;
+    template?: { [name: string]: any };
+    featureType: string;
+    geometryType: ol.geom.GeometryType;
+    source: ol.source.Vector;
+}) {
+
+    options.source.on("addfeature", (args: { feature: ol.Feature }) => {
+        Object.keys(options.template).forEach(k => {
+            args.feature.set(k, options.template[k]);
+        });
+    });
+
+    let serializer = new XMLSerializer();
+
+    let format = new ol.format.WFS();
+
+    let filter = Object.keys(options.template).map(k => ol.format.filter.equalTo(k, options.template[k]));
+    if (filter.length > 1) {
+        debugger; // might need apply
+        filter = ol.format.filter.and(filter);
+    } else {
+        filter = filter[0];
+    }
+
+    let requestBody = format.writeGetFeature({
+        featureNS: WFS_INFO.featureNS,
+        featurePrefix: WFS_INFO.featurePrefix,
+        featureTypes: [options.featureType],
+        srsName: WFS_INFO.srsName,
+        filter: filter
+    });
+
+    let data = serializer.serializeToString(requestBody);
+
+    $.ajax({
+        type: "POST",
+        url: WFS_INFO.wfsUrl,
+        data: data,
+        contentType: "application/xml",
+        dataType: "xml",
+        success: (response: XMLDocument) => {
+            let features = format.readFeatures(response);
+            features = features.filter(f => !!f.getGeometry());
+            options.source.addFeatures(features);
+
+            if (options.map) {
+                let extent = options.map.getView().calculateExtent(options.map.getSize());
+                features.forEach(f => ol.extent.extend(extent, f.getGeometry().getExtent()));
+                options.map.getView().fit(extent, options.map.getSize());
+            }
+
+            WfsSync.create({
+                wfsUrl: WFS_INFO.wfsUrl,
+                featureNS: WFS_INFO.featureNS,
+                featurePrefix: WFS_INFO.featurePrefix,
+                srsName: WFS_INFO.srsName,
+                sourceSrs: WFS_INFO.srsName,
+                source: options.source,
+                targets: {
+                    [options.geometryType]: options.featureType
+                }
+            });
+
+        }
+    });
+}
 
 export function create(args: { map: ol.Map }) {
     let map = args.map;
@@ -17,11 +111,14 @@ export function create(args: { map: ol.Map }) {
     map.addLayer(lineLayer);
     map.addLayer(pointLayer);
 
+    let selectStyle = Select.DEFAULT_OPTIONS.style;
+    selectStyle["MultiPolygon"] = selectStyle["Polygon"];
+
     let toolbar = [
         Select.create({ map: map, label: "?", eventName: "info", boxSelectCondition: ol.events.condition.primaryAction }),
 
         Draw.create({
-            map: map, geometryType: "MultiPolygon", label: "▧", title: "Polygon",
+            map: map, geometryType: "Polygon", label: "▧", title: "Polygon",
             layers: [polygonLayer],
             style: [
                 {
@@ -100,6 +197,107 @@ export function create(args: { map: ol.Map }) {
         Button.create({ map: map, label: "X", eventName: "exit", title: "Exit" }),
     ];
     toolbar.forEach((t, i) => t.setPosition(`left top${-i * 2 || ''}`));
+
+    map.on("exit", () => {
+        toolbar.forEach(t => t.destroy());
+    });
+
+    map.on("info", (args: {
+        control: Button
+    }) => {
+        if (args.control.get("active")) {
+            stopOtherControls(map, args.control);
+            stopControl(map, Draw);
+            stopControl(map, Delete);
+            stopControl(map, Translate);
+            stopControl(map, Modify);
+        }
+    });
+
+    map.on("delete-feature", (args: { control: Draw }) => {
+        if (args.control.get("active")) {
+            stopOtherControls(map, args.control);
+            stopControl(map, Draw);
+            stopControl(map, Modify);
+            stopControl(map, Translate);
+            stopControl(map, Select);
+        }
+    });
+
+    map.on("draw-feature", (args: { control: Draw }) => {
+        if (args.control.get("active")) {
+            stopOtherControls(map, args.control);
+            stopControl(map, Delete);
+            stopControl(map, Modify);
+            stopControl(map, Translate);
+            stopControl(map, Select);
+        }
+    });
+
+    map.on("translate-feature", (args: { control: Draw }) => {
+        if (args.control.get("active")) {
+            stopOtherControls(map, args.control);
+            stopControl(map, Delete);
+            stopControl(map, Draw);
+            stopControl(map, Modify);
+            stopControl(map, Select);
+        }
+    });
+
+    map.on("modify-feature", (args: { control: Draw }) => {
+        if (args.control.get("active")) {
+            stopOtherControls(map, args.control);
+            stopControl(map, Delete);
+            stopControl(map, Draw);
+            stopControl(map, Translate);
+            stopControl(map, Select);
+        }
+    });
+
+    map.on("clear-drawings", (args: { control: Button }) => {
+        if (args.control.get("active")) {
+            stopControl(map, Delete);
+            stopControl(map, Draw);
+            stopControl(map, Translate);
+            stopControl(map, Select);
+
+            map.getControls()
+                .getArray()
+                .filter(i => i instanceof Draw)
+                .forEach(t => (<Draw>t).options.layers.forEach(l => l.getSource().clear()));
+
+        }
+    });
+
+    loadAndWatch({
+        map: map,
+        geometryType: "Point",
+        featureType: "addresses",
+        template: {
+            "strname": "29615"
+        },
+        source: pointLayer.getSource()
+    });
+
+    loadAndWatch({
+        map: map,
+        geometryType: "MultiLineString",
+        featureType: "streets",
+        template: {
+            "strname": "29615"
+        },
+        source: lineLayer.getSource()
+    });
+
+    loadAndWatch({
+        map: map,
+        geometryType: "MultiPolygon",
+        featureType: "parcels",
+        template: {
+            "strname": "29615"
+        },
+        source: polygonLayer.getSource(),
+    });
 
     return toolbar;
 }
