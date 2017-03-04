@@ -1,0 +1,24 @@
+{
+  "name": "schole-bus",
+  "version": "0.0.1",
+  "description": "Scholé Bus",
+  "main": "index.ts",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corey-alix/schole-bus.git"
+  },
+  "keywords": [
+    "education",
+    "travel",
+    "openlayers"
+  ],
+  "author": "coreyalix@hotmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/corey-alix/schole-bus/issues"
+  },
+  "homepage": "https://github.com/corey-alix/schole-bus#readme",
+}
