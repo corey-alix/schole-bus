@@ -7,6 +7,8 @@ import { Modify } from "ol3-draw/ol3-draw/ol3-edit";
 import { Translate } from "ol3-draw/ol3-draw/ol3-translate";
 import { Select } from "ol3-draw/ol3-draw/ol3-select";
 import { WfsSync } from "ol3-draw/ol3-draw/services/wfs-sync";
+import { Grid } from "ol3-grid";
+import { cssin } from "ol3-fun/ol3-fun/common";
 
 const WFS_INFO = {
     srsName: "EPSG:3857",
@@ -118,7 +120,7 @@ export function create(args: { map: ol.Map }) {
         Select.create({ map: map, label: "?", eventName: "info", boxSelectCondition: ol.events.condition.primaryAction }),
 
         Draw.create({
-            map: map, geometryType: "Polygon", label: "▧", title: "Polygon",
+            map: map, geometryType: "MultiPolygon", label: "▧", title: "Polygon",
             layers: [polygonLayer],
             style: [
                 {
@@ -298,6 +300,23 @@ export function create(args: { map: ol.Map }) {
         },
         source: polygonLayer.getSource(),
     });
+
+    let grid = Grid.create({
+        map: map,
+        className: "ol-grid top left-2",
+        currentExtent: false,
+        autoCollapse: false,
+        autoPan: true,
+        labelAttributeName: "strname",
+        showIcon: true,
+        layers: [pointLayer, lineLayer, polygonLayer]
+    });
+
+    grid.on("destroy", cssin("toolbar", `
+.ol-grid {
+    background-color: rgba(250,250,250,1);
+}        
+        `));
 
     return toolbar;
 }
