@@ -141,6 +141,7 @@ export function create(args: { map: ol.Map }) {
 
             ]
         }),
+
         Draw.create({
             map: map, geometryType: "Circle", label: "◯", title: "Circle", style: [
                 {
@@ -190,12 +191,48 @@ export function create(args: { map: ol.Map }) {
         }),
 
         Translate.create({ map: map, label: "↔" }),
-        Modify.create({ map: map, label: "Δ" }),
+
+        Modify.create({
+            map: map, label: "Δ", style: {
+                "Point": [{
+                    "circle": {
+                        "radius": 6,
+                        "stroke": {
+                            "color": "rgba(255, 0, 0, 1)"
+                        },
+                        "opacity": 1
+                    }
+                },
+                {
+                    "star": {
+                        "opacity": 1,
+                        "stroke": {
+                            "color": "rgba(255, 255, 0, 1)",
+                            "width": 1
+                        },
+                        "radius": 5,
+                        "radius2": 0,
+                        "points": 4
+                    }
+                },
+                {
+                    "circle": {
+                        "radius": 1,
+                        "stroke": {
+                            "color": "rgba(0, 0, 0, 1)"
+                        },
+                        "opacity": 1
+                    }
+                }]
+            }
+        }),
 
         Delete.create({ map: map, label: "␡" }),
+
         Button.create({ map: map, label: "⎚", title: "Clear", eventName: "clear-drawings" }),
 
         Button.create({ map: map, label: "💾", eventName: "save", title: "Save" }),
+
         Button.create({ map: map, label: "X", eventName: "exit", title: "Exit" }),
     ];
     toolbar.forEach((t, i) => t.setPosition(`left top${-i * 2 || ''}`));
