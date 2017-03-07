@@ -9,6 +9,10 @@ import { Select } from "ol3-draw/ol3-draw/ol3-select";
 import { WfsSync } from "ol3-draw/ol3-draw/services/wfs-sync";
 import { Grid } from "ol3-grid";
 import { cssin } from "ol3-fun/ol3-fun/common";
+import { styles } from "../symbology";
+import { StyleConverter } from "ol3-symbolizer";
+
+const converter = new StyleConverter();
 
 const WFS_INFO = {
     srsName: "EPSG:3857",
@@ -108,6 +112,22 @@ export function create(args: { map: ol.Map }) {
     let pointLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
     let lineLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
     let polygonLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
+
+    {
+        let unsavedStyle = styles["unsaved-point"].map(s => converter.fromJson(s));
+        let savedStyle = styles["point"].map(s => converter.fromJson(s));
+        pointLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
+    }
+    {
+        let unsavedStyle = styles["unsaved-multiline"].map(s => converter.fromJson(s));
+        let savedStyle = styles["multiline"].map(s => converter.fromJson(s));
+        lineLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
+    }
+    {
+        let unsavedStyle = styles["unsaved-polygon"].map(s => converter.fromJson(s));
+        let savedStyle = styles["polygon"].map(s => converter.fromJson(s));
+        polygonLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
+    }
 
     map.addLayer(polygonLayer);
     map.addLayer(lineLayer);

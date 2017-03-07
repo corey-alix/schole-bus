@@ -25,9 +25,11 @@ const Colors = <{ [name: string]: Color }>{
     education: [0, 200, 0, 1],
     clear: [0, 0, 0, 0],
     black: [0, 0, 0, 1],
+    red: [255, 0, 0, 1],
     white: [255, 255, 255, 1],
     park: [0, 128, 0, 1],
-    poi_stroke: [255, 255, 255, 1]
+    poi_stroke: [255, 255, 255, 1],
+    unsaved: [255, 0, 0, 1]
 }
 
 export const styles = <{ [name: string]: Format.Style[] }>{
@@ -93,5 +95,89 @@ export const styles = <{ [name: string]: Format.Style[] }>{
                 }
             }
         }
-    ]
+    ],
+    "polygon": [
+        {
+            fill: {
+                color: rgba(mix(Colors.white, Colors.clear))
+            },
+            stroke: {
+                color: rgba(mix(Colors.black)),
+                width: 1
+            }
+        }
+    ],
+    "unsaved-polygon": [
+        {
+            fill: {
+                color: rgba(mix(Colors.unsaved, Colors.clear))
+            },
+            stroke: {
+                color: rgba(mix(Colors.unsaved)),
+                width: 1
+            }
+        }
+    ],
+    "multiline": [
+        {
+            stroke: {
+                color: rgba(mix(Colors.black)),
+                width: 3
+            }
+        }
+    ],
+    "unsaved-multiline": [
+        {
+            stroke: {
+                color: rgba(mix(Colors.unsaved)),
+                width: 5
+            }
+        },
+        {
+            stroke: {
+                color: rgba(Colors.black),
+                width: 1
+            }
+        }
+    ],
+    "point": [
+        {
+            circle: {
+                radius: 8,
+                fill: {
+                    color: rgba(mix(Colors.white, Colors.clear))
+                },
+                stroke: {
+                    color: rgba(mix(Colors.black)),
+                    width: 1
+                }
+            }
+        }
+    ],
+    "unsaved-point": [
+        {
+            circle: {
+                radius: 12,
+                fill: {
+                    color: rgba(mix(Colors.unsaved, Colors.clear))
+                },
+                stroke: {
+                    color: rgba(mix(Colors.black)),
+                    width: 1
+                }
+            }
+        },
+        {
+            circle: {
+                radius: 8,
+                fill: {
+                    color: rgba(mix(Colors.white, Colors.clear))
+                },
+                stroke: {
+                    color: rgba(mix(Colors.black)),
+                    width: 1
+                }
+            }
+        }
+    ],
 };
