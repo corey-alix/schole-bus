@@ -2,13 +2,14 @@ import ol = require("openlayers");
 import { Popup } from "ol3-popup";
 import { create as CreateToolbar } from "./app/draw/toolbar";
 import { create as CreateSearch } from "./app/search";
-import { cssin, html, mixin } from "ol3-fun/ol3-fun/common";
+import { cssin, html, mixin, getParameterByName } from "ol3-fun/ol3-fun/common";
 import { styles } from "./app/symbology";
 import { StyleConverter } from "ol3-symbolizer";
 
-import { UpperPeninsula } from "./app/poi/usa";
+import { GreenvilleSc } from "./app/poi/usa";
 
-import POI = require("./app/poi/geonames");
+//import POI = require("./app/poi/geonames");
+const POI = [];
 
 cssin("schole-bus", `
 html, body, .schole-bus {
@@ -32,7 +33,7 @@ export function run() {
         loadTilesWhileInteracting: true,
         view: new ol.View({
             zoom: 10,
-            center: ol.proj.transform(UpperPeninsula, "EPSG:4326", "EPSG:3857"),
+            center: ol.proj.transform(GreenvilleSc, "EPSG:4326", "EPSG:3857"),
             projection: "EPSG:3857"
         }),
         layers: [
@@ -43,7 +44,11 @@ export function run() {
         ]
     });
 
-    CreateToolbar({ map: map });
+    CreateToolbar({
+        map: map,
+        keyword: getParameterByName("keyword") || "schole-bus",
+        commentFieldName: "comment"
+    });
     CreateSearch({ map: map });
 
     {

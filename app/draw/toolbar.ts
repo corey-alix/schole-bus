@@ -6,6 +6,7 @@ import { Draw } from "ol3-draw/ol3-draw/ol3-draw";
 import { Modify } from "ol3-draw/ol3-draw/ol3-edit";
 import { Translate } from "ol3-draw/ol3-draw/ol3-translate";
 import { Select } from "ol3-draw/ol3-draw/ol3-select";
+import { Note } from "ol3-draw/ol3-draw/ol3-note";
 import { WfsSync } from "ol3-draw/ol3-draw/services/wfs-sync";
 import { Grid } from "ol3-grid";
 import { cssin } from "ol3-fun/ol3-fun/common";
@@ -16,7 +17,7 @@ const converter = new StyleConverter();
 
 const WFS_INFO = {
     srsName: "EPSG:3857",
-    wfsUrl: "http://localhost:8080/geoserver/cite/wfs",
+    wfsUrl: `${location.protocol}//${location.hostname}:8080/geoserver/cite/wfs`,
     featureNS: "http://www.opengeospatial.net/cite",
     featurePrefix: "cite",
 };
@@ -57,8 +58,7 @@ function loadAndWatch(options: {
 
     let filter = Object.keys(options.template).map(k => ol.format.filter.equalTo(k, options.template[k]));
     if (filter.length > 1) {
-        debugger; // might need apply
-        filter = ol.format.filter.and(filter);
+        filter = ol.format.filter.and.apply(ol.format.filter.and, filter);
     } else {
         filter = filter[0];
     }
@@ -106,8 +106,13 @@ function loadAndWatch(options: {
     });
 }
 
-export function create(args: { map: ol.Map }) {
-    let map = args.map;
+export function create(options: {
+    map: ol.Map;
+    keyword: string;
+    commentFieldName: string;
+}) {
+    let map = options.map;
+    let keyword = options.keyword || "schole-bus";
 
     let pointLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
     let lineLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
@@ -129,14 +134,19 @@ export function create(args: { map: ol.Map }) {
         polygonLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
     }
 
-    map.addLayer(polygonLayer);
-    map.addLayer(lineLayer);
-    map.addLayer(pointLayer);
+    [polygonLayer, lineLayer, pointLayer].forEach(l => {
+        map.addLayer(l);
+        if (options.commentFieldName) {
+            l.getSource().on("addfeature", (args: ol.source.VectorEvent) => args.feature.set(options.commentFieldName, args.feature.get(options.commentFieldName) || ""));
+        }
+    });
 
     let selectStyle = Select.DEFAULT_OPTIONS.style;
     selectStyle["MultiPolygon"] = selectStyle["Polygon"];
 
     let toolbar = [
+        Note.create({ map: map, layer: pointLayer, noteFieldName: "comment" }),
+
         Select.create({ map: map, label: "?", eventName: "info", boxSelectCondition: ol.events.condition.primaryAction }),
 
         Draw.create({
@@ -249,10 +259,6 @@ export function create(args: { map: ol.Map }) {
 
         Delete.create({ map: map, label: "␡" }),
 
-        Button.create({ map: map, label: "⎚", title: "Clear", eventName: "clear-drawings" }),
-
-        Button.create({ map: map, label: "💾", eventName: "save", title: "Save" }),
-
         Button.create({ map: map, label: "X", eventName: "exit", title: "Exit" }),
     ];
     toolbar.forEach((t, i) => t.setPosition(`left top${-i * 2 || ''}`));
@@ -313,27 +319,12 @@ export function create(args: { map: ol.Map }) {
         }
     });
 
-    map.on("clear-drawings", (args: { control: Button }) => {
-        if (args.control.get("active")) {
-            stopControl(map, Delete);
-            stopControl(map, Draw);
-            stopControl(map, Translate);
-            stopControl(map, Select);
-
-            map.getControls()
-                .getArray()
-                .filter(i => i instanceof Draw)
-                .forEach(t => (<Draw>t).options.layers.forEach(l => l.getSource().clear()));
-
-        }
-    });
-
     loadAndWatch({
         map: map,
         geometryType: "Point",
         featureType: "addresses",
         template: {
-            "strname": "29615"
+            "strname": keyword
         },
         source: pointLayer.getSource()
     });
@@ -343,7 +334,7 @@ export function create(args: { map: ol.Map }) {
         geometryType: "MultiLineString",
         featureType: "streets",
         template: {
-            "strname": "29615"
+            "strname": keyword
         },
         source: lineLayer.getSource()
     });
@@ -353,23 +344,36 @@ export function create(args: { map: ol.Map }) {
         geometryType: "MultiPolygon",
         featureType: "parcels",
         template: {
-            "strname": "29615"
+            "strname": keyword
         },
         source: polygonLayer.getSource(),
     });
 
-    let grid = Grid.create({
+    Grid.create({
+        map: map,
+        className: "ol-grid bottom left",
+        currentExtent: true,
+        autoCollapse: true,
+        autoPan: true,
+        labelAttributeName: options.commentFieldName,
+        showIcon: true,
+        layers: [pointLayer, lineLayer, polygonLayer],
+        zoomMinResolution: 1,
+        zoomPadding: 50
+    });
+
+    Grid.create({
         map: map,
         className: "ol-grid top left-2",
         currentExtent: false,
-        autoCollapse: false,
+        autoCollapse: true,
         autoPan: true,
-        labelAttributeName: "strname",
+        labelAttributeName: options.commentFieldName,
         showIcon: true,
-        layers: [pointLayer, lineLayer, polygonLayer]
-    });
-
-    grid.on("destroy", cssin("toolbar", `
+        layers: [pointLayer],
+        zoomMinResolution: 1,
+        zoomPadding: 50
+    }).on("destroy", cssin("toolbar", `
 .ol-grid {
     background-color: rgba(250,250,250,1);
 }        
