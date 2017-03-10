@@ -147,8 +147,6 @@ export function create(options: {
     let toolbar = [
         Note.create({ map: map, layer: pointLayer, noteFieldName: "comment" }),
 
-        Select.create({ map: map, label: "?", eventName: "info", boxSelectCondition: ol.events.condition.primaryAction }),
-
         Draw.create({
             map: map, geometryType: "MultiPolygon", label: "▧", title: "Polygon",
             layers: [polygonLayer],
@@ -259,9 +257,8 @@ export function create(options: {
 
         Delete.create({ map: map, label: "␡" }),
 
-        Button.create({ map: map, label: "X", eventName: "exit", title: "Exit" }),
     ];
-    toolbar.forEach((t, i) => t.setPosition(`left top${-i * 2 || ''}`));
+    toolbar.forEach((t, i) => t.setPosition(`left top${-(4 + i * 2) || ''}`));
 
     map.on("exit", () => {
         toolbar.forEach(t => t.destroy());
@@ -351,7 +348,8 @@ export function create(options: {
 
     Grid.create({
         map: map,
-        className: "ol-grid bottom left",
+        className: "ol-grid",
+        position: "bottom-2 left",
         currentExtent: true,
         autoCollapse: true,
         autoPan: true,
@@ -364,7 +362,8 @@ export function create(options: {
 
     Grid.create({
         map: map,
-        className: "ol-grid top left-2",
+        className: "ol-grid",
+        position: "top left-2",
         currentExtent: false,
         autoCollapse: true,
         autoPan: true,

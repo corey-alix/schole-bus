@@ -10,12 +10,14 @@ export function create(args: { map: ol.Map }) {
     Input.create({
         map: map,
         source: searchResults.getSource(),
-        className: "ol-input top right"
+        className: "ol-input",
+        position: "top right"
     });
 
     Grid.create({
         map: map,
-        className: "ol-grid top-2 right",
+        className: "ol-grid",
+        position: "top-2 right",
         currentExtent: false,
         autoCollapse: false,
         autoPan: true,

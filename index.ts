@@ -3,6 +3,8 @@ import { Popup } from "ol3-popup";
 import { create as CreateLayerSwitcher } from "./app/layerswitcher";
 import { create as CreateToolbar } from "./app/draw/toolbar";
 import { create as CreateSearch } from "./app/search";
+import { create as CreateGoto } from "./app/search/goto";
+
 import { cssin, html, mixin, getParameterByName } from "ol3-fun/ol3-fun/common";
 import { styles } from "./app/symbology";
 import { StyleConverter } from "ol3-symbolizer";
@@ -80,6 +82,8 @@ export function run() {
         commentFieldName: "comment"
     });
     CreateSearch({ map: map });
+
+    CreateGoto({ map: map });
 
     {
         let poi = new ol.layer.Vector({
