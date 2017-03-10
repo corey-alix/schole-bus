@@ -1,5 +1,6 @@
 import ol = require("openlayers");
 import { Popup } from "ol3-popup";
+import { create as CreateLayerSwitcher } from "./app/layerswitcher";
 import { create as CreateToolbar } from "./app/draw/toolbar";
 import { create as CreateSearch } from "./app/search";
 import { cssin, html, mixin, getParameterByName } from "ol3-fun/ol3-fun/common";
@@ -20,11 +21,41 @@ html, body, .schole-bus {
     bottom:0;
 }`);
 
+function bingLayers() {
+    return [
+        'Road',
+        'Aerial',
+        'AerialWithLabels',
+        'collinsBart',
+        'ordnanceSurvey'
+    ].map(style => new ol.layer.Tile({
+        title: style,
+        basemap: true,
+        visible: false,
+        preload: Infinity,
+        source: new ol.source.BingMaps({
+            key: 'As7mdqzf-iBHBqrSHonXJQHrytZ_SL9Z2ojSyOAYoWTceHYYLKUy0C8X8R5IABRg',
+            imagerySet: style,
+            maxZoom: 19
+        })
+    }));
+
+}
+
 export function run() {
     // create map container
     let target = document.createElement("div");
     target.className = "schole-bus";
     document.body.appendChild(target);
+
+    let layers = bingLayers().concat([
+        new ol.layer.Tile({
+            basemap: true,
+            title: "OSM",
+            opacity: 0.8,
+            source: new ol.source.OSM()
+        })
+    ]);
 
     // create map
     let map = new ol.Map({
@@ -36,12 +67,11 @@ export function run() {
             center: ol.proj.transform(GreenvilleSc, "EPSG:4326", "EPSG:3857"),
             projection: "EPSG:3857"
         }),
-        layers: [
-            new ol.layer.Tile({
-                opacity: 0.8,
-                source: new ol.source.OSM()
-            })
-        ]
+        layers: layers
+    });
+
+    CreateLayerSwitcher({
+        map: map
     });
 
     CreateToolbar({
