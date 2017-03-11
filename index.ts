@@ -37,6 +37,12 @@ html, body, .schole-bus {
     right: 2.5em;
     top: 2.5em;
 }
+
+.schole-bus .ol-rotate {
+    top: .5em;
+    right: 2.5em;
+    transition: opacity .25s linear,visibility 0s linear;
+}
 `);
 
 function bingLayers() {
@@ -86,6 +92,9 @@ export function run() {
         target: target,
         loadTilesWhileAnimating: true,
         loadTilesWhileInteracting: true,
+        interactions: ol.interaction.defaults().extend([
+          new ol.interaction.DragRotateAndZoom()
+        ]),        
         controls: ol.control.defaults().extend([
             new ol.control.OverviewMap({
                 collapseLabel: "»",
