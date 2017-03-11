@@ -37,7 +37,7 @@ export function create(options: InputOptions) {
 
     Button.create({
         map: options.map,
-        position: "top-4 left-2",
+        position: "top-6 left-2",
         label: "G",
         title: "Goto Google"
     }).on("click", () => {

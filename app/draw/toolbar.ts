@@ -8,6 +8,8 @@ import { Translate } from "ol3-draw/ol3-draw/ol3-translate";
 import { Select } from "ol3-draw/ol3-draw/ol3-select";
 import { Note } from "ol3-draw/ol3-draw/ol3-note";
 import { WfsSync } from "ol3-draw/ol3-draw/services/wfs-sync";
+import { NavHistory } from "ol3-draw/ol3-draw/ol3-history";
+
 import { Grid } from "ol3-grid";
 import { cssin } from "ol3-fun/ol3-fun/common";
 import { styles } from "../symbology";
@@ -171,20 +173,6 @@ export function create(options: {
         }),
 
         Draw.create({
-            map: map, geometryType: "Circle", label: "◯", title: "Circle", style: [
-                {
-                    fill: {
-                        color: "rgba(255,0,0,0.5)"
-                    },
-                    stroke: {
-                        color: "rgba(255,255,255,1)",
-                        width: 3
-                    }
-                }
-            ]
-        }),
-
-        Draw.create({
             map: map, geometryType: "MultiLineString", label: "▬", title: "Line",
             layers: [lineLayer]
         }),
@@ -194,34 +182,10 @@ export function create(options: {
             layers: [pointLayer]
         }),
 
-        Draw.create({
-            map: map, geometryType: "Point", label: "★", title: "Gradient", style: [
-                {
-                    "star": {
-                        "fill": {
-                            "gradient": {
-                                "type": "linear(1,0,3,46)",
-                                "stops": "rgba(30,186,19,0.22) 0%;rgba(4,75,1,0.48) 70%;rgba(12,95,37,0.56) 77%;rgba(45,53,99,0.72) 100%"
-                            }
-                        },
-                        "opacity": 1,
-                        "stroke": {
-                            "color": "rgba(26,39,181,0.82)",
-                            "width": 8
-                        },
-                        "radius": 23,
-                        "radius2": 15,
-                        "points": 20,
-                        "scale": 1
-                    }
-                }
-            ]
-        }),
-
-        Translate.create({ map: map, label: "↔" }),
+        Translate.create({ map: map, label: "T" }),
 
         Modify.create({
-            map: map, label: "Δ", style: {
+            map: map, label: "E", style: {
                 "Point": [{
                     "circle": {
                         "radius": 6,
@@ -258,7 +222,16 @@ export function create(options: {
         Delete.create({ map: map, label: "␡" }),
 
     ];
-    toolbar.forEach((t, i) => t.setPosition(`left top${-(4 + i * 2) || ''}`));
+
+    Button.create({ map: map, label: "«", eventName: "nav:back", title: "Back", position: "left top-4" });
+    Button.create({ map: map, label: "»", eventName: "nav:forward", title: "Forward", position: "left-2 top-4" });
+
+    toolbar.forEach((t, i) => t.setPosition(`left top${-(6 + i * 2) || ''}`));
+
+    NavHistory.create({
+        map: map,
+        delay: 500
+    });
 
     map.on("exit", () => {
         toolbar.forEach(t => t.destroy());
