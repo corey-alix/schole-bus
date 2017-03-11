@@ -1,5 +1,6 @@
 import ol = require("openlayers");
 import $ = require("jquery");
+import { Measurement } from "ol3-draw/ol3-draw/measure-extension";
 import { Button } from "ol3-draw/ol3-draw/ol3-button";
 import { Delete } from "ol3-draw/ol3-draw/ol3-delete";
 import { Draw } from "ol3-draw/ol3-draw/ol3-draw";
@@ -112,32 +113,34 @@ export function create(options: {
     map: ol.Map;
     keyword: string;
     commentFieldName: string;
+    layers: {
+        pointLayer: ol.layer.Vector;
+        lineLayer: ol.layer.Vector;
+        polygonLayer: ol.layer.Vector;
+    }
 }) {
     let map = options.map;
     let keyword = options.keyword || "schole-bus";
 
-    let pointLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
-    let lineLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
-    let polygonLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
+    let layers = options.layers;
 
     {
         let unsavedStyle = styles["unsaved-point"].map(s => converter.fromJson(s));
         let savedStyle = styles["point"].map(s => converter.fromJson(s));
-        pointLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
+        layers.pointLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
     }
     {
         let unsavedStyle = styles["unsaved-multiline"].map(s => converter.fromJson(s));
         let savedStyle = styles["multiline"].map(s => converter.fromJson(s));
-        lineLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
+        layers.lineLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
     }
     {
         let unsavedStyle = styles["unsaved-polygon"].map(s => converter.fromJson(s));
         let savedStyle = styles["polygon"].map(s => converter.fromJson(s));
-        polygonLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
+        layers.polygonLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
     }
 
-    [polygonLayer, lineLayer, pointLayer].forEach(l => {
-        map.addLayer(l);
+    [layers.polygonLayer, layers.lineLayer, layers.pointLayer].forEach(l => {
         if (options.commentFieldName) {
             l.getSource().on("addfeature", (args: ol.source.VectorEvent) => args.feature.set(options.commentFieldName, args.feature.get(options.commentFieldName) || ""));
         }
@@ -146,12 +149,31 @@ export function create(options: {
     let selectStyle = Select.DEFAULT_OPTIONS.style;
     selectStyle["MultiPolygon"] = selectStyle["Polygon"];
 
+    let lineDraw = Draw.create({
+        map: map, geometryType: "MultiLineString", label: "▬", title: "Line",
+        layers: [layers.lineLayer]
+    });
+
+    Measurement.create({ map: map, draw: lineDraw, uom: "mi" });
+
+    Button.create({
+        map: options.map,
+        position: "top-6 left-2",
+        label: "G",
+        title: "Goto Google"
+    }).on("click", () => {
+        let center = new ol.geom.Point(options.map.getView().getCenter());
+        center.transform(options.map.getView().getProjection(), "EPSG:4326");
+        let [lon, lat] = center.getFirstCoordinate();
+        window.open(`https://www.google.com/maps/@${lat},${lon},15z`)
+    });
+
     let toolbar = [
-        Note.create({ map: map, layer: pointLayer, noteFieldName: "comment" }),
+        Note.create({ map: map, layer: layers.pointLayer, noteFieldName: "comment" }),
 
         Draw.create({
             map: map, geometryType: "MultiPolygon", label: "▧", title: "Polygon",
-            layers: [polygonLayer],
+            layers: [layers.polygonLayer],
             style: [
                 {
                     fill: {
@@ -172,14 +194,11 @@ export function create(options: {
             ]
         }),
 
-        Draw.create({
-            map: map, geometryType: "MultiLineString", label: "▬", title: "Line",
-            layers: [lineLayer]
-        }),
+        lineDraw,
 
         Draw.create({
             map: map, geometryType: "Point", label: "●", title: "Point",
-            layers: [pointLayer]
+            layers: [layers.pointLayer]
         }),
 
         Translate.create({ map: map, label: "T" }),
@@ -296,7 +315,7 @@ export function create(options: {
         template: {
             "strname": keyword
         },
-        source: pointLayer.getSource()
+        source: layers.pointLayer.getSource()
     });
 
     loadAndWatch({
@@ -306,7 +325,7 @@ export function create(options: {
         template: {
             "strname": keyword
         },
-        source: lineLayer.getSource()
+        source: layers.lineLayer.getSource()
     });
 
     loadAndWatch({
@@ -316,7 +335,7 @@ export function create(options: {
         template: {
             "strname": keyword
         },
-        source: polygonLayer.getSource(),
+        source: layers.polygonLayer.getSource(),
     });
 
     Grid.create({
@@ -324,11 +343,10 @@ export function create(options: {
         className: "ol-grid",
         position: "bottom-2 left",
         currentExtent: true,
-        autoCollapse: true,
         autoPan: true,
-        labelAttributeName: options.commentFieldName,
+        labelAttributeName: null,
         showIcon: true,
-        layers: [pointLayer, lineLayer, polygonLayer],
+        layers: [layers.pointLayer, layers.lineLayer, layers.polygonLayer],
         zoomMinResolution: 1,
         zoomPadding: 50
     });
@@ -338,11 +356,10 @@ export function create(options: {
         className: "ol-grid",
         position: "top left-2",
         currentExtent: false,
-        autoCollapse: true,
+        autoCollapse: false,
         autoPan: true,
         labelAttributeName: options.commentFieldName,
-        showIcon: true,
-        layers: [pointLayer],
+        layers: [layers.pointLayer],
         zoomMinResolution: 1,
         zoomPadding: 50
     }).on("destroy", cssin("toolbar", `

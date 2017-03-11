@@ -21,18 +21,32 @@ html, body, .schole-bus {
     left: 0;
     right: 0;
     bottom:0;
-}`);
+}
+
+.schole-bus .ol-mouse-position {
+    position: absolute;
+    top: auto;
+    left: auto;
+    right: 3em;
+    bottom: 1em;
+}
+
+.schole-bus .ol-overviewmap {
+    left: auto;
+    bottom: auto;
+    right: 2.5em;
+    top: 2.5em;
+}
+`);
 
 function bingLayers() {
     return [
         'Road',
-        'Aerial',
         'AerialWithLabels',
-        'collinsBart',
-        'ordnanceSurvey'
+        'Aerial'
     ].map(style => new ol.layer.Tile({
         title: style,
-        basemap: true,
+        type: "base",
         visible: false,
         preload: Infinity,
         source: new ol.source.BingMaps({
@@ -50,27 +64,47 @@ export function run() {
     target.className = "schole-bus";
     document.body.appendChild(target);
 
-    let layers = bingLayers().concat([
-        new ol.layer.Tile({
-            basemap: true,
-            title: "OSM",
-            opacity: 0.8,
-            source: new ol.source.OSM()
-        })
+    let osmLayer = new ol.layer.Tile({
+        type: "base",
+        title: "OSM",
+        opacity: 0.8,
+        source: new ol.source.OSM()
+    });
+
+    let baseLayers = bingLayers().concat([
+        osmLayer
     ]);
+
+    let drawLayers = {
+        pointLayer: new ol.layer.Vector({ source: new ol.source.Vector() }),
+        lineLayer: new ol.layer.Vector({ source: new ol.source.Vector() }),
+        polygonLayer: new ol.layer.Vector({ source: new ol.source.Vector() })
+    };
 
     // create map
     let map = new ol.Map({
         target: target,
         loadTilesWhileAnimating: true,
         loadTilesWhileInteracting: true,
+        controls: ol.control.defaults().extend([
+            new ol.control.OverviewMap({
+                collapseLabel: "»",
+                label: "O",
+                layers: [new ol.layer.Tile({ source: new ol.source.OSM() })].concat(<any>[drawLayers.polygonLayer, drawLayers.lineLayer, drawLayers.pointLayer])
+            })
+        ]),
         view: new ol.View({
             zoom: 10,
             center: ol.proj.transform(GreenvilleSc, "EPSG:4326", "EPSG:3857"),
             projection: "EPSG:3857"
         }),
-        layers: layers
+        layers: baseLayers.concat([drawLayers.polygonLayer, drawLayers.lineLayer, drawLayers.pointLayer])
     });
+
+    map.addControl(new ol.control.MousePosition({
+        projection: "EPSG:4326",
+        coordinateFormat: coord => coord.map(v => v.toFixed(5)).join(",")
+    }));
 
     CreateLayerSwitcher({
         map: map
@@ -79,7 +113,8 @@ export function run() {
     CreateToolbar({
         map: map,
         keyword: getParameterByName("keyword") || "schole-bus",
-        commentFieldName: "comment"
+        commentFieldName: "comment",
+        layers: drawLayers
     });
     CreateSearch({ map: map });
 

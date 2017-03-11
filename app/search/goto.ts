@@ -35,16 +35,4 @@ export function create(options: InputOptions) {
 
     });
 
-    Button.create({
-        map: options.map,
-        position: "top-6 left-2",
-        label: "G",
-        title: "Goto Google"
-    }).on("click", () => {
-        let center = new ol.geom.Point(options.map.getView().getCenter());
-        center.transform(options.map.getView().getProjection(), "EPSG:4326");
-        let [lon, lat] = center.getFirstCoordinate();
-        window.open(`https://www.google.com/maps/@${lat},${lon},15z`)
-    });
-
 }
