@@ -154,7 +154,48 @@ export function create(options: {
         layers: [layers.lineLayer]
     });
 
-    Measurement.create({ map: map, draw: lineDraw, uom: "mi" });
+    let lineEdit = Modify.create({
+        map: map, label: "E", 
+        style: {
+            "Point": [{
+                "circle": {
+                    "radius": 6,
+                    "stroke": {
+                        "color": "rgba(255, 0, 0, 1)"
+                    },
+                    "opacity": 1
+                }
+            },
+            {
+                "star": {
+                    "opacity": 1,
+                    "stroke": {
+                        "color": "rgba(255, 255, 0, 1)",
+                        "width": 1
+                    },
+                    "radius": 5,
+                    "radius2": 0,
+                    "points": 4
+                }
+            },
+            {
+                "circle": {
+                    "radius": 1,
+                    "stroke": {
+                        "color": "rgba(0, 0, 0, 1)"
+                    },
+                    "opacity": 1
+                }
+            }]
+        }
+    });
+
+    Measurement.create({
+        map: map,
+        draw: lineDraw,
+        edit: lineEdit,
+        uom: "mi"
+    });
 
     Button.create({
         map: options.map,
@@ -203,40 +244,7 @@ export function create(options: {
 
         Translate.create({ map: map, label: "T" }),
 
-        Modify.create({
-            map: map, label: "E", style: {
-                "Point": [{
-                    "circle": {
-                        "radius": 6,
-                        "stroke": {
-                            "color": "rgba(255, 0, 0, 1)"
-                        },
-                        "opacity": 1
-                    }
-                },
-                {
-                    "star": {
-                        "opacity": 1,
-                        "stroke": {
-                            "color": "rgba(255, 255, 0, 1)",
-                            "width": 1
-                        },
-                        "radius": 5,
-                        "radius2": 0,
-                        "points": 4
-                    }
-                },
-                {
-                    "circle": {
-                        "radius": 1,
-                        "stroke": {
-                            "color": "rgba(0, 0, 0, 1)"
-                        },
-                        "opacity": 1
-                    }
-                }]
-            }
-        }),
+        lineEdit,
 
         Delete.create({ map: map, label: "␡" }),
 
