@@ -25,6 +25,7 @@ const WFS_INFO = {
     wfsUrl: `${location.protocol}//${location.hostname}:8080/geoserver/cite/wfs`,
     featureNS: "http://www.opengeospatial.net/cite",
     featurePrefix: "cite",
+    keyField: "strname"
 };
 
 function distance(c1: ol.Coordinate, c2: ol.Coordinate) {
@@ -211,11 +212,17 @@ export function create(options: {
         autoPopup: true,
         asContent: (feature: ol.Feature) => {
             let editable = {
-                comment: true
+                [options.commentFieldName]: true
             };
+
+            let visible = {
+                [WFS_INFO.keyField]: false,
+                gid: false
+            };
+
             let div = document.createElement("div");
 
-            let keys = Object.keys(feature.getProperties()).filter(key => {
+            let keys = Object.keys(feature.getProperties()).filter(key => editable[key] || visible[key]).filter(key => {
                 let v = feature.get(key);
                 if (typeof v === "string") return true;
                 if (typeof v === "number") return true;
@@ -367,7 +374,7 @@ export function create(options: {
         geometryType: "Point",
         featureType: "addresses",
         template: {
-            "strname": keyword
+            [WFS_INFO.keyField]: keyword
         },
         source: layers.pointLayer.getSource()
     });
@@ -377,7 +384,7 @@ export function create(options: {
         geometryType: "MultiLineString",
         featureType: "streets",
         template: {
-            "strname": keyword
+            [WFS_INFO.keyField]: keyword
         },
         source: layers.lineLayer.getSource()
     });
@@ -387,7 +394,7 @@ export function create(options: {
         geometryType: "MultiPolygon",
         featureType: "parcels",
         template: {
-            "strname": keyword
+            [WFS_INFO.keyField]: keyword
         },
         source: layers.polygonLayer.getSource(),
     });
@@ -405,6 +412,7 @@ export function create(options: {
         zoomPadding: 50,
         preprocessFeatures: (features: ol.Feature[]) => {
             let center = map.getView().getCenter();
+            features = features.filter(f => !!f.get("comment"));
             return features.sort((f1, f2) => {
                 let p1 = ol.extent.getCenter(f1.getGeometry().getExtent());
                 let p2 = ol.extent.getCenter(f2.getGeometry().getExtent());
