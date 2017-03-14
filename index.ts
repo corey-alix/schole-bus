@@ -1,5 +1,4 @@
 import ol = require("openlayers");
-import { Popup } from "ol3-popup";
 import { create as CreateLayerSwitcher } from "./app/layerswitcher";
 import { create as CreateToolbar } from "./app/draw/toolbar";
 import { create as CreateSearch } from "./app/search";
@@ -93,8 +92,8 @@ export function run() {
         loadTilesWhileAnimating: true,
         loadTilesWhileInteracting: true,
         interactions: ol.interaction.defaults().extend([
-          new ol.interaction.DragRotateAndZoom()
-        ]),        
+            new ol.interaction.DragRotateAndZoom()
+        ]),
         controls: ol.control.defaults().extend([
             new ol.control.OverviewMap({
                 collapseLabel: "»",
@@ -136,8 +135,6 @@ export function run() {
             maxResolution: 256
         });
         map.addLayer(poi);
-
-        let popup = Popup.create({ map: map, autoPopup: false });
 
         let converter = new StyleConverter();
         let styleHash = <{ [name: string]: ol.style.Style[] }>{};
@@ -185,7 +182,7 @@ export function run() {
                 if (!feature.getGeometry().intersectsCoordinate(args.coordinate)) {
                     coord = feature.getGeometry().getClosestPoint(coord);
                 }
-                popup.show(coord, JSON.stringify(feature.get("poi-data"), null, "\t"));
+                console.log(JSON.stringify(feature.get("poi-data"), null, "\t"));
                 return true;
             })
         });

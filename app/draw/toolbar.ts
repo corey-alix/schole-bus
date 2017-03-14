@@ -1,5 +1,7 @@
 import ol = require("openlayers");
 import $ = require("jquery");
+
+import { Popup } from "ol3-popup";
 import { Measurement } from "ol3-draw/ol3-draw/measure-extension";
 import { Button } from "ol3-draw/ol3-draw/ol3-button";
 import { Delete } from "ol3-draw/ol3-draw/ol3-delete";
@@ -12,7 +14,7 @@ import { WfsSync } from "ol3-draw/ol3-draw/services/wfs-sync";
 import { NavHistory } from "ol3-draw/ol3-draw/ol3-history";
 
 import { Grid } from "ol3-grid";
-import { cssin } from "ol3-fun/ol3-fun/common";
+import { cssin, debounce } from "ol3-fun/ol3-fun/common";
 import { styles } from "../symbology";
 import { StyleConverter } from "ol3-symbolizer";
 
@@ -24,6 +26,13 @@ const WFS_INFO = {
     featureNS: "http://www.opengeospatial.net/cite",
     featurePrefix: "cite",
 };
+
+function distance(c1: ol.Coordinate, c2: ol.Coordinate) {
+    return c1
+        .map((v, i) => (v - c2[i]))
+        .map(v => v * v)
+        .reduce((a, b) => a + b, 0);
+}
 
 function stopControl(map: ol.Map, type: any) {
     map.getControls()
@@ -155,7 +164,7 @@ export function create(options: {
     });
 
     let lineEdit = Modify.create({
-        map: map, label: "E", 
+        map: map, label: "E",
         style: {
             "Point": [{
                 "circle": {
@@ -197,6 +206,38 @@ export function create(options: {
         uom: "mi"
     });
 
+    let popup = Popup.create({
+        map: map,
+        autoPopup: true,
+        asContent: (feature: ol.Feature) => {
+            let editable = {
+                comment: true
+            };
+            let div = document.createElement("div");
+
+            let keys = Object.keys(feature.getProperties()).filter(key => {
+                let v = feature.get(key);
+                if (typeof v === "string") return true;
+                if (typeof v === "number") return true;
+                return false;
+            });
+            div.title = feature.getGeometryName();
+            div.innerHTML = `<table>${keys.map(k => `<tr><td>${k}</td><td><input data-event="${k}" ${editable[k] ? "" : "readonly"} value="${feature.get(k)}"/></td></tr>`).join("")}</table>`;
+
+            $("input", div).change(args => {
+                let target = <HTMLInputElement>args.target;
+                let key = target.dataset.event;
+                let value = target.value;
+                value && feature.set(key, value); // disallow blank
+            });
+
+            return div;
+        }
+
+    });
+
+    popup.set("enabled", false);
+
     Button.create({
         map: options.map,
         position: "top-6 left-2",
@@ -210,7 +251,10 @@ export function create(options: {
     });
 
     let toolbar = [
-        Note.create({ map: map, layer: layers.pointLayer, noteFieldName: "comment" }),
+
+        Button.create({ map: map, label: "ℹ", title: "Information", eventName: "info" }),
+
+        //Note.create({ map: map, layer: layers.pointLayer, noteFieldName: "comment" }),
 
         Draw.create({
             map: map, geometryType: "MultiPolygon", label: "▧", title: "Polygon",
@@ -267,13 +311,15 @@ export function create(options: {
     map.on("info", (args: {
         control: Button
     }) => {
-        if (args.control.get("active")) {
+        let isActive = args.control.get("active");
+        if (isActive) {
             stopOtherControls(map, args.control);
             stopControl(map, Draw);
             stopControl(map, Delete);
             stopControl(map, Translate);
             stopControl(map, Modify);
         }
+        popup.set("active", isActive);
     });
 
     map.on("delete-feature", (args: { control: Draw }) => {
@@ -346,31 +392,34 @@ export function create(options: {
         source: layers.polygonLayer.getSource(),
     });
 
-    Grid.create({
+    let grid = Grid.create({
         map: map,
         className: "ol-grid",
         position: "bottom-2 left",
-        currentExtent: true,
-        autoPan: true,
-        labelAttributeName: null,
-        showIcon: true,
-        layers: [layers.pointLayer, layers.lineLayer, layers.polygonLayer],
-        zoomMinResolution: 1,
-        zoomPadding: 50
-    });
-
-    Grid.create({
-        map: map,
-        className: "ol-grid",
-        position: "top left-2",
         currentExtent: false,
         autoCollapse: false,
         autoPan: true,
         labelAttributeName: options.commentFieldName,
-        layers: [layers.pointLayer],
+        layers: [layers.pointLayer, layers.lineLayer, layers.polygonLayer],
         zoomMinResolution: 1,
-        zoomPadding: 50
-    }).on("destroy", cssin("toolbar", `
+        zoomPadding: 50,
+        preprocessFeatures: (features: ol.Feature[]) => {
+            let center = map.getView().getCenter();
+            return features.sort((f1, f2) => {
+                let p1 = ol.extent.getCenter(f1.getGeometry().getExtent());
+                let p2 = ol.extent.getCenter(f2.getGeometry().getExtent());
+                let d1 = distance(center, p1);
+                let d2 = distance(center, p2);
+                return d1 - d2;
+            });
+        }
+    });
+
+    map.getView().on("change:center", debounce(() => {
+        grid.redraw();
+    }, 2000));
+
+    grid.on("destroy", cssin("toolbar", `
 .ol-grid {
     background-color: rgba(250,250,250,1);
 }        
