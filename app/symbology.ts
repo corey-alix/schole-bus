@@ -21,15 +21,20 @@ function complement(color: Color) {
 }
 
 const Colors = <{ [name: string]: Color }>{
+    animal: [200, 200, 50, 1],
     history: [0, 0, 0, 1],
     education: [0, 200, 0, 1],
     clear: [0, 0, 0, 0],
+    camping: [0, 240, 0, 1],
+    science: [250, 250, 25, 1],
     black: [0, 0, 0, 1],
     red: [255, 0, 0, 1],
     white: [255, 255, 255, 1],
+    monument: [64, 32, 32, 1],
     park: [0, 128, 0, 1],
     poi_stroke: [255, 255, 255, 1],
-    unsaved: [255, 0, 0, 1]
+    unsaved: [255, 0, 0, 1],
+    state: [0, 0, 255, 1]
 }
 
 export const styles = <{ [name: string]: Format.Style[] }>{
@@ -47,7 +52,82 @@ export const styles = <{ [name: string]: Format.Style[] }>{
             }
         }
     }],
-    HTL: [{
+    "artifact": [
+        {
+            text: {
+                text: "See",
+                fill: {
+                    color: rgba(complement(Colors.park))
+                },
+                stroke: {
+                    color: rgba(Colors.park),
+                    width: 3
+                },
+                "offset-y": 15
+            },
+            circle: {
+                radius: 1,
+                fill: {
+                    color: rgba(mix(Colors.park, Colors.clear))
+                },
+                stroke: {
+                    color: rgba(Colors.poi_stroke)
+                }
+            }
+        }
+    ],
+    "milestone": [
+        {
+            circle: {
+                radius: 15,
+                fill: {
+                    color: rgba(Colors.white)
+                },
+                stroke: {
+                    color: rgba(Colors.black),
+                    width: 3
+                }
+            }
+        },
+        {
+            text: {
+                text: "1",
+                fill: {
+                    color: rgba(Colors.white)
+                },
+                stroke: {
+                    color: rgba(Colors.black),
+                    width: 3
+                },
+                scale: 2
+            }
+        }
+    ],
+    "cemetery": [{
+        text: {
+            text: "R.I.P",
+            fill: {
+                color: rgba(mix(Colors.camping, Colors.black))
+            },
+            stroke: {
+                color: rgba(Colors.black)
+            },
+            "offset-y": 0
+        }
+    }],
+    "campground": [{
+        text: {
+            text: "Campground",
+            fill: {
+                color: rgba(mix(Colors.camping, Colors.clear))
+            },
+            stroke: {
+                color: rgba(mix(Colors.white, Colors.black))
+            },
+            "offset-y": 0
+        }
+    }],
+    "HTL": [{
         text: {
             text: "HOTEL",
             fill: {
@@ -59,7 +139,92 @@ export const styles = <{ [name: string]: Format.Style[] }>{
             "offset-y": 0
         }
     }],
-    PRK: [
+    "museum": [
+        {
+            circle: {
+                radius: poi_radius,
+                fill: {
+                    color: rgba(mix(Colors.history, Colors.education))
+                },
+                stroke: {
+                    color: rgba(complement(mix(Colors.history, Colors.education)))
+                }
+            }
+        }
+    ],
+    "national-monument": [
+        {
+            text: {
+                text: "NM",
+                fill: {
+                    color: rgba(complement(Colors.monument))
+                },
+                stroke: {
+                    color: rgba(Colors.monument),
+                    width: 1
+                },
+                "offset-y": 15
+            },
+            circle: {
+                radius: poi_radius,
+                fill: {
+                    color: rgba(mix(Colors.monument, Colors.clear))
+                },
+                stroke: {
+                    color: rgba(Colors.poi_stroke)
+                }
+            }
+        }
+    ],
+    "national-park": [
+        {
+            text: {
+                text: "NP",
+                fill: {
+                    color: rgba(complement(Colors.park))
+                },
+                stroke: {
+                    color: rgba(Colors.park),
+                    width: 3
+                },
+                "offset-y": 15
+            },
+            circle: {
+                radius: poi_radius,
+                fill: {
+                    color: rgba(mix(Colors.park, Colors.clear))
+                },
+                stroke: {
+                    color: rgba(Colors.poi_stroke)
+                }
+            }
+        }
+    ],
+    "state-park": [
+        {
+            text: {
+                text: "SP",
+                fill: {
+                    color: rgba(Colors.park)
+                },
+                stroke: {
+                    color: rgba(Colors.state),
+                    width: 3
+                },
+                "offset-y": 15
+            },
+            circle: {
+                radius: poi_radius,
+                fill: {
+                    color: rgba(mix(Colors.park, Colors.clear))
+                },
+                stroke: {
+                    color: rgba(Colors.poi_stroke)
+                }
+            }
+        }
+    ],
+    "PRK": [
         {
             text: {
                 text: "Park",
@@ -83,19 +248,6 @@ export const styles = <{ [name: string]: Format.Style[] }>{
             }
         }
     ],
-    museums: [
-        {
-            circle: {
-                radius: poi_radius,
-                fill: {
-                    color: rgba(mix(Colors.history, Colors.education))
-                },
-                stroke: {
-                    color: rgba(complement(mix(Colors.history, Colors.education)))
-                }
-            }
-        }
-    ],
     "polygon": [
         {
             fill: {
@@ -103,6 +255,45 @@ export const styles = <{ [name: string]: Format.Style[] }>{
             },
             stroke: {
                 color: rgba(mix(Colors.black)),
+                width: 1
+            }
+        }
+    ],
+    "science-center": [
+        {
+            text: {
+                text: "Think!",
+                fill: {
+                    color: rgba(Colors.science)
+                },
+                stroke: {
+                    color: rgba(Colors.park),
+                    width: 3
+                },
+                "offset-y": 15
+            },
+            circle: {
+                radius: poi_radius,
+                fill: {
+                    color: rgba(mix(Colors.science, Colors.clear))
+                },
+                stroke: {
+                    color: rgba(Colors.poi_stroke)
+                }
+            }
+        }
+
+    ],
+    "trail": [
+        {
+            stroke: {
+                color: rgba(mix(Colors.park, Colors.clear, Colors.clear)),
+                width: 6
+            }
+        },
+        {
+            stroke: {
+                color: rgba(complement(Colors.park)),
                 width: 1
             }
         }
@@ -179,5 +370,30 @@ export const styles = <{ [name: string]: Format.Style[] }>{
                 }
             }
         }
+    ],
+    "zoo": [
+        {
+            text: {
+                text: "Z-oh-oh",
+                fill: {
+                    color: rgba(Colors.animal)
+                },
+                stroke: {
+                    color: rgba(Colors.park),
+                    width: 3
+                },
+                "offset-y": 15
+            },
+            circle: {
+                radius: poi_radius,
+                fill: {
+                    color: rgba(mix(Colors.animal, Colors.clear))
+                },
+                stroke: {
+                    color: rgba(Colors.poi_stroke)
+                }
+            }
+        }
+
     ],
 };

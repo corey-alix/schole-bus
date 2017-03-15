@@ -6,14 +6,14 @@ import { Button } from "ol3-draw/ol3-draw/ol3-button";
 export function create(options: InputOptions) {
 
     cssin("goto", `
-.ol-input.goto input {
+.ol-goto input {
     text-transform: uppercase;
 }
 `
     );
 
     let DEFAULT_OPTIONS = <InputOptions>{
-        className: "ol-input goto",
+        className: "ol-goto",
         position: "bottom left",
         autoCollapse: true,
         placeholderText: `DMS`
