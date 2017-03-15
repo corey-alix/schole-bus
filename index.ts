@@ -33,14 +33,18 @@ html, body, .schole-bus {
 .schole-bus .ol-overviewmap {
     left: auto;
     bottom: auto;
-    right: 2.5em;
-    top: 2.5em;
+    right: 0.5em;
+    top: 0.5em;
 }
 
 .schole-bus .ol-rotate {
     top: .5em;
     right: 2.5em;
     transition: opacity .25s linear,visibility 0s linear;
+}
+
+.schole-bus .ol-search table thead {
+    display: none;
 }
 `);
 
