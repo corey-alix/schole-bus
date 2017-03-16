@@ -76,33 +76,6 @@ export const styles = <{ [name: string]: Format.Style[] }>{
             }
         }
     ],
-    "milestone": [
-        {
-            circle: {
-                radius: 15,
-                fill: {
-                    color: rgba(Colors.white)
-                },
-                stroke: {
-                    color: rgba(Colors.black),
-                    width: 3
-                }
-            }
-        },
-        {
-            text: {
-                text: "1",
-                fill: {
-                    color: rgba(Colors.white)
-                },
-                stroke: {
-                    color: rgba(Colors.black),
-                    width: 3
-                },
-                scale: 2
-            }
-        }
-    ],
     "cemetery": [{
         text: {
             text: "R.I.P",
@@ -139,6 +112,49 @@ export const styles = <{ [name: string]: Format.Style[] }>{
             "offset-y": 0
         }
     }],
+    "label": [
+        {
+            text: {
+                text: "1",
+                font: "cursive",
+                fill: {
+                    color: rgba(Colors.white)
+                },
+                stroke: {
+                    color: rgba(Colors.black),
+                    width: 1
+                },
+                scale: 2
+            }
+        }
+    ],
+    "milestone": [
+        {
+            circle: {
+                radius: 15,
+                fill: {
+                    color: rgba(Colors.white)
+                },
+                stroke: {
+                    color: rgba(Colors.black),
+                    width: 3
+                }
+            }
+        },
+        {
+            text: {
+                text: "1",
+                fill: {
+                    color: rgba(Colors.white)
+                },
+                stroke: {
+                    color: rgba(Colors.black),
+                    width: 3
+                },
+                scale: 2
+            }
+        }
+    ],
     "museum": [
         {
             circle: {
@@ -312,8 +328,14 @@ export const styles = <{ [name: string]: Format.Style[] }>{
     "multiline": [
         {
             stroke: {
-                color: rgba(mix(Colors.black)),
-                width: 3
+                color: rgba(mix(Colors.black, Colors.clear)),
+                width: 5
+            }
+        },
+        {
+            stroke: {
+                color: rgba(Colors.white),
+                width: 1
             }
         }
     ],

@@ -142,10 +142,25 @@ export function create(options: {
     {
         let unsavedStyle = styles["unsaved-point"].map(s => converter.fromJson(s));
         let defaultStyle = styles["point"].map(s => converter.fromJson(s));
-        let mapping = [            
+
+        let mapping = [
             {
                 test: (text: string) => !!text.match(/DAY \d+$/),
-                style: styles["milestone"].map(s => converter.fromJson(s))
+                style: (text: string) => {
+                    let style = styles["milestone"].map(s => converter.fromJson(s));
+                    let day = text.match(/\d+/)[0];
+                    style.forEach(s => s.getText && s.getText() && s.getText().setText(day));
+                    return style;
+                }
+            },
+            {
+                test: (text: string) => !!text.match(/^\*/),
+                style: (text: string) => {
+                    let style = styles["label"].map(s => converter.fromJson(s));
+                    let label = text.substr(1);
+                    style.forEach(s => s.getText && s.getText() && s.getText().setText(label));
+                    return style;
+                }
             },
             {
                 test: (text: string) => !!text.match(/RIP$/) || !!text.match(/CEMETERY/i),
@@ -195,10 +210,9 @@ export function create(options: {
 
         let savedStyle = (feature: ol.Feature) => {
             let text = <string>feature.get(options.commentFieldName);
-            return first(mapping, v => v.test(text), {
-                test: (dontcare: string) => true,
-                style: defaultStyle
-            }).style;
+            let styler = first(mapping, v => v.test(text));
+            if (!styler) return defaultStyle;
+            return (typeof styler.style === "function") ? styler.style(text) : styler.style
         }
 
         layers.pointLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle(feature));
@@ -324,7 +338,44 @@ export function create(options: {
 
     });
 
-    popup.set("enabled", false);
+    popup.set("active", false);
+    popup.on("hide", () => popup.set("active", false));
+
+    {
+        let doit = event => {
+            let pixel = map.getEventPixel(event);
+            if (map.hasFeatureAtPixel(pixel)) {
+                let features = [];
+                map.forEachFeatureAtPixel(pixel, f => features.push(f));
+                map.dispatchEvent({
+                    type: "hover",
+                    pixel: pixel,
+                    features: features
+                });
+            }
+        };
+
+        map.getViewport().addEventListener("mousemove", debounce(event => {
+            if (!popup.get("active")) return;
+            doit(event);
+        }));
+
+        map.getViewport().addEventListener("mousemove", debounce(event => {
+            popup.set("active", true);
+            doit(event);
+        }, 2000));
+    }
+
+    map.on("hover", (args: {
+        pixel: ol.Pixel;
+        features: ol.Feature[];
+    }) => {
+        popup.pages.clear();
+        popup.pages.addFeature(args.features[0], {
+            searchCoordinate: map.getCoordinateFromPixel(args.pixel)
+        });
+        popup.pages.goto(0);
+    });
 
     Button.create({
         map: options.map,
@@ -399,7 +450,7 @@ export function create(options: {
     map.on("info", (args: {
         control: Button
     }) => {
-        let isActive = args.control.get("active");
+        let isActive = !popup.get("active"); // toggle popup
         if (isActive) {
             stopOtherControls(map, args.control);
             stopControl(map, Draw);
@@ -408,6 +459,7 @@ export function create(options: {
             stopControl(map, Modify);
         }
         popup.set("active", isActive);
+        if (!isActive) popup.hide();
     });
 
     map.on("delete-feature", (args: { control: Draw }) => {
