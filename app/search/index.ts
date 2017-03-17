@@ -84,17 +84,15 @@ export function create(args: { map: ol.Map }) {
         }).then(json => {
             let results = searchProvider.handleResponse(json);
             results.some(r => {
-                console.log(r);
-                {
-                    let [lon, lat] = ol.proj.transform([r.lon, r.lat], "EPSG:4326", "EPSG:3857");
-                    let feature = new ol.Feature(new ol.geom.Point([lon, lat]));
-                    feature.set("text", r.title);
-                    searchResults.getSource().addFeature(feature);
-                    navigation.zoomToFeature(map, new ol.Feature(r.extent), {
-                        minResolution: 1,
-                        padding: 200
-                    });
-                }
+                let geom = new ol.geom.Point([r.lon, r.lat]).transform("EPSG:4326", map.getView().getProjection());
+                let feature = new ol.Feature(geom);
+                feature.set("text", r.title);
+                searchResults.getSource().addFeature(feature);
+                r.extent.transform("EPSG:4326", map.getView().getProjection());
+                navigation.zoomToFeature(map, new ol.Feature(r.extent), {
+                    minResolution: 1,
+                    padding: 200
+                });
                 return true;
             });
         }).fail(() => {
