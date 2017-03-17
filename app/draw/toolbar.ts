@@ -1,7 +1,6 @@
 import ol = require("openlayers");
 import $ = require("jquery");
 
-import { Popup } from "ol3-popup";
 import { Measurement } from "ol3-draw/ol3-draw/measure-extension";
 import { Button } from "ol3-draw/ol3-draw/ol3-button";
 import { Delete } from "ol3-draw/ol3-draw/ol3-delete";
@@ -14,19 +13,13 @@ import { WfsSync } from "ol3-draw/ol3-draw/services/wfs-sync";
 import { NavHistory } from "ol3-draw/ol3-draw/ol3-history";
 
 import { Grid } from "ol3-grid";
-import { cssin, debounce } from "ol3-fun/ol3-fun/common";
+import { cssin, debounce } from "ol3-fun";
 import { styles } from "../symbology";
 import { StyleConverter } from "ol3-symbolizer";
 
-const converter = new StyleConverter();
+import { WFS_INFO } from "../wfs-info";
 
-const WFS_INFO = {
-    srsName: "EPSG:3857",
-    wfsUrl: `${location.protocol}//${location.hostname}:8080/geoserver/cite/wfs`,
-    featureNS: "http://www.opengeospatial.net/cite",
-    featurePrefix: "cite",
-    keyField: "strname"
-};
+const converter = new StyleConverter();
 
 function first<T>(list: Array<T>, filter: (v: T) => boolean, elseVal?: T) {
     let result = -1;
@@ -163,6 +156,17 @@ export function create(options: {
                 }
             },
             {
+                test: (text: string) => !!text.match(/^!/),
+                style: (text: string) => {
+                    let style = styles["warning-point"].map(s => converter.fromJson(s));
+                    return style;
+                }
+            },
+            {
+                test: (text: string) => !text,
+                style: styles["unknown"].map(s => converter.fromJson(s))
+            },
+            {
                 test: (text: string) => !!text.match(/RIP$/) || !!text.match(/CEMETERY/i),
                 style: styles["cemetery"].map(s => converter.fromJson(s))
             },
@@ -227,14 +231,26 @@ export function create(options: {
                 test: (text: string) => !!text.match(/TRAIL/i),
                 style: styles["trail"].map(s => converter.fromJson(s))
             },
+            {
+                test: (text: string) => !text,
+                style: styles["unknown-line"].map(s => converter.fromJson(s))
+            },
+            {
+                test: (text: string) => !!text.match(/^!/),
+                style: (text: string) => {
+                    let style = styles["warning-line"].map(s => converter.fromJson(s));
+                    let label = text.substr(1);
+                    style.forEach(s => s.getText && s.getText() && s.getText().setText(label));
+                    return style;
+                }
+            },
         ];
 
         let savedStyle = (feature: ol.Feature) => {
             let text = <string>feature.get(options.commentFieldName);
-            return first(mapping, v => v.test(text), {
-                test: (dontcare: string) => true,
-                style: defaultStyle
-            }).style;
+            let styler = first(mapping, v => v.test(text));
+            if (!styler) return defaultStyle;
+            return (typeof styler.style === "function") ? styler.style(text) : styler.style
         }
 
         layers.lineLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle(feature));
@@ -302,81 +318,6 @@ export function create(options: {
         uom: "mi"
     });
 
-    let popup = Popup.create({
-        map: map,
-        autoPopup: true,
-        asContent: (feature: ol.Feature) => {
-            let editable = {
-                [options.commentFieldName]: true
-            };
-
-            let visible = {
-                [WFS_INFO.keyField]: false,
-                gid: false
-            };
-
-            let div = document.createElement("div");
-
-            let keys = Object.keys(feature.getProperties()).filter(key => editable[key] || visible[key]).filter(key => {
-                let v = feature.get(key);
-                if (typeof v === "string") return true;
-                if (typeof v === "number") return true;
-                return false;
-            });
-            div.title = feature.getGeometryName();
-            div.innerHTML = `<table>${keys.map(k => `<tr><td>${k}</td><td><input data-event="${k}" ${editable[k] ? "" : "readonly"} value="${feature.get(k)}"/></td></tr>`).join("")}</table>`;
-
-            $("input", div).change(args => {
-                let target = <HTMLInputElement>args.target;
-                let key = target.dataset.event;
-                let value = target.value;
-                value && feature.set(key, value); // disallow blank
-            });
-
-            return div;
-        }
-
-    });
-
-    popup.set("active", false);
-    popup.on("hide", () => popup.set("active", false));
-
-    {
-        let doit = event => {
-            let pixel = map.getEventPixel(event);
-            if (map.hasFeatureAtPixel(pixel)) {
-                let features = [];
-                map.forEachFeatureAtPixel(pixel, f => features.push(f));
-                map.dispatchEvent({
-                    type: "hover",
-                    pixel: pixel,
-                    features: features
-                });
-            }
-        };
-
-        map.getViewport().addEventListener("mousemove", debounce(event => {
-            if (!popup.get("active")) return;
-            doit(event);
-        }));
-
-        map.getViewport().addEventListener("mousemove", debounce(event => {
-            popup.set("active", true);
-            doit(event);
-        }, 2000));
-    }
-
-    map.on("hover", (args: {
-        pixel: ol.Pixel;
-        features: ol.Feature[];
-    }) => {
-        popup.pages.clear();
-        popup.pages.addFeature(args.features[0], {
-            searchCoordinate: map.getCoordinateFromPixel(args.pixel)
-        });
-        popup.pages.goto(0);
-    });
-
     Button.create({
         map: options.map,
         position: "top-6 left-2",
@@ -391,8 +332,7 @@ export function create(options: {
 
     let toolbar = [
 
-        Button.create({ map: map, label: "ℹ", title: "Information", eventName: "info" }),
-
+        //Button.create({ map: map, label: "ℹ", title: "Information", eventName: "info" }),
         //Note.create({ map: map, layer: layers.pointLayer, noteFieldName: "comment" }),
 
         Draw.create({
@@ -445,21 +385,6 @@ export function create(options: {
 
     map.on("exit", () => {
         toolbar.forEach(t => t.destroy());
-    });
-
-    map.on("info", (args: {
-        control: Button
-    }) => {
-        let isActive = !popup.get("active"); // toggle popup
-        if (isActive) {
-            stopOtherControls(map, args.control);
-            stopControl(map, Draw);
-            stopControl(map, Delete);
-            stopControl(map, Translate);
-            stopControl(map, Modify);
-        }
-        popup.set("active", isActive);
-        if (!isActive) popup.hide();
     });
 
     map.on("delete-feature", (args: { control: Draw }) => {

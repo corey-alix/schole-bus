@@ -34,7 +34,8 @@ const Colors = <{ [name: string]: Color }>{
     park: [0, 128, 0, 1],
     poi_stroke: [255, 255, 255, 1],
     unsaved: [255, 0, 0, 1],
-    state: [0, 0, 255, 1]
+    state: [0, 0, 255, 1],
+    warning: [255, 0, 0, 1]
 }
 
 export const styles = <{ [name: string]: Format.Style[] }>{
@@ -314,6 +315,73 @@ export const styles = <{ [name: string]: Format.Style[] }>{
             }
         }
     ],
+    'unknown': [{
+        circle: {
+            radius: poi_radius + 2,
+            fill: {
+                color: rgba(mix(Colors.clear, Colors.warning))
+            },
+            stroke: {
+                color: rgba(Colors.white)
+            }
+        },
+        text: {
+            text: "?",
+            fill: {
+                color: rgba(mix(Colors.clear, Colors.warning))
+            },
+            stroke: {
+                color: rgba(complement(Colors.warning))
+            }
+        },
+    }],
+    'unknown-line': [{
+        stroke: {
+            color: rgba(mix(Colors.warning, Colors.clear, Colors.clear)),
+            width: 8
+        }
+    },
+    {
+        stroke: {
+            color: rgba(complement(Colors.warning)),
+            width: 1
+        }
+    }],
+    'warning-point': [{
+        circle: {
+            radius: 20,
+            fill: {
+                color: rgba(mix(Colors.white, Colors.clear, Colors.clear))
+            },
+            stroke: {
+                color: rgba(Colors.warning),
+                width: 3
+            }
+        },
+        text: {
+            text: "!",
+            fill: {
+                color: rgba(Colors.white)
+            },
+            stroke: {
+                color: rgba(Colors.warning),
+                width: 3
+            },
+            scale: 2
+        },
+    }],
+    'warning-line': [{
+        stroke: {
+            color: rgba(Colors.warning),
+            width: 8
+        }
+    },
+    {
+        stroke: {
+            color: rgba(Colors.black),
+            width: 2
+        }
+    }],
     "unsaved-polygon": [
         {
             fill: {

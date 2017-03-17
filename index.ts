@@ -3,10 +3,13 @@ import { create as CreateLayerSwitcher } from "./app/layerswitcher";
 import { create as CreateToolbar } from "./app/draw/toolbar";
 import { create as CreateSearch } from "./app/search";
 import { create as CreateGoto } from "./app/search/goto";
+import { create as CreatePopup } from "./app/popup";
 
 import { cssin, html, mixin, getParameterByName } from "ol3-fun/ol3-fun/common";
 import { styles } from "./app/symbology";
 import { StyleConverter } from "ol3-symbolizer";
+
+import { WFS_INFO } from "./app/wfs-info";
 
 import { GreenvilleSc } from "./app/poi/usa";
 
@@ -131,6 +134,42 @@ export function run() {
     CreateSearch({ map: map });
 
     CreateGoto({ map: map });
+
+    CreatePopup({
+        map: map,
+        autoPopup: true,
+        asContent: (feature: ol.Feature) => {
+            let editable = {
+                "comment": true
+            };
+
+            let visible = {
+                [WFS_INFO.keyField]: false,
+                gid: false
+            };
+
+            let div = document.createElement("div");
+
+            let keys = Object.keys(feature.getProperties()).filter(key => editable[key] || visible[key]).filter(key => {
+                let v = feature.get(key);
+                if (typeof v === "string") return true;
+                if (typeof v === "number") return true;
+                return false;
+            });
+            div.title = feature.getGeometryName();
+            div.innerHTML = `<table>${keys.map(k => `<tr><td>${k}</td><td><input data-event="${k}" ${editable[k] ? "" : "readonly"} value="${feature.get(k)}"/></td></tr>`).join("")}</table>`;
+
+            $("input", div).change(args => {
+                let target = <HTMLInputElement>args.target;
+                let key = target.dataset.event;
+                let value = target.value;
+                value && feature.set(key, value); // disallow blank
+            });
+
+            return div;
+        }
+
+    });
 
     {
         let poi = new ol.layer.Vector({

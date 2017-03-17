@@ -2,7 +2,7 @@ import ol = require("openlayers");
 import $ = require("jquery");
 import { navigation } from "ol3-fun";
 import { SearchForm } from "ol3-search";
-import { Google } from "ol3-search/ol3-search/providers/google";
+import { GoogleGeocode as Google } from "ol3-search/ol3-search/providers/google";
 import { Grid } from "ol3-grid";
 import { StyleConverter } from "ol3-symbolizer";
 
@@ -51,12 +51,13 @@ export function create(args: { map: ol.Map }) {
     });
 
     let form = SearchForm.create({
-        className: 'ol-search top-2 right',
+        className: 'ol-search',
+        position: 'top-2 right',
         expanded: false,
-        autoCollapse: true,        
+        autoCollapse: true,
         autoClear: true,
         closedText: "G",
-        placeholderText: "Google Map Search",
+        title: "Google Map Search",
         fields: [
             {
                 name: "query",
@@ -70,7 +71,10 @@ export function create(args: { map: ol.Map }) {
     form.on("change", args => {
         if (!args.value) return;
 
-        let searchArgs = searchProvider.getParameters(args.value, map);
+        let searchArgs = searchProvider.getParameters({
+            query: args.value.query,
+            params: {}
+        }, map);
 
         $.ajax({
             url: searchArgs.url,
@@ -84,9 +88,12 @@ export function create(args: { map: ol.Map }) {
                 {
                     let [lon, lat] = ol.proj.transform([r.lon, r.lat], "EPSG:4326", "EPSG:3857");
                     let feature = new ol.Feature(new ol.geom.Point([lon, lat]));
-                    feature.set("text", r.original.formatted_address);
+                    feature.set("text", r.title);
                     searchResults.getSource().addFeature(feature);
-                    navigation.zoomToFeature(map, feature, { minResolution: 1, padding: 200 });
+                    navigation.zoomToFeature(map, new ol.Feature(r.extent), {
+                        minResolution: 1,
+                        padding: 200
+                    });
                 }
                 return true;
             });
