@@ -67,7 +67,7 @@ function loadAndWatch(options: {
 
     let format = new ol.format.WFS();
 
-    let filter = Object.keys(options.template).map(k => ol.format.filter.equalTo(k, options.template[k]));
+    let filter = <any>Object.keys(options.template).map(k => ol.format.filter.equalTo(k, options.template[k]));
     if (filter.length > 1) {
         filter = ol.format.filter.and.apply(ol.format.filter.and, filter);
     } else {

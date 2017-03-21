@@ -86,7 +86,7 @@ export function run() {
         source: new ol.source.OSM()
     });
 
-    let baseLayers = bingLayers().concat([
+    let baseLayers = [].concat(bingLayers()).concat([
         osmLayer
     ]);
 
@@ -132,7 +132,7 @@ export function run() {
 
     {
         oregonTrailLayer.setStyle((feature: ol.Feature, res: number) => {
-            let featureStyle = feature.getStyle();
+            let featureStyle = <ol.style.Style>feature.getStyle();
             if (featureStyle) return featureStyle;
 
             let name = <string>feature.get("name");
