@@ -1,0 +1,3895 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Oregon Trail Trip</name>
+    <description>Following the trail as much as possible from east to west, taking about a month to do it correctly. I will be doing some of the Sublette Cutoff route. I will not be going to Fort Bridger.</description>
+    <Style id="icon-102-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/102-pink.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-102-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/102-pink.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-102">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-102-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-102-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-102-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/102-pink.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-102-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/102-pink.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-102-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-102-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-102-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-125-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/125-restaurant.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-125-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/125-restaurant.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-125">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-125-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-125-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-125-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/125-restaurant.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-125-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/125-restaurant.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-125-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-125-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-125-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-158-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/158-yellow.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-158-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/158-yellow.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-158">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-158-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-158-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-159-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/159-blue-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-159-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/159-blue-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-159">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-159-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-159-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-161-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/161-grn-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-161-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/161-grn-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-161">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-161-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-161-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-161-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/161-grn-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-161-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/161-grn-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-161-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-161-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-161-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-165-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/165-pink-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-165-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/165-pink-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-165">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-165-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-165-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-165-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/165-pink-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-165-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/165-pink-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-165-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-165-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-165-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-167-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/167-red-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-167-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/167-red-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-167">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-167-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-167-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-167-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/167-red-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-167-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/167-red-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-167-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-167-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-167-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-168-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/168-ylw-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-168-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/168-ylw-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-168">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-168-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-168-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-168-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/168-ylw-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-168-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/168-ylw-pushpin.png</href>
+        </Icon>
+        <hotSpot x="10" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-168-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-168-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-168-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-181-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/181-info_circle.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-181-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/181-info_circle.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-181">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-181-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-181-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-22-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/22-blue-dot.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-22-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/22-blue-dot.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-22">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-22-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-22-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-22-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/22-blue-dot.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-22-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/22-blue-dot.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-22-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-22-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-22-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-31-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/31-campground.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-31-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/31-campground.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-31">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-31-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-31-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-31-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/31-campground.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-31-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/31-campground.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-31-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-31-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-31-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-61-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/61-green-dot.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-61-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/61-green-dot.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-61">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-61-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-61-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-61-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/61-green-dot.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-61-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/61-green-dot.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-61-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-61-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-61-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-62-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/62-green.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-62-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/62-green.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-62">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-62-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-62-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-62-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/62-green.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-62-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/62-green.png</href>
+        </Icon>
+        <hotSpot x="16" xunits="pixels" y="31" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-62-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-62-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-62-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-77-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/77-info.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-77-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/77-info.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-77">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-77-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-77-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-77-nodesc-normal">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/77-info.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-77-nodesc-highlight">
+      <IconStyle>
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://www.gstatic.com/mapspro/images/stock/77-info.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1.1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-77-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-77-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-77-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Folder>
+      <name>Untitled layer</name>
+      <Placemark>
+        <name>Flagstaff Hill</name>
+        <description>http://www.nps.gov/oreg/planyourvisit/site10.htm</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -117.726789,44.81515,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ward Massacre Site</name>
+        <description><![CDATA[http://www.idahohistory.net/OTward.html<br><br>North side of Lincoln]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -116.608812,43.677129,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Bonneville Point</name>
+        <description>http://www.idahohistory.net/OTindiancrk.html</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -116.035666,43.48777,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Three Island Crossing</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -115.333099,42.935564,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Farewell Bend State Park</name>
+        <description>Go up a small hill to see ruts coming up to the banks of the river.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -117.221889,44.308802,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Milner Dam/Ruts</name>
+        <description>http://www.idahohistory.net/OTmilner.html</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -114.016049,42.519071,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Massacre Rocks SP</name>
+        <description>http://parksandrecreation.idaho.gov/parks/massacrerocks.aspx</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -112.99284,42.672844,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>National Oregon/California Trail Center</name>
+        <description>http://www.oregontrailcenter.org/</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -111.297255,42.323175,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Big Sandy</name>
+        <description>http://wyoshpo.state.wy.us/trailsdemo/big_sandy.htm</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -109.453236,42.107926,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Little Sandy</name>
+        <description>http://wyoshpo.state.wy.us/trailsdemo/little_sandy.htm</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -109.449395,42.109398,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>True Parting Of The Ways</name>
+        <description>http://wyoshpo.state.wy.us/trailsdemo/prtingoftheways.htm</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -109.228209,42.257543,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>South Pass</name>
+        <description>http://wyoshpo.state.wy.us/trailsdemo/southpass.htm</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -108.880777,42.348046,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>South Pass marker</name>
+        <description>http://www.independencerock.org/map3.html</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -108.886914,42.344335,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Trail Ruts</name>
+        <description><![CDATA[Approximate location. Short drive south of Sweetwater Station on Bison Basin Rd.<br><br>http://www.independencerock.org/map3.html]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -108.164241,42.514168,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Indepedence Rock</name>
+        <description>http://wyoshpo.state.wy.us/trailsdemo/independencerock256k.htm</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -107.132192,42.493903,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hembree/Baker Grave</name>
+        <description>http://wyoshpo.state.wy.us/trailsdemo/hembreebaker.htm</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -105.600479,42.754733,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ayres Natural Bridge Park</name>
+        <description>http://en.wikipedia.org/wiki/Ayres_Natural_Bridge_State_Park</description>
+        <styleUrl>#icon-31</styleUrl>
+        <Point>
+          <coordinates>
+            -105.610843,42.734405,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Guernsey Ruts</name>
+        <description>Self-explanatory</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.749274,42.25611,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Register Cliff</name>
+        <description>http://wyoshpo.state.wy.us/trailsdemo/register_cliff.htm</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.712238,42.247613,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Mary Homsley Grave</name>
+        <description>http://wyoshpo.state.wy.us/trailsdemo/mary_homsley.htm</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.566691,42.221947,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Scotts Bluff NM</name>
+        <description><![CDATA[http://en.wikipedia.org/wiki/Scotts_Bluff_National_Monument<br><br>Ask about ruts near Henry Hill grave]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -103.706818,41.831712,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Chimney Rock</name>
+        <description><![CDATA[This is the actual site of Chimney Rock. It is unknown how close you can get to this feature.<br><br>http://en.wikipedia.org/wiki/Chimney_Rock_National_Historic_Site]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -103.348217,41.705729,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Courthouse/Jailhouse Rocks</name>
+        <description>http://en.wikipedia.org/wiki/Courthouse_and_Jail_Rocks</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -103.116603,41.59805,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ash Hollow</name>
+        <description>http://www.ngpc.state.ne.us/parks/guides/parksearch/showpark.asp?Area_No=8</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -102.119293,41.299992,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Windlass Hill</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -102.11483,41.26155,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Devils Gate</name>
+        <description><![CDATA[http://wyoshpo.state.wy.us/trailsdemo/devilsgate.htm<br><br>I think this is the closest view.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -107.218516,42.443997,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Split Rock </name>
+        <description><![CDATA[http://wyoshpo.state.wy.us/trailsdemo/splitrock256k.htm<br><br>Not sure if you can see the split here. You might see it better from either west of here or from the Devils Gate area.<br><br>You might be able to hike around the mound to the ruts.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -107.545896,42.45383,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Corral Springs</name>
+        <description><![CDATA[Ruts on right<br><br>Approx. Location]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -119.122009,45.693351,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Deadman Pass</name>
+        <description>Ruts and kiosk</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -118.504286,45.598215,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Blue Mountain Crossing</name>
+        <description>Exit 248 off I-84</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -118.316075,45.397972,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ezra Meeker marker</name>
+        <description>B Avenue is part of the trail, paved over</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -118.104529,45.313589,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[Lira's Mexican Restaurant]]></name>
+        <description>Recommended</description>
+        <styleUrl>#icon-125</styleUrl>
+        <Point>
+          <coordinates>
+            -104.34514,42.137218,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Pink Palace</name>
+        <description><![CDATA[Can't miss it!!]]></description>
+        <styleUrl>#icon-167</styleUrl>
+        <Point>
+          <coordinates>
+            -103.418126,41.746726,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Official start of the Oregon Trail</name>
+        <description><![CDATA[Official start of the Oregon Trail, where<br>wagons were outfitted through much of<br>the emigration era. Open year-round;<br>business hours vary.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -94.416987,39.092299,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Santa Fe Trail Park</name>
+        <description><![CDATA[45-acre park preserving one-quarter<br>mile of ruts and swales.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -94.423199,39.067547,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Point A</name>
+        <description><![CDATA[US-24 follows the trail between Rossville and Silver Lake. From Rossville to St. Mary's, the highway is on top of the trail.]]></description>
+        <styleUrl>#icon-159</styleUrl>
+        <Point>
+          <coordinates>
+            -95.952873,39.137117,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Point B</name>
+        <description>US-24 follows the trail between Rossville and Silver Lake. The actual trail was just to the north.</description>
+        <styleUrl>#icon-159</styleUrl>
+        <Point>
+          <coordinates>
+            -95.858717,39.105155,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Oregon Trail Nature Park</name>
+        <description><![CDATA[On the Oregon Trail route, and offers nature trails and a view of the winding<br>road that overlies the old Oregon Trail. The nature park is open to the public<br>May 1-Sept. 30, 7 a.m. – 9 p.m.; and Oct. 1-April 30, 8 a.m. – 6 p.m.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -96.147108,39.225771,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Cholera Cemetary</name>
+        <description><![CDATA[Red Vermillion Crossing / Vieux<br>Cemetery/Cholera Cemetery (near<br>Belvue, KS) is the site on the Red Vermillion<br>where Louis Vieux, a Potawatomi<br>Indian, established a toll bridge in 1847.<br>In 1849, a large wagon train camped on<br>the east side of the creek was struck by<br>cholera, which left 50 emigrants dead<br>within a week. They were buried nearby.<br>The Vieux family cemetery is also in the<br>vicinity. Exhibits interpret the sites<br><br>Approx location. Don't block gate when parking.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -96.249665,39.25718,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Alcove Spring</name>
+        <description><![CDATA[Has been called the<br>most significant historic site on the<br>Oregon Trail within the State of<br>Kansas. The scenic spring was a<br>popular campsite, mentioned in<br>many emigrant journals. Also at<br>about this location, emigrants left<br>the tallgrass prairie of eastern<br>Kansas and entered the shortgrass<br>plains. Access to this privately<br>owned site is provided by the Alcove<br>Spring Historical Trust.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -96.677005,39.748922,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hollenberg Station</name>
+        <description><![CDATA[Seven-acre state park and<br>national historic landmark that boasts<br>the only Pony Express station in<br>Kansas remaining in its original location.<br>It was initially built in 1857 as a<br>waystation to serve emigrant traffic on<br>the Oregon and California trails. The<br>site also offers a picnic area, nature<br>trail, museum, historical markers and<br>monuments. Open Wed.-Sat., 10 a.m. –<br>5 p.m.; Sun., 1 – 5 p.m.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -96.844182,39.902132,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Rock Creek Station</name>
+        <description><![CDATA[Best known as the Pony Express station where Wild Bill Hickok shot 3 men. Also, a road ranch serving Oregon and California emigrants.<br><br>Exhibits, reconstructed buildings, graves and ruts]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -97.064037,40.114577,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>George Winslow Grave</name>
+        <description><![CDATA[Interpretive sign.<br><br>Walk in through gate.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -97.206216,40.20759,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Susan Haile Grave</name>
+        <description><![CDATA[35 years old and the mother of 6 children.<br><br>Interpretive sign<br><br>Approx location. North side of road.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -98.72411,40.65546,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Fort Kearney</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -99.005635,40.64325,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[O'Fallens Bluff Trail Ruts and Interpretive Area]]></name>
+        <description><![CDATA[Westbound-Exit 158 to eastbound I-84<br><br>Then, exit at Exit 164 to return westbound]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -101.096921,41.139413,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>California Hill ruts</name>
+        <description>A half-mile up this road leads you to a way to see the ruts. Left side of road.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -101.979303,41.091125,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Rawhide Creek Wayside Exhibit</name>
+        <description><![CDATA[CLOSED<br><br>Many emigrants camped near the banks of the creek. They also died there and buried their dead.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.325764,42.125005,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Creek</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -104.32658,42.125625,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Bedlam Ruts</name>
+        <description>Interpretive signs</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.574437,42.221907,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Olinger Point Overlook</name>
+        <description><![CDATA[Trail related sites and landmarks<br><br>Binoculars helpful]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.697604,42.261144,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Cold Springs and Rifle Pit Hill</name>
+        <description>Campsite and installation where soldiers protected the emigrants</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.790387,42.267274,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Red Buttes Crossing/Bessemer Bend Crossing</name>
+        <description>Emigrants crossed here over the North Platte for the last time heading toward South Pass</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -106.530347,42.774157,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Avenue of Rocks</name>
+        <description>6.3 miles</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -106.662998,42.736296,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Willow Springs</name>
+        <description>8.5 miles</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -106.698918,42.710065,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ice Slough</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.008689,42.517513,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Lombard Ferry turnout</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -109.809036,41.879786,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Thomas Fork</name>
+        <description>Look west for ruts, also on surrounding hillsides</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -111.066477,42.214168,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Big Hill</name>
+        <description>Look west up the hill between powerlines</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -111.153295,42.214327,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hooper Spring</name>
+        <styleUrl>#icon-167-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -111.604308,42.67958,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Fort Hall replica</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -112.421165,42.844318,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Snake River overlook</name>
+        <description>Westbound access only. Access from Massacre Rocks SP</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -112.959194,42.697829,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Register Rock</name>
+        <description>Inscriptions</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -113.016357,42.652489,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Evil Knievel Snake River Jump</name>
+        <description>Look for signs to visitor center</description>
+        <styleUrl>#icon-167</styleUrl>
+        <Point>
+          <coordinates>
+            -114.460545,42.596028,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>To South Pass City</name>
+        <styleUrl>#icon-167-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.809924,42.492732,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Lava Hot Springs</name>
+        <description><![CDATA[<img src="https://lh6.googleusercontent.com/proxy/BMxgcpEejKkBdmb0ItEwnUnKAI3jw8ja1KTxN7V4NZ3rM434eD1wXGreqyF26-7vxDvubyxjHbEMK9Qxc_bOPuKUjLYe95XQeuBQ-W8rPQ" height="200" width="auto" /><br><br>Formerly part of the Fort Hall Indian Reservation, the hot springs were sold to U.S. Government, then later ceded to the State of Idaho. Soak in world famous hot pools, or take a dip at the Olympic Swimming Complex.  The South Bannock County Historical Center offers a complete history of the area. Explore the nearby Portneuf River for tubing, or take in a wide range of outdoor activities like hiking trails, fishing, hunting, skiing and snowmobiling.  Located along Hwy 30. 42°37'10.30"N, 112° 0'25.96"W<br><br><img src="https://lh3.googleusercontent.com/proxy/NtC3tus-4l-8itjbPWVxl3LjZ3FTmBZznHev4afi2vWy9J0J65s1aWE9jPipxsrQY3WyeOFzGgJTkiwk_LPp3Ypew1p2uavHsPIBms9tSJ6SeXSbLFEX_tgCZumrmSvFxzz6V8TJS9km" height="200" width="auto" />]]></description>
+        <styleUrl>#icon-167</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value>https://lh6.googleusercontent.com/proxy/BMxgcpEejKkBdmb0ItEwnUnKAI3jw8ja1KTxN7V4NZ3rM434eD1wXGreqyF26-7vxDvubyxjHbEMK9Qxc_bOPuKUjLYe95XQeuBQ-W8rPQ https://lh3.googleusercontent.com/proxy/NtC3tus-4l-8itjbPWVxl3LjZ3FTmBZznHev4afi2vWy9J0J65s1aWE9jPipxsrQY3WyeOFzGgJTkiwk_LPp3Ypew1p2uavHsPIBms9tSJ6SeXSbLFEX_tgCZumrmSvFxzz6V8TJS9km</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            -112.006874,42.619766,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Lower Portneuf River Sportsman’s Access</name>
+        <description><![CDATA[<img src="https://lh5.googleusercontent.com/proxy/MX8i2zdbkaglkQLoHkLZ7EaDOIVIBdtzEbBYzmXnG-j0bII19NTRnrw94ezd1jNsv29y6Vz8I03tK5Fw210esp3Oq0GEDCF3X9M1" height="200" width="auto" /><br><br>This site offers wildlife viewing, fishing, and (further up the river) kayaking and canoeing. The Portneuf River was named after a mountain man by the name of Portneuf from Peter Skene Ogden’s trapper party. On Old Highway 30 two miles north of U.S. 30. A loop road provides a place to park and a moderate walk on an undeveloped trail to Portneuf River Falls. 42°38'28.02"N, 112° 0'23.11"W]]></description>
+        <styleUrl>#icon-167</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value>https://lh5.googleusercontent.com/proxy/MX8i2zdbkaglkQLoHkLZ7EaDOIVIBdtzEbBYzmXnG-j0bII19NTRnrw94ezd1jNsv29y6Vz8I03tK5Fw210esp3Oq0GEDCF3X9M1</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            -112.005875,42.641979,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hudspeth’s Cutoff</name>
+        <description><![CDATA[<img src="https://lh4.googleusercontent.com/proxy/eMYk1LiVGtO9SKxjBZ9KJyTuXMWyM8ALhskqZzmnrok5fVyYiOkENSvbPpjaBSp4LMWvo5AvqCmJB4-ndpNViYwH_zLcW3g-9Gv4Ef3Bl1-Jzw" height="200" width="auto" /><br><br>White fiberglass posts identify the Oregon-California Trail. Turn north the intersection of Idaho 34 and U.S. 30, then turn left through the park-and-ride lot and follow the old asphalt highway. <br>42°39'4.93"N, 111°43'43.01"W]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value>https://lh4.googleusercontent.com/proxy/eMYk1LiVGtO9SKxjBZ9KJyTuXMWyM8ALhskqZzmnrok5fVyYiOkENSvbPpjaBSp4LMWvo5AvqCmJB4-ndpNViYwH_zLcW3g-9Gv4Ef3Bl1-Jzw</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            -111.729584,42.651573,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Wagon Ruts and Trail Markers</name>
+        <description><![CDATA[<img src="https://lh4.googleusercontent.com/proxy/eMYk1LiVGtO9SKxjBZ9KJyTuXMWyM8ALhskqZzmnrok5fVyYiOkENSvbPpjaBSp4LMWvo5AvqCmJB4-ndpNViYwH_zLcW3g-9Gv4Ef3Bl1-Jzw" height="200" width="auto" /><br><br>Oregon Trail Park on the shore of Alexander Reservoir, reveals shallow swale remnants from wagons bound for Oregon and California. Accessible and easily visible from the park entrance road, the trail provokes the memories of those who traveled it.  42°39'31.89"N, 111°39'0.35"W.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value>https://lh4.googleusercontent.com/proxy/eMYk1LiVGtO9SKxjBZ9KJyTuXMWyM8ALhskqZzmnrok5fVyYiOkENSvbPpjaBSp4LMWvo5AvqCmJB4-ndpNViYwH_zLcW3g-9Gv4Ef3Bl1-Jzw</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            -111.651154,42.658566,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Wagon Box Grave</name>
+        <description><![CDATA[<img src="https://lh4.googleusercontent.com/proxy/tA853CXF4gfzwrEG07hoJIu0P2sfCUW0kbiFtIFQrq04Q5rzRYL6Ucld0zoH8KeAn79DP4H2vwjqaf8Ion_CZM8c4UcMySmiERcV" height="200" width="auto" /><br><br>Fairview Cemetery in Soda Springs - Mile 0.2, Located in the Fairview Cemetery one block west of downtown Soda Springs, the grave marks the burial site of an Oregon-bound emigrant family allegedly killed by Indians and buried here in their wagon box by other emigrants.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value>https://lh4.googleusercontent.com/proxy/tA853CXF4gfzwrEG07hoJIu0P2sfCUW0kbiFtIFQrq04Q5rzRYL6Ucld0zoH8KeAn79DP4H2vwjqaf8Ion_CZM8c4UcMySmiERcV</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            -111.606696,42.656734,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Pyramid Springs and Soda Springs Geyser</name>
+        <description><![CDATA[<img src="https://lh5.googleusercontent.com/proxy/-rQhACPJUNEvtpyBi811op1EMzw0RQiwE2zg2n4ob9sRSfADdUDAkWZVJqs6mfkdVg6YmhNfi3eD6cSmdQdtA0buNcrE5N-Tie6J1N8" height="200" width="auto" /><br><br>Soda Springs boasts having the world's only captive geyser. On November 30, 1937 in an attempt to find a hot water source for a local swimming pool, a well driller set free the natural geyser at a depth of 317 feet. It is located on Pyramid Spring, a travertine mound described by Fremont in his 1840s expeditions, along with other area springs. The history of Soda Springs and Caribou County is portrayed on picture boards in the Geyser Park Visitor Center. Historical artifacts and antiques are on display next door at the Enders Hotel Museum. Enter on Main Street & 1st Street South and drive 150 feet west to Geyser Park. <br>42°39'26.13"N, 111°36'17.32"W]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value>https://lh5.googleusercontent.com/proxy/-rQhACPJUNEvtpyBi811op1EMzw0RQiwE2zg2n4ob9sRSfADdUDAkWZVJqs6mfkdVg6YmhNfi3eD6cSmdQdtA0buNcrE5N-Tie6J1N8</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            -111.604679,42.657239,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Georgetown Summit</name>
+        <description><![CDATA[<img src="https://lh6.googleusercontent.com/proxy/bRmcZNO6eQTql9e9XIfSsC0pqtiOwbcOEEvyaKencjGRc_VSw7DA8IesTnOR8ZicgpHQ1KkpkjwnfbR0YrH-yC4aIi3AYDbqlvtRbmE-Y7HTug" height="200" width="auto" /><br><br>Over 300,000 emigrants used the Oregon-California Trail between 1840 and 1869. Three ruts are visible at the bottom of the hill, indicating that the wagons and oxen spread out to reduce the dust. The route crossed over this summit heading northwesterly for Soda Springs, and then went on to the Snake River at Hudson Bay Company’s Fort Hall. On U.S. 30, 3 miles north of Georgetown. 42 31.762 N, 111 24.336 W<br><br>The trail pretty muchs paralels the highway to Soda Springs.<br><br><img src="https://lh5.googleusercontent.com/proxy/zUmDpPFWOzJnHqgd-308EFjewUM5lDkIalzOxaUQFXRSd5awxveZonYq0_sqhdc4kkKz8ebyBRnhUjwnLVkLopPdWFDBkAga5eoDq1BzouPxtRB0OrbcTFJ15Ckj0Z9CjXEd1Hs-aTqg" height="200" width="auto" />]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value>https://lh6.googleusercontent.com/proxy/bRmcZNO6eQTql9e9XIfSsC0pqtiOwbcOEEvyaKencjGRc_VSw7DA8IesTnOR8ZicgpHQ1KkpkjwnfbR0YrH-yC4aIi3AYDbqlvtRbmE-Y7HTug https://lh5.googleusercontent.com/proxy/zUmDpPFWOzJnHqgd-308EFjewUM5lDkIalzOxaUQFXRSd5awxveZonYq0_sqhdc4kkKz8ebyBRnhUjwnLVkLopPdWFDBkAga5eoDq1BzouPxtRB0OrbcTFJ15Ckj0Z9CjXEd1Hs-aTqg</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            -111.408813,42.5312,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Oregon-California Trail Portal - Big Hill</name>
+        <description><![CDATA[<img src="https://lh5.googleusercontent.com/proxy/bBOqCFce0Gi7XiKL9QSVrsV4VgAawnAPQQUWe3phu9Bjr3ALXHhZnS0W-G7PhAfYYkYeSXf5tZlLpFHugSArRrOxfAhLXxVFmfBcdLXgMuhGYjs" height="200" width="auto" /><br><br>Emigrants by the thousands entered present day eastern Idaho at this location traveling along the Oregon-California Trail. Emigrants on the trail encountered Big Hill, thought to be the steepest and longest descent found on the trip west. Wheel ruts are still visible today from the locking of wagon wheels. East of Montpelier at ITD roadside pullouts on U.S. 30 (Milepost 440.1, Milepost 441.7 and Milepost 454.5). N 42 14 09.73, W 111 13 59.27<br><br><img src="https://lh4.googleusercontent.com/proxy/D-LF8T0bDSs1T29gqtCG7JFXctgl6qVQmK5q5M-GTfNhy1J5p2USYf1bAcvQMkm3dntLCzAfIylaa4C6aYoaVfuMI6kc1dBq_T4xUrH6CPwxcnajDy1JBecmKQoex7BHnJmsocwffftb" height="200" width="auto" />]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value>https://lh5.googleusercontent.com/proxy/bBOqCFce0Gi7XiKL9QSVrsV4VgAawnAPQQUWe3phu9Bjr3ALXHhZnS0W-G7PhAfYYkYeSXf5tZlLpFHugSArRrOxfAhLXxVFmfBcdLXgMuhGYjs https://lh4.googleusercontent.com/proxy/D-LF8T0bDSs1T29gqtCG7JFXctgl6qVQmK5q5M-GTfNhy1J5p2USYf1bAcvQMkm3dntLCzAfIylaa4C6aYoaVfuMI6kc1dBq_T4xUrH6CPwxcnajDy1JBecmKQoex7BHnJmsocwffftb</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            -111.233185,42.235889,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Louis Vieux Tree, Kansas</name>
+        <description><![CDATA[<img src="https://lh4.googleusercontent.com/proxy/4YpMeMVazmajt0kgrZ4vjdtgd6wUGWM75toiBdUTd_z0WLbCuvXyxBQo_ImSP8cb0CvxWFQkBZs-RFnrDSRdg4z_mAmDGDcT5ufh83pIWC2tbiuVsRocacdRsaK0inokWiA" height="200" width="auto" /><br><br>Louis Vieux moved to this area about 1848 and ran a toll bridge over the river. The toll was $1 a wagon and some days he made $300 in tolls. He also sold some basic supplies to the emigrants.<br><br><br><br><br>This tree was seen by the emigrants as they passed. At the time of the Oregon Trail, this tree was about 130 years old and was quite large; stunning in a land of stunted trees and brush. In recent years, since this picture was taken in 1993, the tree has been struck by lightning and vandalized. It still lives but is no longer this size and shape.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value>https://lh4.googleusercontent.com/proxy/4YpMeMVazmajt0kgrZ4vjdtgd6wUGWM75toiBdUTd_z0WLbCuvXyxBQo_ImSP8cb0CvxWFQkBZs-RFnrDSRdg4z_mAmDGDcT5ufh83pIWC2tbiuVsRocacdRsaK0inokWiA</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            -96.250652,39.256424,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>1000 Springs, Idaho</name>
+        <description><![CDATA[<img src="https://lh5.googleusercontent.com/proxy/dHN-SiQwT0cKMGrAt8UCtXDE6QLON5_2JiWmBErqwItqs_Tf62-iQuDmC0c7eL3iPWrhORwtQJ5IkeqMvwl5ml8PDRQHbwhWu9lFWoxc6AjL6kZrozkh9_8opzu2V8k" height="200" width="auto" /><br><br>The emigrants traveled along the Snake River for quite a ways in Idaho. The walls along part of the Snake are black volcanic rock from which gush white water for several miles. It is quite a sight.<br><br> <br><br> <br>Due to diversions of rain and melt water, there are fewer springs now than during the heyday of the Oregon Trail and may be fewer than shown in this picture taken in 1993.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <ExtendedData>
+          <Data name="gx_media_links">
+            <value>https://lh5.googleusercontent.com/proxy/dHN-SiQwT0cKMGrAt8UCtXDE6QLON5_2JiWmBErqwItqs_Tf62-iQuDmC0c7eL3iPWrhORwtQJ5IkeqMvwl5ml8PDRQHbwhWu9lFWoxc6AjL6kZrozkh9_8opzu2V8k</value>
+          </Data>
+        </ExtendedData>
+        <Point>
+          <coordinates>
+            -114.925232,42.880996,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[Pioneer Woman's Grave]]></name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -121.700857,45.28304,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Barlow Road Tollgate</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -121.902924,45.319806,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Laurel Hill</name>
+        <description>Approx. location</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -121.801718,45.311115,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Pony Express station</name>
+        <description>Look toward Horse Creek for steel post marking where the station was.</description>
+        <styleUrl>#icon-167</styleUrl>
+        <Point>
+          <coordinates>
+            -106.958084,42.603642,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>National Historic Trails Center</name>
+        <description>1501 N Poplar St</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -106.333612,42.863092,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Laramie Peak viewpoint</name>
+        <description>Interpretive sign</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -105.200025,42.655495,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Oregon Trail Monument</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -104.822016,42.284358,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Trail Monument</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -104.848414,42.299937,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Emigrant campground</name>
+        <description>Approx. location</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.889833,42.316599,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Fort Platte Monument</name>
+        <description>Probable site of an 1841 trading post, often noted by emigrants</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.541768,42.209313,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>North Platte River Crossing site</name>
+        <description>Where northbank emigrants crossed the North Platte to Fort Laramie.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.53415,42.209758,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Western History Center</name>
+        <description>Trail-related exhibits</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.437773,42.178464,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>North Platte Valley Museum</name>
+        <description>Exhibits and archives</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -103.663259,41.817257,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Younger Cabin</name>
+        <description>The Younger cabin. The Youngers ran with the James Boys.</description>
+        <styleUrl>#icon-167</styleUrl>
+        <Point>
+          <coordinates>
+            -94.41144,39.093407,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Scott Spring</name>
+        <description>Interpretive area. See sign for more info.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -96.405791,39.383547,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Lone Elm Campground</name>
+        <description><![CDATA[This was the first or second night's encampment.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -94.831109,38.822875,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Split of Oregon/Santa Fe trails.</name>
+        <description><![CDATA[Interpretive area. Actual site is about 1200 feet away in a tree nursery.<br><br>Historians argue that the actual site is in the town of Gardner at the Elem. School.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -94.9617,38.796591,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Oregon Trail monument</name>
+        <description>Somewhere along here is a monument marking where the trail left Kansas and entered Nebraska.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -96.916409,40.001386,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Wagon Swale through Golf Course</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -111.639687,42.659472,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>A</name>
+        <description>Where the Newman train was resting when word came of the attack on August 9, 1852. Assistance was sent.</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -112.891957,42.751251,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>B</name>
+        <description>The Adams train was found looted.</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -112.933649,42.711303,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>C</name>
+        <description>The Smart train, attacked at the same time, made a running fight to a strong position near Massacre Rocks.</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -112.9475,42.701164,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>D</name>
+        <description>The dead were buried at the southern end of Massacre Rocks</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -112.988527,42.674548,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>E</name>
+        <description>Location of trains combined for safety</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -112.997518,42.668616,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Shoshone Falls</name>
+        <styleUrl>#icon-167-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -114.400291,42.594164,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Fort Boise monument</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -117.019372,43.822205,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Weatherford Monument</name>
+        <description>Ruts to the southeast.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -120.165415,45.622435,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>End</name>
+        <description>End Of The Oregon Trail interpretive center</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -122.594113,45.364814,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Platte River Archway</name>
+        <styleUrl>#icon-167-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -99.039774,40.670613,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -107.948838,42.521878,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Turnoff for trail-north</name>
+        <description>Find owner of land for permission</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -107.755237,42.48846,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Lucinda Rollins grave</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -104.752133,42.260628,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Fort Casper Museum</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -106.369951,42.836923,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Blue Mound</name>
+        <description>Can be seen from roadway.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -95.183229,38.905061,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Boot Hill</name>
+        <styleUrl>#icon-167-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -101.72562,41.132391,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[Ole's Steakhouse]]></name>
+        <styleUrl>#icon-125-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -101.356087,41.124625,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Oregon Trail Wagon Train</name>
+        <description><![CDATA[www.oregontrailwagontrain.com<br><br>If done, 1 night here.]]></description>
+        <styleUrl>#icon-167</styleUrl>
+        <Point>
+          <coordinates>
+            -103.354912,41.730202,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carhenge</name>
+        <description>Like Stonehenge, but with cars!</description>
+        <styleUrl>#icon-167</styleUrl>
+        <Point>
+          <coordinates>
+            -102.85836,42.142851,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Oregon Trail Cemetary</name>
+        <description><![CDATA[Possible ruts<br><br>Paul Henderson marker. He is also buried here with his wife, Helen. He, very accurately, traced the trail. <br>http://www.npvm.org/thehendersoncollection.html]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -103.146558,41.669642,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Unusual car junkyard</name>
+        <styleUrl>#icon-167-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -105.597711,42.795653,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>9th (and final) Crossing</name>
+        <description><![CDATA[of the Sweetwater River and Burnt Ranch<br><br>Private property. Not known how to get permission to visit]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -108.719351,42.377838,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Trail marker</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.871207,42.345794,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Keeney Pass</name>
+        <description><![CDATA[Look for a BLM sign showing where Keeney Pass Historic Site is.<br><br>Approx. location]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -117.176313,43.909333,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Bates Motel</name>
+        <styleUrl>#icon-167-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -117.252123,43.981529,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts and swale</name>
+        <description>southwest?</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -96.435606,39.536848,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>More possible ruts</name>
+        <description>southeast?</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -96.444318,39.565628,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Swales in the golf course</name>
+        <description>Then, follow Road 54 as it is practically on top of the trail. Follow all the way to the 92. Cross over to Cisco if needed.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -102.347946,41.378161,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <description>2.3 miles from McGrew, a quarter mile south of the highway are some significant ruts</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -103.464088,41.759532,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Robidoux Pass</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -103.844404,41.812843,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Permission</name>
+        <description>Ask at this house for permission to see Hembree grave</description>
+        <styleUrl>#icon-167</styleUrl>
+        <Point>
+          <coordinates>
+            -105.602646,42.755206,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Grave</name>
+        <description><![CDATA[A. H. Unthank<br><br>Remember, he wrote his name at Register Cliff a week prior to his death.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -105.790261,42.826104,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Grave</name>
+        <description><![CDATA[Ada Magill<br><br>Approx. location]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -105.977468,42.849321,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Zero Odometer</name>
+        <styleUrl>#icon-77-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -106.593647,42.806138,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Prospect Hill</name>
+        <description>Approx. location</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -106.711922,42.701677,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts?</name>
+        <description>Can you get to this point and walk to Independence Rock?</description>
+        <styleUrl>#icon-181</styleUrl>
+        <Point>
+          <coordinates>
+            -107.077303,42.515322,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Sublette Cutoff descends </name>
+        <description>off a ridge about 7 miles away. West end of the Sublette Cutoff. 3 miles south of Cokeville.</description>
+        <styleUrl>#icon-77</styleUrl>
+        <Point>
+          <coordinates>
+            -110.931702,42.044449,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name> Independence Landing</name>
+        <description>For emigrants that came by boat, this was the main landing where they offloaded.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -94.419765,39.145705,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Fort Hall</name>
+        <description><![CDATA[Call for permission to enter reservation.<br><br>208-238-0097 "Red" Perry<br><br>Or write: Oregon Trail tours<br>Route 6 Box 666<br>Pocatello, ID 83202]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -112.437344,43.034768,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Optional</name>
+        <styleUrl>#icon-167-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -117.265406,44.062056,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Zero Odometer</name>
+        <styleUrl>#icon-62-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -119.199375,45.742131,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -119.24869,45.726806,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -119.248663,45.726293,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <description>Park here and walk northeast to ruts</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -119.310687,45.718847,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts/BLM marker</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.032759,45.615388,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 149</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -119.969158,45.624843,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 150</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -119.994049,45.61836,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 151</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.016537,45.61884,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 152</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.051212,45.627034,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 153</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.064688,45.636247,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 154</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.082755,45.645878,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 155</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.08945,45.633966,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 156</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.104084,45.625203,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 157</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.133953,45.623162,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 158</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.154381,45.624663,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Interpretive panel and ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.91203,45.634184,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>John D Henderson grave</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -117.235204,43.97194,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Clinton State Park</name>
+        <description><![CDATA[785-842-8562<br><br>under $20]]></description>
+        <styleUrl>#icon-31</styleUrl>
+        <Point>
+          <coordinates>
+            -95.366135,38.937247,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>City Park</name>
+        <description>785-562-3101</description>
+        <styleUrl>#icon-31</styleUrl>
+        <Point>
+          <coordinates>
+            -96.646171,39.839139,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Rose Garden RV Camp</name>
+        <description>785-325-2411</description>
+        <styleUrl>#icon-31</styleUrl>
+        <Point>
+          <coordinates>
+            -97.053223,39.814865,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>KOA</name>
+        <description>(800) 562-0846</description>
+        <styleUrl>#icon-31</styleUrl>
+        <Point>
+          <coordinates>
+            -103.750162,44.371416,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Riverside Zoo</name>
+        <styleUrl>#icon-167-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -103.682957,41.854155,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 164</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -111.345105,41.846004,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 166</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -112.98357,42.681552,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 167</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -115.32074,42.93858,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Interpretive panel</name>
+        <description>13 miles south of I-84</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -119.952164,45.630065,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Kiosk</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.044088,45.622007,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Oregon Trail Wagon Train</name>
+        <description><![CDATA[$10/tent<br>$20/RV+hookups]]></description>
+        <styleUrl>#icon-31</styleUrl>
+        <Point>
+          <coordinates>
+            -103.35371,41.730266,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Inscriptions</name>
+        <description>Frederick Fulkerson grave</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -107.206628,42.443961,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>1st Crossing</name>
+        <description>Sweetwater River</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -107.131805,42.489853,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>6th Crossing</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.229194,42.509501,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Names Hill</name>
+        <description><![CDATA[Approx. location. Jim Bridger allegedly signed his name here.<br><br>About 8-9 miles]]></description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -110.191498,42.166966,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>trail intersection</name>
+        <description>Stop here. 240 degrees, the trail intersects and makes a beeline for the Raft River.</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -113.21909,42.576351,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Right turn</name>
+        <description>Follow to US-26</description>
+        <styleUrl>#icon-22</styleUrl>
+        <Point>
+          <coordinates>
+            -102.074661,41.163794,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Actual split of the trails</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.963712,38.798798,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Kansas River crossing</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -95.67461,39.063915,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hodges Rd</name>
+        <description>My last name</description>
+        <styleUrl>#icon-22</styleUrl>
+        <Point>
+          <coordinates>
+            -95.835414,39.094164,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Camping</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -96.666641,39.68394,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Trail crossed here</name>
+        <description>Marker</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -97.148302,40.160657,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Trail intercept</name>
+        <description>Trail intercepted this intersection heading NW</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -102.036552,41.14906,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Swales</name>
+        <description>Swales are marked in the CC</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -102.345243,41.374587,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Rebecca Winters grave</name>
+        <description>She was a Mormon pioneer following the Mormon Trail.</description>
+        <styleUrl>#icon-22</styleUrl>
+        <Point>
+          <coordinates>
+            -103.617033,41.843178,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -105.390644,42.629365,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker and swale</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -105.393434,42.627249,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Zero odometer</name>
+        <description>About 4.5 miles SW to BLM marker for Pacific Springs.</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -108.888674,42.34497,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker (Pullout)</name>
+        <description>The trail intercepted here after crossing river.</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -117.037085,43.825502,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Trail intercept</name>
+        <description><![CDATA[Heading NW<br><br>1/2 mile after turn]]></description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -101.984711,41.105387,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Trail intercept</name>
+        <description><![CDATA[About 100 yards from intersection.<br><br>Coming from the SE and still going NW.]]></description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -102.05462,41.163762,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Rock Creek/Stricker Store</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -114.322572,42.460953,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <description>About 8 miles north of Farson. Sublette Cutoff.</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -109.465027,42.233093,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Lake Ogallala SRA</name>
+        <description>under $20</description>
+        <styleUrl>#icon-31</styleUrl>
+        <Point>
+          <coordinates>
+            -101.661301,41.210172,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Missouri Town 1855</name>
+        <styleUrl>#icon-167-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.321146,38.971955,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Iles Pharmacy</name>
+        <description>Info about Alcove Spring</description>
+        <styleUrl>#icon-22</styleUrl>
+        <Point>
+          <coordinates>
+            -96.658058,39.679184,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Pioneer Village</name>
+        <styleUrl>#icon-22-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -98.955402,40.507535,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Fort McPherson</name>
+        <description>SE of here is a statue at the site of the forts flagstaff.</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -100.52619,41.025208,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Set time back one hour</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -101.88446,41.118676,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Walmart</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -103.677335,41.879323,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Trail Marker</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -104.046021,41.954895,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Municipal Park</name>
+        <description><![CDATA[On Fort Laramie Ave.<br><br>Free]]></description>
+        <styleUrl>#icon-31</styleUrl>
+        <Point>
+          <coordinates>
+            -104.521952,42.211578,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Float down river</name>
+        <description>From Bessemer Bend to Casper.</description>
+        <styleUrl>#icon-167</styleUrl>
+        <Point>
+          <coordinates>
+            -106.481552,42.787339,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>BLM land ?</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -106.747284,42.673349,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 197</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.817177,42.749281,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Walmart</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -116.27964,43.66812,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 198</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -117.22558,44.307251,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 199</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.228254,45.341408,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 200</name>
+        <styleUrl>#icon-31-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -119.291096,45.852179,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Weatherby Rest Area</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -117.366085,44.495143,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Baker Valley Rest Area</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -117.819035,44.913657,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 203</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.46549,45.542006,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <description><![CDATA["Birch Creek Ruts" Small parking lot<br><br>Approx. location.]]></description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -117.215758,44.27868,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Emigrant graves</name>
+        <description>Concrete post</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -117.223928,44.289475,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Pullout for ruts</name>
+        <description>Left side of highway</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -117.232125,44.314061,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Trail crossing</name>
+        <description><![CDATA[At the crest of the hill 2 1/2 miles north of Farewell Bend, the trail crossed under the present day highway.<br><br>Approx. location]]></description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -117.251458,44.339535,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Wesatherbee Rest Area</name>
+        <description><![CDATA[This is actually on top of an emigrant campground.<br><br>Interpretive panels]]></description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -117.366031,44.49522,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Baker Valley rest area</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -117.818971,44.91355,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Pull off</name>
+        <description><![CDATA[This road pretty much is on top of the trail into La Grande. <br><br>At the wildlife viewing area, you can see the trail come down Ladd Hill.]]></description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -118.021874,45.248365,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Stone building</name>
+        <description>From the trail days</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -118.101697,45.314404,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <description>Look up the hill. You can walk in these ruts.</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -118.508663,45.601173,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Pendleton Undergound Tours</name>
+        <styleUrl>#icon-102-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.785274,45.670905,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Bank/Museum</name>
+        <description>Walking tour of the town.</description>
+        <styleUrl>#icon-102</styleUrl>
+        <Point>
+          <coordinates>
+            -119.19547,45.742341,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Well Spring</name>
+        <description><![CDATA[Approx. location. Signs from Cecil lead you here.<br>Naval Weapons System Training Facility for permission to hike in ruts 541-481-2565]]></description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -119.712868,45.635167,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Cedar Springs Rd</name>
+        <description>Much of this road is on top of the trail.</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -120.165539,45.632526,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Turn right</name>
+        <description>This will take you back to I-84</description>
+        <styleUrl>#icon-158</styleUrl>
+        <Point>
+          <coordinates>
+            -120.290852,45.601458,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Biggs Junction Ruts</name>
+        <description>Approx. location</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -120.856133,45.661927,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 217</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -122.355015,45.358614,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <description>Yes, no?</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -94.513621,38.956005,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Swale</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.574926,38.923076,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 204</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.765446,40.227318,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.821064,40.227318,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.83042,40.227318,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.849216,40.220109,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.857714,40.22201,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.871275,40.229742,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 210</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.89608,40.23505,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.917666,40.2417,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Farmhouse</name>
+        <description><![CDATA[Ask here to possibly see site "The Narrows"]]></description>
+        <styleUrl>#icon-62</styleUrl>
+        <Point>
+          <coordinates>
+            -97.914491,40.258929,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <description>Stands on a bluff overlooking the Narrows.</description>
+        <styleUrl>#icon-62</styleUrl>
+        <Point>
+          <coordinates>
+            -97.932987,40.261942,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.934189,40.256735,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.931228,40.254147,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.953157,40.277627,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.972813,40.30676,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -98.004913,40.321289,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Robidoux Pass</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -103.846722,41.815338,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Henry Hill Grave</name>
+        <description><![CDATA[Permission needed<br><br>Approx. location]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -104.094772,41.973785,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>A</name>
+        <description>Can be hiked to B</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -108.045902,42.520193,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>B</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.202457,42.511589,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>C</name>
+        <description>Might be able to hike sections almost to Farson.</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -108.728256,42.370466,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Weatherbee Rest Area</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -117.365956,44.495051,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hike NW</name>
+        <description>You could start here and hike about 18 miles to the NW terminus of the national forest.</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -118.222418,45.347682,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 228</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.330221,45.419901,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Panels</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.012304,45.235674,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Well Spring</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -119.700508,45.635287,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>First View Monument</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.848751,45.663966,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker for ruts</name>
+        <description>About a mile of hikeable ruts</description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -120.852356,45.662887,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Foster Farm</name>
+        <styleUrl>#icon-61-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -122.35538,45.358448,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.51352,38.955926,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Swale</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.575876,38.924249,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[St. Mary's Mission]]></name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -96.058987,39.192107,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Farmhouse</name>
+        <description><![CDATA[Ask here? for permission to see site of "The Narrows"]]></description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -97.914175,40.259032,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 201</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.914175,40.259032,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>The Narrows</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.932028,40.254905,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.51345,38.955871,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Swale</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.575677,38.923693,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[St. Mary's Mission]]></name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -96.05896,39.191021,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Farmhouse</name>
+        <description><![CDATA[Try asking here for permission to visit "The Narrows"<br><br>If not, in town.]]></description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -97.914104,40.260796,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>The Narrows</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.932129,40.255425,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hike</name>
+        <description>You can hike the trail from here to 6th Crossing</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -108.044357,42.521585,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>End</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.225632,42.509312,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hike</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.727913,42.370213,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hike</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.972359,42.32987,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Interpretive panels</name>
+        <description>About Ladd Canyon. Look SE and you might see swales.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -118.012304,45.235915,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hike/Drive</name>
+        <description>Pretty much on trail to N boundary of NF</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -118.222847,45.348345,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 212</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.330307,45.419841,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 213</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.465748,45.542307,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.513922,38.956038,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Swales</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.574389,38.92386,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Farmhouse</name>
+        <description><![CDATA[If not in town, ask here to visit "The Narrows"]]></description>
+        <styleUrl>#icon-165</styleUrl>
+        <Point>
+          <coordinates>
+            -97.913933,40.261451,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>The Narrows</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.931786,40.256211,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hike to 6th Crossing</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.045044,42.520826,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 206</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.22649,42.510324,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hike</name>
+        <description>How much of this is private property?</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -108.728256,42.369959,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 208</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -108.970127,42.330124,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hike or drive N</name>
+        <description>to N boundary of NF</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -118.222504,45.348285,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 210</name>
+        <styleUrl>#icon-168-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.330307,45.419781,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 211</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.465748,45.543028,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Well Spring</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -119.694672,45.633486,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <description>Look for sign</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -120.849781,45.663966,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 214</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.856304,45.661927,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Foster Farm</name>
+        <styleUrl>#icon-165-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -122.354994,45.358674,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.51375,38.956038,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Swales/Ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.570806,38.923076,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>The Narrows</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -97.931871,40.255097,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Farmhouse</name>
+        <description><![CDATA[Ask for permission to visit "The Narrows"]]></description>
+        <styleUrl>#icon-61</styleUrl>
+        <Point>
+          <coordinates>
+            -97.91419,40.260403,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.513493,38.956105,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts/Swales</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.570441,38.923192,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[St. Mary's Mission]]></name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -96.059303,39.191287,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>The Narrows</name>
+        <description>Ask in town for permission to visit</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -97.930069,40.254377,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hike the ruts</name>
+        <description>You can hike alot of the ruts in Wyoming.</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -107.395477,42.448288,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Placemark 206</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -117.36454,44.492954,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.513509,38.956129,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts/Swale</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.574937,38.923643,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[Site of Jim Bridger Farm & Home]]></name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -94.601319,38.936479,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[St. Mary's Mission]]></name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -96.059861,39.19177,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>The Narrows</name>
+        <description>Ask in town about permission to visit site</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -97.931871,40.255163,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hike</name>
+        <description>Many of the trails in Wyoming are hikeable. Ask permission for PP access.</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -107.308273,42.444235,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Interpretive panels</name>
+        <description>Take side road north onto Sisley Creek Rd</description>
+        <styleUrl>#icon-168</styleUrl>
+        <Point>
+          <coordinates>
+            -117.364798,44.493016,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Interpretive panels</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.012476,45.235794,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Viewpoint</name>
+        <description>Apparently, you can see ruts/swales from the viewpoint.</description>
+        <styleUrl>#icon-161</styleUrl>
+        <Point>
+          <coordinates>
+            -118.034964,45.253259,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ruts/Swales?</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -118.466263,45.543389,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Well Spring</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -119.694157,45.633246,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>McDonalds Ferry</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.407066,45.587615,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Biggs Junction Ruts</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.856304,45.661687,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Marker</name>
+        <styleUrl>#icon-161-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -120.863686,45.658448,0
+          </coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+  </Document>
+</kml>

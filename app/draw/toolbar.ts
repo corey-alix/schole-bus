@@ -232,6 +232,10 @@ export function create(options: {
                 style: styles["trail"].map(s => converter.fromJson(s))
             },
             {
+                test: (text: string) => !!text.match(/RUTS/i),
+                style: styles["rut-line"].map(s => converter.fromJson(s))
+            },
+            {
                 test: (text: string) => !text,
                 style: styles["unknown-line"].map(s => converter.fromJson(s))
             },

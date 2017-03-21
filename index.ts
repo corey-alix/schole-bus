@@ -16,6 +16,9 @@ import { GreenvilleSc } from "./app/poi/usa";
 //import POI = require("./app/poi/geonames");
 const POI = [];
 
+const converter = new StyleConverter();
+
+
 cssin("schole-bus", `
 html, body, .schole-bus {
     position: absolute;
@@ -116,6 +119,61 @@ export function run() {
         layers: baseLayers.concat([drawLayers.polygonLayer, drawLayers.lineLayer, drawLayers.pointLayer])
     });
 
+    let oregonTrailLayer = new ol.layer.Vector({
+        type: "overlay",
+        title: "Oregon Trail POI",
+        visible: false,
+        source: new ol.source.Vector({
+            url: "./app/poi/oregon-trail-kml.xml",
+            format: new ol.format.KML({ extractStyles: false })
+        })
+    });
+    map.addLayer(oregonTrailLayer);
+
+    {
+        oregonTrailLayer.setStyle((feature: ol.Feature, res: number) => {
+            let featureStyle = feature.getStyle();
+            if (featureStyle) return featureStyle;
+
+            let name = <string>feature.get("name");
+            let description = <string>feature.get("description");
+            let symbology = <string>feature.get("styleUrl");
+
+            let style = [
+                {
+                    text: {
+                        text: name,
+                        "offset-y": 20,
+                        fill: {
+                            color: "rgba(0, 0, 0, 1)"
+                        },
+                        stroke: {
+                            color: "rgba(255, 255, 255, 1)",
+                            width: 1
+                        },
+                        scale: 2
+                    }
+                },
+                {
+                    star: {
+                        radius: 10,
+                        radius2: 5,
+                        points: 6,
+                        fill: {
+                            color: "rgba(255, 255, 255, 1)"
+                        },
+                        stroke: {
+                            color: "rgba(255, 0, 0, 1)", width: 1
+                        }
+                    }
+                }].map(s => converter.fromJson(s));
+
+            feature.setStyle(style);
+
+            return style;
+        });
+    }
+
     map.addControl(new ol.control.MousePosition({
         projection: "EPSG:4326",
         coordinateFormat: coord => coord.map(v => v.toFixed(5)).join(",")
@@ -145,12 +203,13 @@ export function run() {
 
             let visible = {
                 [WFS_INFO.keyField]: false,
-                gid: false
+                gid: false,
+                "page-index": false
             };
 
             let div = document.createElement("div");
 
-            let keys = Object.keys(feature.getProperties()).filter(key => editable[key] || visible[key]).filter(key => {
+            let keys = Object.keys(feature.getProperties()).filter(key => editable[key] || (false !== visible[key])).filter(key => {
                 let v = feature.get(key);
                 if (typeof v === "string") return true;
                 if (typeof v === "number") return true;
@@ -179,20 +238,21 @@ export function run() {
         });
         map.addLayer(poi);
 
-        let converter = new StyleConverter();
-        let styleHash = <{ [name: string]: ol.style.Style[] }>{};
+        {
+            let styleHash = <{ [name: string]: ol.style.Style[] }>{};
 
-        poi.setStyle((feature: ol.Feature, res: number) => {
-            let symbology = <string>feature.get("poi-data").c;
-            let style = styleHash[symbology];
-            if (!style) {
-                if (!styles[symbology]) {
-                    console.log("undefined symbology:", symbology);
+            poi.setStyle((feature: ol.Feature, res: number) => {
+                let symbology = <string>feature.get("poi-data").c;
+                let style = styleHash[symbology];
+                if (!style) {
+                    if (!styles[symbology]) {
+                        console.log("undefined symbology:", symbology);
+                    }
+                    style = styleHash[symbology] = (styles[symbology] || styles["*"]).map(s => converter.fromJson(s));
                 }
-                style = styleHash[symbology] = (styles[symbology] || styles["*"]).map(s => converter.fromJson(s));
-            }
-            return style;
-        });
+                return style;
+            });
+        }
 
         POI.forEach(region => {
             let features = region.markers.map(m => {

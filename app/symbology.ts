@@ -276,6 +276,20 @@ export const styles = <{ [name: string]: Format.Style[] }>{
             }
         }
     ],
+    "rut-line": [
+        {
+            stroke: {
+                color: rgba(mix(Colors.park, Colors.clear)),
+                width: 6
+            }
+        },
+        {
+            stroke: {
+                color: rgba(Colors.park),
+                width: 1
+            }
+        }
+    ],
     "science-center": [
         {
             text: {
