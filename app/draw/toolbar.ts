@@ -179,7 +179,7 @@ export function create(options: {
                 style: styles["artifact"].map(s => converter.fromJson(s))
             },
             {
-                test: (text: string) => !!text.match(/\WCG$/) || !!text.match(/CAMPGROUND/i),
+                test: (text: string) => !!text.match(/\WCG$/) || !!text.match(/\WKOA\W/) || !!text.match(/CAMPGROUND/i),
                 style: styles["campground"].map(s => converter.fromJson(s))
             },
             {
@@ -431,10 +431,15 @@ export function create(options: {
         }
     });
 
+    Object.keys(WFS_INFO.layerMapping).forEach((k: keyof typeof WFS_INFO.layerMapping) => {
+        let geometryType = k;
+        let featureType = WFS_INFO.layerMapping[k];
+    });
+
     loadAndWatch({
         map: map,
         geometryType: "Point",
-        featureType: "addresses",
+        featureType: WFS_INFO.layerMapping["Point"],
         template: {
             [WFS_INFO.keyField]: keyword
         },
@@ -444,7 +449,7 @@ export function create(options: {
     loadAndWatch({
         map: map,
         geometryType: "MultiLineString",
-        featureType: "streets",
+        featureType: WFS_INFO.layerMapping["MultiLineString"],
         template: {
             [WFS_INFO.keyField]: keyword
         },
@@ -454,7 +459,7 @@ export function create(options: {
     loadAndWatch({
         map: map,
         geometryType: "MultiPolygon",
-        featureType: "parcels",
+        featureType: WFS_INFO.layerMapping["MultiPolygon"],
         template: {
             [WFS_INFO.keyField]: keyword
         },
@@ -475,7 +480,7 @@ export function create(options: {
         zoomPadding: 50,
         preprocessFeatures: (features: ol.Feature[]) => {
             let center = map.getView().getCenter();
-            features = features.filter(f => !!f.get("comment"));
+            features = features.filter(f => !!f.get(WFS_INFO.commentField));
             return features.sort((f1, f2) => {
                 let p1 = ol.extent.getCenter(f1.getGeometry().getExtent());
                 let p2 = ol.extent.getCenter(f2.getGeometry().getExtent());

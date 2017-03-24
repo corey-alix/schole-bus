@@ -79,17 +79,21 @@ export function run() {
     target.className = "schole-bus";
     document.body.appendChild(target);
 
+    // default basemap
     let osmLayer = new ol.layer.Tile({
         type: "base",
         title: "OSM",
         opacity: 0.8,
+        visible: true,
         source: new ol.source.OSM()
     });
 
+    // bing + osm as basemaps
     let baseLayers = [].concat(bingLayers()).concat([
         osmLayer
     ]);
 
+    // one layer per geometry type to ensure points appear in front of polygons
     let drawLayers = {
         pointLayer: new ol.layer.Vector({ source: new ol.source.Vector() }),
         lineLayer: new ol.layer.Vector({ source: new ol.source.Vector() }),
@@ -119,6 +123,7 @@ export function run() {
         layers: baseLayers.concat([drawLayers.polygonLayer, drawLayers.lineLayer, drawLayers.pointLayer])
     });
 
+    // oregon trail poi (very useful)
     let oregonTrailLayer = new ol.layer.Vector({
         type: "overlay",
         title: "Oregon Trail POI",
@@ -130,75 +135,86 @@ export function run() {
     });
     map.addLayer(oregonTrailLayer);
 
-    {
-        oregonTrailLayer.setStyle((feature: ol.Feature, res: number) => {
-            let featureStyle = <ol.style.Style>feature.getStyle();
-            if (featureStyle) return featureStyle;
+    // oregon trail styling
+    oregonTrailLayer.setStyle((feature: ol.Feature, res: number) => {
+        let featureStyle = <ol.style.Style>feature.getStyle();
+        if (featureStyle) return featureStyle;
 
-            let name = <string>feature.get("name");
-            let description = <string>feature.get("description");
-            let symbology = <string>feature.get("styleUrl");
+        let name = <string>feature.get("name");
+        let description = <string>feature.get("description");
+        let symbology = <string>feature.get("styleUrl");
 
-            let style = [
-                {
-                    text: {
-                        text: name,
-                        "offset-y": 20,
-                        fill: {
-                            color: "rgba(0, 0, 0, 1)"
-                        },
-                        stroke: {
-                            color: "rgba(255, 255, 255, 1)",
-                            width: 1
-                        },
-                        scale: 2
+        let style = [
+            {
+                text: {
+                    text: name,
+                    "offset-y": 20,
+                    fill: {
+                        color: "rgba(0, 0, 0, 1)"
+                    },
+                    stroke: {
+                        color: "rgba(255, 255, 255, 1)",
+                        width: 1
+                    },
+                    scale: 1.5
+                }
+            },
+            {
+                star: {
+                    radius: 10,
+                    radius2: 5,
+                    points: 6,
+                    fill: {
+                        color: "rgba(255, 255, 255, 1)"
+                    },
+                    stroke: {
+                        color: "rgba(255, 0, 0, 1)", width: 1
                     }
-                },
-                {
-                    star: {
-                        radius: 10,
-                        radius2: 5,
-                        points: 6,
-                        fill: {
-                            color: "rgba(255, 255, 255, 1)"
-                        },
-                        stroke: {
-                            color: "rgba(255, 0, 0, 1)", width: 1
-                        }
-                    }
-                }].map(s => converter.fromJson(s));
+                }
+            }].map(s => converter.fromJson(s));
 
-            feature.setStyle(style);
+        feature.setStyle(style);
 
-            return style;
-        });
-    }
+        return style;
+    });
 
+    // cursor position
     map.addControl(new ol.control.MousePosition({
         projection: "EPSG:4326",
         coordinateFormat: coord => coord.map(v => v.toFixed(5)).join(",")
     }));
 
+    // layer picker
     CreateLayerSwitcher({
         map: map
     });
 
+    // the draw/edit buttons
     CreateToolbar({
         map: map,
         keyword: getParameterByName("keyword") || "schole-bus",
-        commentFieldName: "comment",
+        commentFieldName: WFS_INFO.commentField,
         layers: drawLayers
     });
-    CreateSearch({ map: map });
 
+    // geocoder, will search features in current extent, then do a google search of current extent
+    // then feature on entire map then google search of entire world
+    CreateSearch({
+        map: map,
+        layer: drawLayers.pointLayer,
+        textFieldName: "comment"
+    });
+
+    // control for going to a specific coordinate
     CreateGoto({ map: map });
 
+    // info inspector/editor
     CreatePopup({
         map: map,
         autoPopup: true,
         asContent: (feature: ol.Feature) => {
             let editable = {
-                "comment": true
+                [WFS_INFO.commentField]: true
             };
 
             let visible = {
@@ -230,6 +246,7 @@ export function run() {
 
     });
 
+    // built-in poi...not useful
     {
         let poi = new ol.layer.Vector({
             source: new ol.source.Vector(),
