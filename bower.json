@@ -28,7 +28,8 @@
     "ol3-grid": "git://github.com/ca0v/ol3-grid.git#v4.0.1",
     "ol3-fun": "git://github.com/ca0v/ol3-fun.git#v4.0.1",
     "ol3-draw": "git://github.com/ca0v/ol3-draw.git#v4.0.1",
-    "ol3-search": "git://github.com/ca0v/ol3-search.git#v4.0.1"
+    "ol3-search": "git://github.com/ca0v/ol3-search.git#v4.0.1",
+    "ol3-mapquest": "git://github.com/ca0v/ol3-mapquest.git#v4.0.1"
   },
   "devDependencies": {
     "requirejs": "^2.3.2",

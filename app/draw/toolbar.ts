@@ -17,6 +17,8 @@ import { cssin, debounce } from "ol3-fun";
 import { styles } from "../symbology";
 import { StyleConverter } from "ol3-symbolizer";
 
+import { DriveButton } from "../directions/mapquest";
+
 import { WFS_INFO } from "../wfs-info";
 
 const converter = new StyleConverter();
@@ -338,6 +340,12 @@ export function create(options: {
 
         //Button.create({ map: map, label: "ℹ", title: "Information", eventName: "info" }),
         //Note.create({ map: map, layer: layers.pointLayer, noteFieldName: "comment" }),
+
+        DriveButton.create({
+            map: map,
+            routeLayer: layers.lineLayer,
+            commentFieldName: options.commentFieldName
+        }),
 
         Draw.create({
             map: map, geometryType: "MultiPolygon", label: "▧", title: "Polygon",
