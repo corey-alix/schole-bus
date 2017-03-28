@@ -58,7 +58,7 @@ export function create(options: {
         currentExtent: false,
         autoCollapse: false,
         autoPan: true,
-        labelAttributeName: "text",
+        labelAttributeName: WFS_INFO.commentField,
         showIcon: false,
         layers: [searchResults]
     });
