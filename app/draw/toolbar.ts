@@ -336,6 +336,8 @@ export function create(options: {
         window.open(`https://www.google.com/maps/@${lat},${lon},15z`)
     });
 
+    let deleteButton = <Delete>Delete.create({ map: map, label: "␡" });
+
     let toolbar = [
 
         //Button.create({ map: map, label: "ℹ", title: "Information", eventName: "info" }),
@@ -381,7 +383,7 @@ export function create(options: {
 
         lineEdit,
 
-        Delete.create({ map: map, label: "␡" }),
+        deleteButton,
 
     ];
 
@@ -399,6 +401,14 @@ export function create(options: {
         toolbar.forEach(t => t.destroy());
     });
 
+    // change API so can only delete when clicking delete button...too easy to accidently delete
+    // when the trigger is inactivating
+    deleteButton.on("click", () => {
+        if (deleteButton.get("active")) {
+            deleteButton.delete();
+        }
+    });
+
     map.on("delete-feature", (args: { control: Draw }) => {
         if (args.control.get("active")) {
             stopOtherControls(map, args.control);
@@ -406,6 +416,8 @@ export function create(options: {
             stopControl(map, Modify);
             stopControl(map, Translate);
             stopControl(map, Select);
+        } else {
+            deleteButton.clear();
         }
     });
 
