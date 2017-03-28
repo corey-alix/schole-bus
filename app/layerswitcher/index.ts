@@ -1,3 +1,4 @@
+import ol = require("openlayers");
 import { cssin, html, mixin, getParameterByName } from "ol3-fun/ol3-fun/common";
 import { LayerSwitcher } from "ol3-layerswitcher";
 
