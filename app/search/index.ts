@@ -125,13 +125,15 @@ export function create(options: {
             searchProvider.options.bounded = bounded;
 
             layerGeocoder.execute({
-                query: args.value.query,
-                searchNames: [WFS_INFO.commentField]
+                params: {
+                    query: args.value.query,
+                    searchNames: [WFS_INFO.commentField]
+                }
             }).then(results => {
                 if (results.length) {
                     showResults(results, true);
                 } else {
-                    searchProvider.execute(args.value).then(results => {
+                    searchProvider.execute({ params: args.value }).then(results => {
                         if (results.length) {
                             showResults(results);
                         } else {
