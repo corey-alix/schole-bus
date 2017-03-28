@@ -18,6 +18,46 @@ const POI = [];
 
 const converter = new StyleConverter();
 
+const wgs84Sphere = new ol.Sphere(6378137);
+
+// move to ol3-fun
+const MeterConvert = {
+    "m": 1,
+    "km": 1 / 1000,
+    "ft": 3.28084,
+    "mi": 0.000621371
+}
+
+function formatLength(l: number, longUom = "mi") {
+    let uom = l < 100 ? "m" : longUom;
+    return (MeterConvert[uom] * l).toPrecision(5) + " " + uom;
+}
+
+// move to ol3-fun
+function flatten(args: { geom: ol.geom.Geometry }) {
+    let coordinates: ol.Coordinate[];
+
+    if (args.geom instanceof ol.geom.LineString) {
+        coordinates = args.geom.getCoordinates();
+    }
+    else if (args.geom instanceof ol.geom.MultiLineString) {
+        coordinates = args.geom.getLineString(0).getCoordinates();
+    }
+    else if (args.geom instanceof ol.geom.Polygon) {
+        coordinates = args.geom.getLinearRing(0).getCoordinates();
+    }
+    else if (args.geom instanceof ol.geom.MultiPolygon) {
+        coordinates = args.geom.getPolygon(0).getLinearRing(0).getCoordinates();
+    }
+    return coordinates;
+}
+
+// move to ol3-fun
+function computeDistances(args: { coordinates: ol.Coordinate[]; map: ol.Map }) {
+    let sourceProj = args.map.getView().getProjection();
+    let coordinates = args.coordinates.map(c => ol.proj.transform(c, sourceProj, 'EPSG:4326'));
+    return coordinates.map((c, i) => wgs84Sphere.haversineDistance(i ? coordinates[i - 1] : c, c));
+}
 
 cssin("schole-bus", `
 html, body, .schole-bus {
@@ -106,7 +146,9 @@ export function run() {
         loadTilesWhileAnimating: true,
         loadTilesWhileInteracting: true,
         interactions: ol.interaction.defaults().extend([
-            new ol.interaction.DragRotateAndZoom()
+            new ol.interaction.DragRotateAndZoom({
+                condition: ol.events.condition.altKeyOnly
+            })
         ]),
         controls: ol.control.defaults().extend([
             new ol.control.OverviewMap({
@@ -233,6 +275,18 @@ export function run() {
             });
             div.title = feature.getGeometryName();
             div.innerHTML = `<table>${keys.map(k => `<tr><td>${k}</td><td><input data-event="${k}" ${editable[k] ? "" : "readonly"} value="${feature.get(k)}"/></td></tr>`).join("")}</table>`;
+
+            // show length of linear features
+            {
+                let geom = feature.getGeometry();
+                if (geom instanceof ol.geom.MultiLineString) {
+                    let distance = computeDistances({
+                        map: map,
+                        coordinates: geom.getCoordinates()[0]
+                    }).reduce((a, b) => a + b);
+                    div.appendChild(html(`<label>Distance: ${formatLength(distance)}`));
+                }
+            }
 
             $("input", div).change(args => {
                 let target = <HTMLInputElement>args.target;
