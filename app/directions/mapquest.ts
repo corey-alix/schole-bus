@@ -4,10 +4,10 @@ import { Button, ButtonOptions } from "ol3-draw/ol3-draw/ol3-button";
 import { defaults } from "ol3-fun";
 import { WFS_INFO } from "../wfs-info";
 
-let API = new Directions();
-
-const MapQuestKey = "cwm3pF5yuEGNp54sh96TF0irs5kCLd5y";
-const MapQuestServiceUrl = `http://www.mapquestapi.com/directions/v2/route`;
+const MapQuestDirections = Directions.create({
+    url: "//www.mapquestapi.com/directions/v2/route",
+    key: "cwm3pF5yuEGNp54sh96TF0irs5kCLd5y"
+});
 
 function unflatten<T>(items: T[], dimension = 2): Array<T[]> {
     let result = <Array<T[]>>[];
@@ -35,13 +35,11 @@ export function directions(options: {
     to: ol.Feature;
     result: ol.Feature;
 }) {
-
     let from = new ol.geom.Point(ol.extent.getCenter(options.from.getGeometry().getExtent()));
     let to = new ol.geom.Point(ol.extent.getCenter(options.to.getGeometry().getExtent()));
 
-    return API.directions(MapQuestServiceUrl, {
-        key: MapQuestKey,
-        from: asLatLng(from), // 39.750307,-104.999472
+    return MapQuestDirections.directions({
+        from: asLatLng(from),
         to: asLatLng(to)
     }).then(result => {
         let coords = <ol.Coordinate[]>unflatten(result.route.shape.shapePoints, 2);
