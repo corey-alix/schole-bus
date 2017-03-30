@@ -18,6 +18,7 @@ import { styles } from "../symbology";
 import { StyleConverter } from "ol3-symbolizer";
 
 import { DriveButton } from "../directions/mapquest";
+import { exportAs as exportGeoJson, importAs as importGeoJson } from "../export/export-to-geojson";
 
 import { WFS_INFO } from "../wfs-info";
 
@@ -230,6 +231,10 @@ export function create(options: {
 
         let mapping = [
             {
+                test: (text: string) => !!text.match(/RD$/) || !!text.match(/ROAD/i),
+                style: styles["road"].map(s => converter.fromJson(s))
+            },
+            {
                 test: (text: string) => !!text.match(/TRAIL/i),
                 style: styles["trail"].map(s => converter.fromJson(s))
             },
@@ -342,6 +347,8 @@ export function create(options: {
 
         //Button.create({ map: map, label: "ℹ", title: "Information", eventName: "info" }),
         //Note.create({ map: map, layer: layers.pointLayer, noteFieldName: "comment" }),
+        Button.create({ map: map, label: "S", title: "Save", eventName: "export-to-geojson" }),
+        Button.create({ map: map, label: "I", title: "Import", eventName: "import-geojson" }),
 
         DriveButton.create({
             map: map,
@@ -395,6 +402,22 @@ export function create(options: {
     NavHistory.create({
         map: map,
         delay: 500
+    });
+
+    map.on("export-to-geojson", () => {
+        exportGeoJson({
+            map: map
+        })
+    });
+
+    map.on("import-geojson", () => {
+        let json = window.prompt("Paste GeoJSON", "");
+        if (!json) return;
+        importGeoJson({
+            map: map,
+            layers: layers,
+            json: json
+        })
     });
 
     map.on("exit", () => {
