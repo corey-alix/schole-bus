@@ -2,9 +2,7 @@ import ol = require("openlayers");
 import { create as CreateLayerSwitcher } from "./app/layerswitcher";
 import { create as CreateToolbar } from "./app/draw/toolbar";
 import { create as CreateSearch } from "./app/search";
-import { create as CreateGoto } from "./app/search/goto";
 import { create as CreatePopup } from "./app/popup";
-import { create as CreateFilter } from "./app/search/filter";
 
 import { cssin, html, mixin, getParameterByName } from "ol3-fun/ol3-fun/common";
 import { styles } from "./app/symbology";
@@ -244,13 +242,9 @@ export function run() {
     // then feature on entire map then google search of entire world
     CreateSearch({
         map: map,
-        layer: drawLayers.pointLayer,
+        layers: drawLayers,
         textFieldName: "comment"
     });
-
-    // control for going to a specific coordinate
-    CreateGoto({ map: map });
-    CreateFilter({ map: map, layer: drawLayers.pointLayer });
 
     // info inspector/editor
     CreatePopup({

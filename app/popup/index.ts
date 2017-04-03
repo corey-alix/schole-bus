@@ -34,6 +34,29 @@ export function create(options: PopupOptions) {
     let popup = Popup.create(options);
     popup.set("active", false);
 
+    let hiliteLayer = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        style: (feature: ol.Feature) => {
+            return new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: "rgba(0, 255, 255, 1)",
+                    width: 1
+                })
+            });
+        }
+    });
+    map.addLayer(hiliteLayer);
+
+    popup.pages.on("goto", () => {
+        hiliteLayer.getSource().clear();
+        let feature = popup.pages.activePage.feature;
+        feature && hiliteLayer.getSource().addFeature(feature);
+    });
+
+    popup.pages.on("clear", () => {
+        hiliteLayer.getSource().clear();
+    });
+
     popup.on("hide", () => popup.set("active", false));
     {
         let doit = event => {

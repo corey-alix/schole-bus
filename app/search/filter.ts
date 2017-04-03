@@ -3,9 +3,13 @@ import { Input } from "ol3-input";
 import { WFS_INFO } from "../wfs-info";
 import { zoomToFeature } from "ol3-fun/ol3-fun/navigation";
 
-export function create(options: { map: ol.Map, layer: ol.layer.Vector }) {
+export function create(options: {
+    map: ol.Map, layers: {
+        pointLayer: ol.layer.Vector
+    }
+}) {
     let map = options.map;
-    let layer = options.layer;
+    let layer = options.layers.pointLayer;
     // search for a state using 2 character state code
     let input = Input.create({
         map: map,
