@@ -24,6 +24,7 @@ export function exportAs(options: {
 }
 
 export function importAs(options: {
+    ignoreId?: true,
     map: ol.Map;
     layers: {
         pointLayer: ol.layer.Vector;
@@ -39,6 +40,10 @@ export function importAs(options: {
     });
 
     let features = format.readFeatures(options.json);
+    if (options.ignoreId) {
+        debugger;
+        features.forEach(f => f.setId(""));
+    }
 
     if (options.layers.pointLayer) {
         let source = options.layers.pointLayer.getSource();

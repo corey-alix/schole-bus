@@ -289,6 +289,12 @@ export function create(options: {
     let lineEdit = Modify.create({
         map: map, label: "E",
         style: {
+            "LineString": [{
+                stroke: {
+                    color: "rgba(0, 0, 0, 0.5)",
+                    width: 3
+                }
+            }],
             "Point": [{
                 "circle": {
                     "radius": 6,
@@ -341,6 +347,9 @@ export function create(options: {
         window.open(`https://www.google.com/maps/@${lat},${lon},15z`)
     });
 
+    Delete.DEFAULT_OPTIONS.style["LineString"] = Delete.DEFAULT_OPTIONS.style["MultiLineString"];
+    Translate.DEFAULT_OPTIONS.style["LineString"] = Translate.DEFAULT_OPTIONS.style["MultiLineString"];
+    
     let deleteButton = <Delete>Delete.create({ map: map, label: "␡" });
 
     let toolbar = [
