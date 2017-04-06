@@ -83,18 +83,6 @@ export function create(options: { map: ol.Map }) {
         layer: 'oregon_trail_poi'
     }).then(layer => map.getLayers().insertAt(baseLayers.length, layer.layer));
 
-    // oregon trail poi (very useful)
-    let oregonTrailLayer = new ol.layer.Vector({
-        type: "overlay",
-        title: "Oregon Trail POI",
-        visible: false,
-        source: new ol.source.Vector({
-            url: "./app/poi/oregon-trail-kml.xml",
-            format: new ol.format.KML({ extractStyles: false })
-        })
-    });
-    map.addLayer(oregonTrailLayer);
-
     // oregon trail styling
     oregonTrailLayer.setStyle((feature: ol.Feature, res: number) => {
         let featureStyle = <ol.style.Style>feature.getStyle();
