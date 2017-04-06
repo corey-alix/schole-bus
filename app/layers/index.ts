@@ -1,6 +1,9 @@
 import ol = require("openlayers");
 import { styles } from "../symbology";
 import { StyleConverter } from "ol3-symbolizer";
+import { create as createWfsLayer } from "./wfs-factory";
+import { create as createWmsLayer } from "./wms-factory";
+
 const converter = new StyleConverter();
 
 export function create(options: { map: ol.Map }) {
@@ -50,6 +53,35 @@ export function create(options: { map: ol.Map }) {
 
     baseLayers.concat([drawLayers.polygonLayer, drawLayers.lineLayer, drawLayers.pointLayer]).forEach(l => map.addLayer(l));
 
+    createWfsLayer({
+        map: map,
+        url: "//ca0v-pc:8080/geoserver/cite/wfs",
+        layer: "uslines"
+    }).then(layer => map.addLayer(layer.layer));
+
+    createWfsLayer({
+        map: map,
+        url: "//ca0v-pc:8080/geoserver/cite/wfs",
+        layer: "oregon_trail_poi"
+    }).then(layer => map.addLayer(layer.layer));
+
+    createWmsLayer({
+        map: map,
+        url: '//ca0v-pc:8080/geoserver/cite/wms',
+        layer: 'uslines'
+    }).then(layer => map.getLayers().insertAt(baseLayers.length, layer.layer));
+
+    createWmsLayer({
+        map: map,
+        url: '//ca0v-pc:8080/geoserver/cite/wms',
+        layer: 'ogrgeojson'
+    }).then(layer => map.getLayers().insertAt(baseLayers.length, layer.layer));
+
+    createWmsLayer({
+        map: map,
+        url: '//ca0v-pc:8080/geoserver/cite/wms',
+        layer: 'oregon_trail_poi'
+    }).then(layer => map.getLayers().insertAt(baseLayers.length, layer.layer));
 
     // oregon trail poi (very useful)
     let oregonTrailLayer = new ol.layer.Vector({
