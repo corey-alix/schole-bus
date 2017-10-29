@@ -108,6 +108,7 @@ function loadAndWatch(options: {
                 wfsUrl: WFS_INFO.wfsUrl,
                 featureNS: WFS_INFO.featureNS,
                 featurePrefix: WFS_INFO.featurePrefix,
+                featureIdFieldName: WFS_INFO.gidField,
                 srsName: WFS_INFO.srsName,
                 sourceSrs: WFS_INFO.srsName,
                 source: options.source,
@@ -137,135 +138,16 @@ export function create(options: {
 
     {
         let unsavedStyle = styles["unsaved-point"].map(s => converter.fromJson(s));
-        let defaultStyle = styles["point"].map(s => converter.fromJson(s));
-
-        let mapping = [
-            {
-                test: (text: string) => !!text.match(/DAY \d+$/),
-                style: (text: string) => {
-                    let style = styles["milestone"].map(s => converter.fromJson(s));
-                    let day = text.match(/\d+/)[0];
-                    style.forEach(s => s.getText && s.getText() && s.getText().setText(day));
-                    return style;
-                }
-            },
-            {
-                test: (text: string) => !!text.match(/^\*/),
-                style: (text: string) => {
-                    let style = styles["label"].map(s => converter.fromJson(s));
-                    let label = text.substr(1);
-                    style.forEach(s => s.getText && s.getText() && s.getText().setText(label));
-                    return style;
-                }
-            },
-            {
-                test: (text: string) => !!text.match(/^!/),
-                style: (text: string) => {
-                    let style = styles["warning-point"].map(s => converter.fromJson(s));
-                    return style;
-                }
-            },
-            {
-                test: (text: string) => !text,
-                style: styles["unknown"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/RIP$/) || !!text.match(/CEMETERY/i),
-                style: styles["cemetery"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/RUTS$/i) || !!text.match(/SWALE/i),
-                style: styles["artifact"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/MARKER/i),
-                style: styles["artifact"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/\WCG$/) || !!text.match(/\WKOA\W/) || !!text.match(/CAMPGROUND/i),
-                style: styles["campground"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/MUSEUM/i) || !!text.match(/HISTORIC/i),
-                style: styles["museum"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/\WNP$/) || !!text.match(/NATIONAL PARK/i),
-                style: styles["national-park"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/\WNM$/) || !!text.match(/NATIONAL MONUMENT/i),
-                style: styles["national-monument"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/PARK$/i),
-                style: styles["PRK"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/SCIENCE/i) || !!text.match(/\WSC$/),
-                style: styles["science-center"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/\WSP$/) || !!text.match(/STATE PARK/i),
-                style: styles["state-park"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/ZOO$/i),
-                style: styles["zoo"].map(s => converter.fromJson(s))
-            },
-        ];
-
-        let savedStyle = (feature: ol.Feature) => {
-            let text = <string>feature.get(options.commentFieldName);
-            let styler = first(mapping, v => v.test(text));
-            if (!styler) return defaultStyle;
-            return (typeof styler.style === "function") ? styler.style(text) : styler.style
-        }
-
-        layers.pointLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle(feature));
+        let savedStyle = styles["point"].map(s => converter.fromJson(s));
+        layers.pointLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
     }
 
     {
         let unsavedStyle = styles["unsaved-multiline"].map(s => converter.fromJson(s));
-        let defaultStyle = styles["multiline"].map(s => converter.fromJson(s));
-
-        let mapping = [
-            {
-                test: (text: string) => !!text.match(/RD$/) || !!text.match(/ROAD/i),
-                style: styles["road"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/TRAIL/i),
-                style: styles["trail"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/RUTS/i),
-                style: styles["rut-line"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !text,
-                style: styles["unknown-line"].map(s => converter.fromJson(s))
-            },
-            {
-                test: (text: string) => !!text.match(/^!/),
-                style: (text: string) => {
-                    let style = styles["warning-line"].map(s => converter.fromJson(s));
-                    let label = text.substr(1);
-                    style.forEach(s => s.getText && s.getText() && s.getText().setText(label));
-                    return style;
-                }
-            },
-        ];
-
-        let savedStyle = (feature: ol.Feature) => {
-            let text = <string>feature.get(options.commentFieldName);
-            let styler = first(mapping, v => v.test(text));
-            if (!styler) return defaultStyle;
-            return (typeof styler.style === "function") ? styler.style(text) : styler.style
-        }
-
-        layers.lineLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle(feature));
+        let savedStyle = styles["multiline"].map(s => converter.fromJson(s));
+        layers.lineLayer.setStyle((feature: ol.Feature, res: number) => feature.get("touched") ? unsavedStyle : savedStyle);
     }
+    
     {
         let unsavedStyle = styles["unsaved-polygon"].map(s => converter.fromJson(s));
         let savedStyle = styles["polygon"].map(s => converter.fromJson(s));

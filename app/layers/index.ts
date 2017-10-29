@@ -3,6 +3,7 @@ import { styles } from "../symbology";
 import { StyleConverter } from "ol3-symbolizer";
 import { create as createWfsLayer } from "./wfs-factory";
 import { create as createWmsLayer } from "./wms-factory";
+import { WFS_INFO } from "../wfs-info";
 
 const converter = new StyleConverter();
 
@@ -14,8 +15,8 @@ export function create(options: { map: ol.Map }) {
     let osmLayer = new ol.layer.Tile({
         type: "base",
         title: "OSM",
-        opacity: 0.8,
-        visible: true,
+        opacity: 1,
+        visible: false,
         source: new ol.source.OSM()
     });
 
@@ -38,11 +39,6 @@ export function create(options: { map: ol.Map }) {
 
     }
 
-    // bing + osm as basemaps
-    let baseLayers = [].concat(bingLayers()).concat([
-        osmLayer
-    ]);
-
     // one layer per geometry type to ensure points appear in front of polygons
     // to be moved to a control that operates as a single layer
     let drawLayers = {
@@ -51,79 +47,57 @@ export function create(options: { map: ol.Map }) {
         polygonLayer: new ol.layer.Vector({ source: new ol.source.Vector() })
     };
 
-    baseLayers.concat([drawLayers.polygonLayer, drawLayers.lineLayer, drawLayers.pointLayer]).forEach(l => map.addLayer(l));
+    let backgroundLayers = new ol.layer.Group({
+        title: "Backgrounds",
+        opacity: 0.5,
+        layers: [].concat(bingLayers()).concat([osmLayer])
+    });
 
-    createWfsLayer({
-        map: map,
-        url: "//ca0v-pc:8080/geoserver/cite/wfs",
-        layer: "uslines"
-    }).then(layer => map.addLayer(layer.layer));
+    let group = new ol.layer.Group({
+        title: "Help"
+    });
 
-    createWfsLayer({
-        map: map,
-        url: "//ca0v-pc:8080/geoserver/cite/wfs",
-        layer: "oregon_trail_poi"
-    }).then(layer => map.addLayer(layer.layer));
+    let workLayers = new ol.layer.Group({
+        title: "Editing"
+    });
 
-    createWmsLayer({
-        map: map,
-        url: '//ca0v-pc:8080/geoserver/cite/wms',
-        layer: 'uslines'
-    }).then(layer => map.getLayers().insertAt(baseLayers.length, layer.layer));
+    [drawLayers.polygonLayer, drawLayers.lineLayer, drawLayers.pointLayer]
+        .forEach(l => workLayers.getLayers().insertAt(0, l));
 
-    createWmsLayer({
-        map: map,
-        url: '//ca0v-pc:8080/geoserver/cite/wms',
-        layer: 'ogrgeojson'
-    }).then(layer => map.getLayers().insertAt(baseLayers.length, layer.layer));
+    [backgroundLayers, workLayers, group].forEach(l => map.addLayer(l));
 
     createWmsLayer({
         map: map,
         url: '//ca0v-pc:8080/geoserver/cite/wms',
-        layer: 'oregon_trail_poi'
-    }).then(layer => map.getLayers().insertAt(baseLayers.length, layer.layer));
+        layer: 'oregontrailahead',
+    }).then(layer => group.getLayers().insertAt(0, layer.layer));
 
-    // oregon trail styling
-    oregonTrailLayer.setStyle((feature: ol.Feature, res: number) => {
-        let featureStyle = <ol.style.Style>feature.getStyle();
-        if (featureStyle) return featureStyle;
+    createWmsLayer({
+        map: map,
+        url: '//ca0v-pc:8080/geoserver/cite/wms',
+        layer: 'oregon_trail_poi',
+    }).then(layer => group.getLayers().insertAt(0, layer.layer));
 
-        let name = <string>feature.get("name");
-        let description = <string>feature.get("description");
-        let symbology = <string>feature.get("styleUrl");
+    Object
+        .keys(WFS_INFO.layerMapping)
+        .map(k => WFS_INFO.layerMapping[k])
+        .forEach(layerName => {
+            createWmsLayer({
+                map: map,
+                url: '//ca0v-pc:8080/geoserver/cite/wms',
+                layer: layerName
+            }).then(layer => group.getLayers().insertAt(0, layer.layer));
+        });
 
-        let style = [
-            {
-                text: {
-                    text: name,
-                    "offset-y": 20,
-                    fill: {
-                        color: "rgba(0, 0, 0, 1)"
-                    },
-                    stroke: {
-                        color: "rgba(255, 255, 255, 1)",
-                        width: 1
-                    },
-                    scale: 1.5
-                }
-            },
-            {
-                star: {
-                    radius: 10,
-                    radius2: 5,
-                    points: 6,
-                    fill: {
-                        color: "rgba(255, 255, 255, 1)"
-                    },
-                    stroke: {
-                        color: "rgba(255, 0, 0, 1)", width: 1
-                    }
-                }
-            }].map(s => converter.fromJson(s));
-
-        feature.setStyle(style);
-
-        return style;
+    createWmsLayer({
+        map: map,
+        url: '//ca0v-pc:8080/geoserver/cite/wms',
+        layer: 'OSM',
+        title: 'Night',
+        basemap: true,
+        visible: true
+    }).then(layer => {
+        backgroundLayers.getLayers().insertAt(0, layer.layer);
     });
 
     let overviewMap = new ol.control.OverviewMap({

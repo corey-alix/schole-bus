@@ -1,4 +1,5 @@
 import ol = require("openlayers");
+import { defaults } from "ol3-fun";
 
 declare module Wms {
 
@@ -284,18 +285,26 @@ declare module Wms {
 }
 
 
-//http://localhost:8080/geoserver/cite/wms?service=WMS&version=1.1.0&request=GetMap&layers=cite:ogrgeojson&styles=generic&bbox=-124.945098876953,34.6886177062988,-82.1409149169922,52.4851341247559&width=768&height=330&srs=EPSG:4326&format=application/openlayers
+export const DEFAULT_OPTIONS = {
+    visible: false,
+    basemap: false,
+}
+
 export function create(options: {
     map: ol.Map;
     url: string;
     layer: string;
+    title?: string;
+    visible?: boolean;
+    basemap?: boolean;
 }) {
 
+    options = defaults(options, DEFAULT_OPTIONS);
     let map = options.map;
 
     return new Promise<{ layer: ol.layer.Tile }>((resolve, reject) => {
 
-        fetch(`${options.url}?service=WMS&version=1.1.0&request=GetCapabilities`).then(response => {
+        fetch(`${options.url}?service=WMS&version=1.1.0&request=GetCapabilities&tile=true`).then(response => {
             if (!response.ok) {
                 reject(response);
                 return;
@@ -313,18 +322,25 @@ export function create(options: {
                     let mapSrs = map.getView().getProjection().getCode();
                     extent = ol.geom.Polygon.fromExtent(extent).transform(bbox.crs || "EPSG:4326", mapSrs).getExtent();
 
+                    // TODO: does not seem to be using owc tile cache until switch to image/jpeg (not transparent!)
+                    // not sure how to get tileset (http://ca0v-pc:8080/geoserver/gwc/service/wms?SERVICE=WMS&VERSION=1.1.1&REQUEST=getcapabilities&TILED=true)
+                    let source = new ol.source.TileWMS({
+                        projection: mapSrs,
+                        url: result.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
+                        params: {
+                            'FORMAT': "image/png",
+                            'LAYERS': layer.Name,
+                            'TILED': true
+                        },
+                        serverType: 'geoserver'
+                    });
+
                     let wmsLayer = new ol.layer.Tile({
-                        title: options.layer,
-                        type: "overlay",
+                        title: options.title || options.layer,
+                        type: options.basemap ? "base" : "overlay",
+                        visible: options.visible,
                         extent: extent,
-                        source: new ol.source.TileWMS({
-                            projection: mapSrs,
-                            url: result.Capability.Request.GetMap.DCPType[0].HTTP.Get.OnlineResource,
-                            params: {
-                                'LAYERS': layer.Name, 'TILED': true
-                            },
-                            serverType: 'geoserver'
-                        })
+                        source: source
                     });
                     resolve({
                         layer: wmsLayer

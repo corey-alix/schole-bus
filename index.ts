@@ -59,6 +59,9 @@ export function run() {
         target: target,
         loadTilesWhileAnimating: true,
         loadTilesWhileInteracting: true,
+        controls: ol.control.defaults({
+            attribution: false
+        }),
         interactions: ol.interaction.defaults().extend([
             new ol.interaction.DragRotateAndZoom({
                 condition: ol.events.condition.altKeyOnly
@@ -98,7 +101,7 @@ export function run() {
     CreateSearch({
         map: map,
         layers: drawLayers,
-        textFieldName: "comment"
+        textFieldName: WFS_INFO.commentField
     });
 
     // info inspector/editor
@@ -112,7 +115,7 @@ export function run() {
 
             let visible = {
                 [WFS_INFO.keyField]: false,
-                gid: false,
+                fid: false,
                 "page-index": false
             };
 

@@ -36,7 +36,7 @@ export function create(options: {
         params: {
             featureNS: 'http://www.opengeospatial.net/cite',
             featurePrefix: 'cite',
-            featureTypes: ['uslines', 'uspoints'],
+            featureTypes: ['lines'],
             searchNames: 'name'.split(','),
             propertyNames: ['name', 'highway', 'geom']
         }
