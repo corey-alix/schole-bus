@@ -42,7 +42,7 @@
 | Preguntas formales    | Formal Questions    |
 | --------------------- | ------------------- |
 | ¿Cómo está usted?     | How are you?        |
-| ¿Cómo se llama usted? | Waht is your name?  |
+| ¿Cómo se llama usted? | What is your name?  |
 | ¿De dónde es usted?   | Where are you from? |
 | ¿Y usted?             | And you?            |
 
