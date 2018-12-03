@@ -29,7 +29,7 @@
 | Hasta pronto  | See you soon     |
 | Nos vemos     | See you later    |
 
-#Titulos
+## Titulos
 
 | Titulos  | Titles         |
 | -------- | -------------- |
@@ -37,7 +37,7 @@
 | señora   | miss or misses |
 | señorita | Miss           |
 
-#Preguntas formales
+## Preguntas formales
 
 | Preguntas formales    | Formal Questions    |
 | --------------------- | ------------------- |
