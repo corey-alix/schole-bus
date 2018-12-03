@@ -8,7 +8,7 @@
 | 5   | cinco         | 90   | noventa   |
 | 6   | seis          | 100  | cien      |
 | 7   | siete         | 1000 | mil       |
-| 8   | ocho          | 1▲6  | millones  |
+| 8   | ocho          | 10▲6  | millones  |
 | 9   | nueve         |      |           |
 | 10  | diez          |      |           |
 | 11  | once          |      |           |
