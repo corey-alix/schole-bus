@@ -1,0 +1,20 @@
+<html>
+
+<head>
+    <script>
+        var module = window.module = {};
+    </script>
+    <link rel="stylesheet" type="text/css" href="index.css"/>
+</head>
+
+<body>
+    <div id="workarea" class="inline">
+    </div>
+    <script src="./index.js"></script>
+    <script>
+        var workarea = document.getElementById("workarea");
+        workarea.appendChild(module.exports);
+    </script>
+</body>
+
+</html>

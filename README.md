@@ -11,14 +11,20 @@ sequenceDiagram
   you ->> trail:traverse
 ```
 
-Features including
+Features include
 * Extracting road and trail segments from Open Street Map
 * Routing between waypoints
 * Integration with Point of Interest and Geolocating services
 
 Let the adventure begin!
-
 * [Application Design Overview](./app/docs/overview.md)
 * [Server Setup](./app/docs/overview.md)
 * [Database Setup](./app/docs/setup.md)
 * [Routing Setup](todo)
+
+Todo Items
+* Document routing
+* Ability to add custom attributes
+* Ability to style based on attribute values
+* Ability to style an individual feature
+* Ability to import from a geojson endpoint (CORS issues require proxy)

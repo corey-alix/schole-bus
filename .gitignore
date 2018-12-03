@@ -2,4 +2,5 @@
 built
 *.log
 bower_components
+node_modules
 typings

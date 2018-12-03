@@ -1,24 +1,26 @@
 {
   "name": "schole-bus",
-  "version": "0.0.1",
-  "description": "Scholé Bus",
-  "main": "index.ts",
+  "version": "1.0.0",
+  "description": "Scholé Bus is a POI map-centric application geared toward Road-Trippin' Home Educators",
+  "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/corey-alix/schole-bus.git"
   },
-  "keywords": [
-    "education",
-    "travel",
-    "openlayers"
-  ],
-  "author": "coreyalix@hotmail.com",
-  "license": "MIT",
+  "author": "",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/corey-alix/schole-bus/issues"
   },
   "homepage": "https://github.com/corey-alix/schole-bus#readme",
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  },
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
