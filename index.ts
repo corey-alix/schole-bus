@@ -10,7 +10,7 @@ import { computeDistances, formatLength } from "./app/fun";
 
 import { WFS_INFO } from "./app/wfs-info";
 
-import { GreenvilleSc } from "./app/poi/usa";
+import { GreenvilleSc } from "./app/tests/data/usa";
 
 cssin("schole-bus", `
 html, body, .schole-bus {
