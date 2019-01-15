@@ -90,16 +90,16 @@
 
 ## H
 
-| es       | en       |
-| -------- | -------- |
-| jefe     | boss     |
+| es       | en       | ejemplo           |
+| -------- | -------- | ----------------- |
+| jefe     | boss     | Jesús es tu jefe  |
 | jalepeño | jalepeño |
 | Jesús    | Jesús    |
-| pijama   | pijama   |
-| jamón    | ham      |
-| juego    | game     |
-| jugó     | juice    |
-| abajo    | down     |
+| pijama   | pijama   | pijamas en el dia |
+| jamón    | ham      | jamón y huevos    |
+| juego    | game     | juego de niños    |
+| jugó     | juice    | jugo de piña      |
+| abajo    | down     | no mires abejo    |
 | hijos    | children |
 | Juan     | Juan     |
 | juntos   | together |
@@ -107,29 +107,28 @@
 
 ## H
 
-| es      | en     |
-| ------- | ------ |
-| gente   | people |
-| genial  | cool   |
-| gigante | giant  |
+| es      | en     | ejemplo            |
+| ------- | ------ | ------------------ |
+| gente   | people | gente feliz        |
+| genial  | great  | genial historias   |
+| gigante | giant  | había gigantes     |
 | Jorge   | Jorge  |
-| página  | page   |
-|         |        |
+| página  | page   | página tras página |
 
 ## silencio
 
-| es       | en       |
-| -------- | -------- |
-| hermano  | brother  |
-| hielo    | ics      |
-| honra    | honor    |
-| hambre   | hunger   |
-| hasta    | until    |
-| haces    | you do   |
-| hablar   | talk     |
-| ahora    | now      |
-| hora     | hour     |
-| horrible | horrible |
+| es       | en       | ejemplo              |
+| -------- | -------- | -------------------- |
+| hermano  | brother  | mis hermanos         |
+| hielo    | ice      | quedarse de hielo    |
+| honra    | honor    | honra a tu padre     |
+| hambre   | hunger   | hambre de trabajo    |
+| hasta    | until    | hasta ahora          |
+| haces    | you do   | ¿qué haces?          |
+| hablar   | talk     | habla comigo         |
+| ahora    | now      | háblame ahora        |
+| hora     | hour     | veinticuatro horas   |
+| horrible | horrible | horrible experiencia |
 
 ## perrrr
 
@@ -145,15 +144,15 @@
 
 ## sss
 
-| es       | en        |
-| -------- | --------- |
-| cinco    | five      |
-| gracias  | thank you |
-| entonces | so        |
-| decir    | tell      |
-| dices    | dices?    |
-| hacer    | do        |
-| cero     | zero      |
+| es       | en        | ejemplo                             |
+| -------- | --------- | ----------------------------------- |
+| cinco    | five      | cinco de Mayo                       |
+| gracias  | thank you | gracias a Dios                      |
+| entonces | then      | hasta entonces                      |
+| decir    | tell      | decir que no                        |
+| dices    | say       | la hente dice...                    |
+| hacer    | do        | todos lo hacemos                    |
+| cero     | zero      | cualquier número cero veces es cero |
 
 ## K
 

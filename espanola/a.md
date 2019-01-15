@@ -6,6 +6,8 @@ ah, beh, seh, deh, eh, ef-eh, heh, ah-che, ee, hotah (j), kah, el-eh, em-eh, en-
 
 | ch  | Alt    |
 | --- | ------ |
+| ¡   | + 0161 |
+| ¿   | + 0191 |
 | á   | + 0225 |
 | é   | + 0233 |
 | í   | + 0237 |
@@ -14,5 +16,3 @@ ah, beh, seh, deh, eh, ef-eh, heh, ah-che, ee, hotah (j), kah, el-eh, em-eh, en-
 | ú   | + 0250 |
 | ü   | + 0252 |
 | ý   | + 0253 |
-| ¡   | + 0161 |
-| ¿   | + 0191 |
