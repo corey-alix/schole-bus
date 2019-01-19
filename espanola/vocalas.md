@@ -2,52 +2,52 @@
 
 ## ah
 
-| es   | en     |
-| ---- | ------ |
-| casa | home   |
-| para | for    |
-| ama  | madame |
-| anda | walk   |
-| alba | dawn   |
-| mamá | mom    |
+| es   | en     | ejemplo                       |
+| ---- | ------ | ----------------------------- |
+| casa | home   | Yo soy casa                   |
+| para | for    | para me casa                  |
+| ama  | madame | ama de la casa                |
+| anda | walk   | (?) caminar a casa            |
+| alba | dawn   | (?) caminar hasta el amanecer |
+| mamá | mom    | mamàs casa                    |
 
 ## eh
 
-| es    | en      |
-| ----- | ------- |
-| bebé  | baby    |
-| ser   | be      |
-| en    | in      |
-| el    | the     |
-| es    | is      |
-| de    | of      |
-| este  | this    |
-| eres  | you are |
-| mente | mind    |
-| gente | people  |
+| es    | en      | ejemplo                 |
+| ----- | ------- | ----------------------- |
+| bebé  | baby    | eres una bebé           |
+| ser   | be      | el es un bebe (?)       |
+| en    | in      | en su casa              |
+| el    | the     | el chico/niño           |
+| es    | is      | la casa es amarilla     |
+| de    | of      | la casa de los bebés    |
+| este  | this    | este carro es para mamà |
+| eres  | you are | eres una mamà           |
+| mente | mind    | mente de una niña       |
+| gente | people  | gente amarilla          |
 
 ## ee
 
-| es           | en          |
-| ------------ | ----------- |
-| importante   | important   |
-| impresionate | impress     |
-| imperio      | empire      |
-| impulso      | impulse     |
-| innumerable  | innumerable |
-| incluir      | include     |
+| es          | en          | ejemplo                              |
+| ----------- | ----------- | ------------------------------------ |
+| importante  | important   | bebé importante                      |
+| impresionar | impress     | impresionar+la/lo/los (her/him/them) |
+| imperio     | empire      | imperio eterno                       |
+| impulso     | impulse     | impulso pecaminoso                   |
+| innumerable | innumerable | innumerables niños                   |
+| incluir     | include     | ¿Tu paseo me incluirà?               |
 
 ## oh
 
-| es   | en         |
-| ---- | ---------- |
-| por  | by         |
-| con  | with       |
-| como | as         |
-| nos  | us         |
-| todo | all        |
-| poco | little bit |
-| tomo | I take     |
+| es   | en         | ejemplo              |
+| ---- | ---------- | -------------------- |
+| por  | by         | por favor            |
+| con  | with       | vete con alagria     |
+| como | as         | como dice el diho    |
+| nos  | us         | nos amamos           |
+| todo | all        | todo bebé es impulso |
+| poco | little bit | un poco mãs que yo   |
+| tomo | I take     |                      |
 
 ## oo
 
