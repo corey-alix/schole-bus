@@ -19,3 +19,5 @@
 | ella estaba feliz    | she was happy     |
 | viver plenamente     | live fully        |
 | vivir y dar vivir    | live and let live |
+| mi vida              | my life           |
+| tengo vida           | I've life         |

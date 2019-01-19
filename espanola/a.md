@@ -1,6 +1,6 @@
 ## Alphabet (27)
 
-ah, beh, seh, deh, eh, ef-eh, heh, ah-che, ee, hotah (j), kah, el-eh, em-eh, en-eh, en-yeh (ñ) oh, peh, coo, air-eh, es-eh, teh, oo, veh, doh-bleh-veh, eh-keys (x), jeh, seh-tah
+ah, beh, seh, deh, eh, ef-eh, heh, ah-che, ee, hotah (j), kah, el-eh, em-eh, en-eh, en-yeh (ñ), oh, peh, coo, air-eh, es-eh, teh, oo, veh, doh-bleh-veh, eh-keys (x), jeh, seh-tah
 
 ## Alt Codes
 
