@@ -3,12 +3,13 @@
 | Saludo               | Greetings            |
 | -------------------- | -------------------- |
 | Hola                 | Hello                |
-| Buenos dias          | Good morning         |
-| Buenas tardes        | Good afternoon       |
-| Buenas noches        | Good evening         |
 | ¿Cómo va?            | How's it going?      |
 | ¿Cómo estàs?         | How are you?         |
 | ¿Qué tal?            | How are you?         |
+| Buen día             | Good morning         |
+| Buenos días          | Good morning         |
+| Buenas tardes        | Good afternoon       |
+| Buenas noches        | Good evening         |
 | Muy bien, gracias    | Very well, thanks    |
 | Bien gracias, ¿y tú? | fine thanks and you? |
 | ¡Excelente!          | Excellent!           |

@@ -51,42 +51,42 @@
 
 ## oo
 
-| es    | en    |
-| ----- | ----- |
-| un    | one   |
-| su    | its   |
-| mucho | much  |
-| mundo | world |
-| uno   | one   |
-| usa   | uses  |
-| punto | point |
+| es    | en    | ejemplo                      |
+| ----- | ----- | ---------------------------- |
+| una   | one   | De una manera u otra         |
+| uno   | one   | una fuente es suficiente     |
+| su    | its   | es agradable                 |
+| mucho | much  | mucho bien                   |
+| mundo | world | Copa Mundial                 |
+| usa   | uses  | Èl usa sus notas             |
+| punto | point | Dos puntos definen una linea |
 
 ## Y
 
-| es         | en         |
-| ---------- | ---------- |
-| tortilla   | tortilla   |
-| silla      | chair      |
-| llamó      | name       |
-| quesadilla | quesadilla |
-| castillo   | castle     |
-| amarillo   | yellow     |
-| llenar     | fill in    |
+| es          | en         | ejemplo                                           |
+| ----------- | ---------- | ------------------------------------------------- |
+| la tortilla | tortilla   | No comas tu tortilla...                           |
+| la silla    | chair      | ...en esa silla                                   |
+| llamó       | name       | Yo lo llamo persistencia                          |
+| quesadilla  | quesadilla | Cómo se hace una quesadilla?                      |
+| castillo    | castle     | Dónde està el castillo?                           |
+| amarillo    | yellow     | Quión pintó el castillo de amarillo?!             |
+| llenar      | fill in    | ¿No vas a llenar la tina antes de lavar el perro? |
 
 ## onion
 
-| es      | en         |
-| ------- | ---------- |
-| años    | years      |
-| enseñar | teacher    |
-| leñador | woodcutter |
-| español | spanish    |
-| baño    | bathroom   |
-| niño    | boy        |
-| niña    | girl       |
-| mañana  | morning    |
-| señor   | sir/mr.    |
-| señora  | mrs.       |
+| es        | en         | ejemplo |
+| --------- | ---------- | ------- |
+| años      | years      |
+| enseñar   | teacher    |
+| leñador   | woodcutter |
+| español   | spanish    |
+| baño      | bathroom   |
+| niño      | boy        |
+| la niña   | girl       |
+| la mañana | morning    |
+| señor     | sir/mr.    |
+| la señora | mrs.       |
 
 ## H
 
@@ -132,15 +132,15 @@
 
 ## perrrr
 
-| es        | en        |
-| --------- | --------- |
-| por favor | please    |
-| pero      | but       |
-| perro     | dog       |
-| caro      | expensive |
-| carro     | car       |
-| gracias   | thank you |
-| tarde     | late      |
+| es        | en        | ejemplo                                        |
+| --------- | --------- | ---------------------------------------------- |
+| por favor | please    | Puedo tener algo para el perro, por favor?     |
+| pero      | but       | Sí, pero es caro.                              |
+| perro     | dog       | Mi perro te lo agradecerá.                     |
+| caro      | expensive | Es demasiado caro para mi.                     |
+| carro     | car       | Un coche esta un carro y un carro es un coche. |
+| gracias   | thank you | Gracias por tu hospitalidad.                   |
+| tarde     | late      | Hasta luego cocodrilo.                         |
 
 ## sss
 
@@ -156,23 +156,23 @@
 
 ## K
 
-| es      | en        |
-| ------- | --------- |
-| cinco   | five      |
-| caro    | expensive |
-| coco    | coconut   |
-| cañar   | cane      |
-| calor   | hot       |
-| curioso | curios    |
-| cruces  | crosses   |
+| es      | en        | ejemplo                              |
+| ------- | --------- | ------------------------------------ |
+| cinco   | five      | cinco de la mañana.                  |
+| caro    | expensive | perfume caro                         |
+| coco    | coconut   | manteca de coco                      |
+| cañar   | cane      | caña de azucar                       |
+| calor   | hot       | el jarabe es azúcar de caña caliente |
+| curioso | curios    | Curiosidad desesperada               |
+| cruces  | crosses   | cruces glorifican a dios             |
 
 ## S
 
-| es       | en       |
-| -------- | -------- |
-| zapota   | zapota   |
-| corazón  | heart    |
-| nariz    | nose     |
-| abrazo   | hug      |
-| Gonzales | Gonzales |
-| cruz     | cross    |
+| es       | en       | ejemplo                           |
+| -------- | -------- | --------------------------------- |
+| zapota   | zapota   | ¿que es zapota?                   |
+| corazón  | heart    | examina tu corazón                |
+| nariz    | nose     | mi nariz feliz                    |
+| abrazo   | hug      | abrazar al cocinero               |
+| Gonzales | Gonzales | La cocinera es la señora Gonzales |
+| cruz     | cross    | Èl lleva tu cruz                  |
