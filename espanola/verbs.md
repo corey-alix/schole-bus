@@ -13,12 +13,12 @@
 
 ## verbos
 
-| es(en)       | yo   | tú     | él   | usted | nosotros | vosotros | ellos  | ustedes |
-| ------------ | ---- | ------ | ---- | ----- | -------- | -------- | ------ | ------- |
-| ser(be)      | soy  | eres   | es   | es    | somos    | sois     | son    | son     |
-| ◄ pretérito  | fui  | fuiste | fue  | fue   | fuimos   | fuisteis | fueron | fueron  |
-| ◄ imperfecto | era  | eras   | era  | era   | éramos   | erais    | eran   | eran    |
-| ► futuro     | seré | serás  | será | será  | seremos  | seréis   | serán  | serán   |
+| es(en)       | yo   | tú     | él y usted | nosotros | vosotros | ellos y ustedes |
+| ------------ | ---- | ------ | ---------- | -------- | -------- | --------------- |
+| ser(be)      | soy  | eres   | es         | somos    | sois     | son             |
+| ◄ pretérito  | fui  | fuiste | fue        | fuimos   | fuisteis | fueron          |
+| ◄ imperfecto | era  | eras   | era        | éramos   | erais    | eran            |
+| ► futuro     | seré | serás  | será       | seremos  | seréis   | serán           |
 
 | es(en)        | yo        | tú         | él        |
 | ------------- | --------- | ---------- | --------- |
@@ -32,6 +32,23 @@
 | Subjuntivo    | esté      | estés      | esté      |
 | ◄ imperfecto  | estuviera | estuvieras | estuviera |
 | ►             | estuviere | estuvieres | estuviere |
+
+## Ser y Estar
+
+A few adjectives have different meanings depending upon which form of "to Be" you use. Generally, if you use Ser, the adjective is a characteristic of the person or thing you are describing; whereas if you use Estar, it is a description of a mood or appearance.
+
+| ser           | estar                       | en                        |
+| ------------- | --------------------------- | ------------------------- |
+|               | estamos bien                | We are fine               |
+|               | Yo estoy feliz              | I am happy                |
+|               | estoy escribiendo           | I am writing              |
+|               | estamos caminando           | we are walking            |
+|               | Estoy en la iglesia         | I am at church            |
+|               | Todavía están en el trabajo | still they are in the job |
+| Soy amada     |                             | I am loved                |
+| Soy lento     |                             | A am slow                 |
+| Soy Americano |                             | I am American             |
+| Es mediodía   |                             | It's noon                 |
 
 | es(en)                  | yo     | tú      | él     |
 | ----------------------- | ------ | ------- | ------ |
