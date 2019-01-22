@@ -14,6 +14,5 @@ ah, beh, seh, deh, eh, ef-eh, heh, ah-che, ee, hotah (j), kah, el-eh, em-eh, en-
 | ñ   | + 0241 |
 | ó   | + 0243 |
 | ú   | + 0250 |
-| ü   | + 0252 |
 | ý   | + 0253 |
 | È   | 0200   |

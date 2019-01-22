@@ -1,6 +1,8 @@
 ## Génesis 1:1-3 (La Biblia de las Américas)
 
-En el principio créo Dios las cielos y la tierra. Y la tierra estaba disordinada y vacia. Y las tiniablas estaben sobre la faz del bizmo. Y el Espiritu de Dios se movía sobre la faz de las aguas. Y dijo Dios: Sea la luz. Y Fue la luz.
+1. En el principio creó Dios los cielos y la tierra.
+2. Y la tierra estaba desordenada y vacía, y las tinieblas estaban sobre la faz del abismo, y el Espíritu de Dios se movía sobre la faz de las aguas.
+3. Y dijo Dios: Sea la luz; y fue la luz.
 
 | es                   | en                      |
 | -------------------- | ----------------------- |
@@ -22,6 +24,9 @@ En el principio créo Dios las cielos y la tierra. Y la tierra estaba disordinad
 | Sea la luz;          | Be the light;           |
 | y fue la luz.        | and it was light.       |
 
+4. Y vio Dios que la luz era buena; y separó Dios la luz de las tinieblas.
+5. Y llamó Dios a la luz Día, y a las tinieblas llamó Noche. Y fue la tarde y la mañana un día.
+
 | es                | en                |
 | ----------------- | ----------------- |
 | Y vio Dios        | and God saw       |
@@ -37,6 +42,9 @@ En el principio créo Dios las cielos y la tierra. Y la tierra estaba disordinad
 | Y fue ella tarde  | And it afternoon  |
 | Y la mañana       | and morning       |
 | un dia.           | one day.          |
+
+6. Luego dijo Dios: Haya expansión en medio de las aguas, y separe las aguas de las aguas.
+7. E hizo Dios la expansión, y separó las aguas que estaban debajo de la expansión, de las aguas que estaban sobre la expansión. Y fue así.
 
 | es                 | en                        |
 | ------------------ | ------------------------- |
@@ -58,33 +66,55 @@ En el principio créo Dios las cielos y la tierra. Y la tierra estaba disordinad
 | las expansion      | the expansion             |
 | Y fue ací.         | It was so.                |
 
-| es              | en                   |
-| --------------- | -------------------- |
-| Y llamó Dios    | And God called       |
-| a la expansión  | the expansion        |
-| Cielos.         | Heavens.             |
-| Y fue la tarde  | And it was afternoon |
-| Y la mañana     | and day              |
-| el día segundo. | The second day.      |
+8. Y llamó Dios a la expansión Cielos. Y fue la tarde y la mañana el día segundo.
+
+| es              | en                 |
+| --------------- | ------------------ |
+| Y llamó Dios    | And God called     |
+| a la expansión  | the expansion      |
+| Cielos.         | Heavens.           |
+| Y fue la tarde  | And it was evening |
+| Y la mañana     | and morning        |
+| el día segundo. | The second day.    |
+
+9. Dijo también Dios: Júntense las aguas que están debajo de los cielos en un lugar, y descúbrase lo seco. Y fue así.
 
 | es                 | en                |
 | ------------------ | ----------------- |
 | Dijo también Dios  | God also said     |
 | Júntense las aguas | Gather the waters |
 | que estàn debajo   | that are below    |
-| !!!de los cielos   | the heavens       |
+| de los cielos      | the heavens       |
 | en un lugar,       | in one place,     |
+| y descubrase       | and discovered    |
+| los seco           | the dry           |
+| Y fue así.         | and it was so.    |
 
-| es             | en                   |
-| -------------- | -------------------- |
-| y descubrase   | and discovered       |
-| los seco       | the dry              |
-| Y fue así      | and it was like that |
-| Y llamo Dios   | And God called       |
-| a lo seco      | the dry              |
-| tierra,        | earth                |
-| y a la reunión | and the meeting      |
-| de las aguas   | of the waters        |
-| llamó Mares.   | He called Sea.       |
-| Y vio Dios     | And God saw          |
-| que era bueno. | it was good.         |
+10. Y llamó Dios a lo seco Tierra, y a la reunión de las aguas llamó Mares. Y vio Dios que era bueno.
+
+| es             | en              |
+| -------------- | --------------- |
+| Y llamo Dios   | And God called  |
+| a lo seco      | the dry         |
+| tierra,        | earth           |
+| y a la reunión | and the meeting |
+| de las aguas   | of the waters   |
+| llamó Mares.   | He called Sea.  |
+| Y vio Dios     | And God saw     |
+| que era bueno. | it was good.    |
+
+11. Después dijo Dios: Produzca la tierra hierba verde, hierba que dé semilla; árbol de fruto que dé fruto según su género, que su semilla esté en él, sobre la tierra. Y fue así.
+
+| es                     | en                       |
+| ---------------------- | ------------------------ |
+| Después dijo Dios      | Then God said            |
+| Produzca la tierra     | Produce from the earth   |
+| hierba verde,          | green grass              |
+| hierba que dé semilla; | grass that give seed;    |
+| àrbol de fruto         | fruit trees              |
+| que dé fruto           | that bear fruit          |
+| según su género,       | according to your gender |
+| que su semilla         | that his seed            |
+| esté en él,            | be in it                 |
+| sobra la tierra.       | over the earth.          |
+| Y fue así.             | It was so.               |
