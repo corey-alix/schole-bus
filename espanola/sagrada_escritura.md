@@ -59,7 +59,7 @@
 | las expansión,     | the expansion             |
 | y separó las aquas | and he divided the waters |
 | que estaben        | that were                 |
-| debejo             | below                     |
+| debajo             | below                     |
 | de las expansion   | the expansion             |
 | de las aguas       | from the water            |
 | que estaben sobre  | was over                  |
@@ -105,16 +105,16 @@
 
 11. Después dijo Dios: Produzca la tierra hierba verde, hierba que dé semilla; árbol de fruto que dé fruto según su género, que su semilla esté en él, sobre la tierra. Y fue así.
 
-| es                     | en                       |
-| ---------------------- | ------------------------ |
-| Después dijo Dios      | Then God said            |
-| Produzca la tierra     | Produce from the earth   |
-| hierba verde,          | green grass              |
-| hierba que dé semilla; | grass that give seed;    |
-| àrbol de fruto         | fruit trees              |
-| que dé fruto           | that bear fruit          |
-| según su género,       | according to your gender |
-| que su semilla         | that his seed            |
-| esté en él,            | be in it                 |
-| sobra la tierra.       | over the earth.          |
-| Y fue así.             | It was so.               |
+| es                     | en                            |
+| ---------------------- | ----------------------------- |
+| Después dijo Dios:     | Then God said                 |
+| Produzca la tierra     | Produce from the earth        |
+| hierba verde,          | green grass (vuh-bear-duh-ay) |
+| hierba que dé semilla; | grass that give seed;         |
+| àrbol de fruto         | fruit trees                   |
+| que dé fruto           | that bear fruit               |
+| según su género,       | according to your gender      |
+| que su semilla         | that his seed                 |
+| esté en él,            | be in it                      |
+| sobra la tierra.       | over the earth.               |
+| Y fue así.             | It was so.                    |
