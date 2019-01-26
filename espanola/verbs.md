@@ -11,14 +11,29 @@
 | ellos/ellas      | they are                              |
 | ustedes          | formal you all                        |
 
+## practico
+
+| es         | en          | ex                                        |
+| ---------- | ----------- | ----------------------------------------- |
+| desordenar | to mess up  | a habitación está desordenada             |
+| mover      | to move     | el viento movía sus cabello               |
+| separar    | to separate | Una rama se separó del árbol              |
+| llamar     | to call     | Llamó a la puerta de la cancela.          |
+| haber      | to have     | hay quien dice…                           |
+| decir      | to say      | Mamá dijo que nos teníamos que acostar.   |
+| estar      | to be       | para eso están los amigos                 |
+| producir   | to produce  | a no ser que se produzca un cambio        |
+| dar        | to give     | hay un relato que dé sentido a todo esto. |
+| generar    | to generate | He organizado los libros por género.      |
+
 ## verbos
 
-| es(en)       | yo   | tú     | él y usted | nosotros | vosotros | ellos y ustedes |
-| ------------ | ---- | ------ | ---------- | -------- | -------- | --------------- |
-| ser(be)      | soy  | eres   | es         | somos    | sois     | son             |
-| ◄ pretérito  | fui  | fuiste | fue        | fuimos   | fuisteis | fueron          |
-| ◄ imperfecto | era  | eras   | era        | éramos   | erais    | eran            |
-| ► futuro     | seré | serás  | será       | seremos  | seréis   | serán           |
+| es(en)       | yo   | tú     | él/usted | nosotros | vosotros | ellos/ustedes |
+| ------------ | ---- | ------ | -------- | -------- | -------- | ------------- |
+| ser(be)      | soy  | eres   | es       | somos    | sois     | son           |
+| ◄ pretérito  | fui  | fuiste | fue      | fuimos   | fuisteis | fueron        |
+| ◄ imperfecto | era  | eras   | era      | éramos   | erais    | eran          |
+| ► futuro     | seré | serás  | será     | seremos  | seréis   | serán         |
 
 | es(en)        | yo        | tú         | él        |
 | ------------- | --------- | ---------- | --------- |
