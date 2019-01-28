@@ -13,18 +13,38 @@
 
 ## practico
 
-| es         | en          | ex                                        |
-| ---------- | ----------- | ----------------------------------------- |
-| desordenar | to mess up  | a habitación está desordenada             |
-| mover      | to move     | el viento movía sus cabello               |
-| separar    | to separate | Una rama se separó del árbol              |
-| llamar     | to call     | Llamó a la puerta de la cancela.          |
-| haber      | to have     | hay quien dice…                           |
-| decir      | to say      | Mamá dijo que nos teníamos que acostar.   |
-| estar      | to be       | para eso están los amigos                 |
-| producir   | to produce  | a no ser que se produzca un cambio        |
-| dar        | to give     | hay un relato que dé sentido a todo esto. |
-| generar    | to generate | He organizado los libros por género.      |
+| es         | en          | ex                                            |
+| ---------- | ----------- | --------------------------------------------- |
+| dar        | to give     | hay un relato que **dé** sentido a todo esto. |
+| decir      | to say      | Mamá **dijo** que nos teníamos que acostar.   |
+| desordenar | to mess up  | a habitación está **desordenada**             |
+| estar      | to be       | para **eso** están los amigos                 |
+| generar    | to generate | He organizado los libros por **género**.      |
+| haber      | to have     | **hay** quien dice…                           |
+| llamar     | to call     | **Llamó** a la puerta de la cancela.          |
+| mover      | to move     | el viento **movía** sus cabello               |
+| producir   | to produce  | a no ser que se **produzca** un cambio        |
+| separar    | to separate | Una rama se **separó** del árbol              |
+| cantar     | to sing     | Me encanta **cantar** en la ducha             |
+| comer      | to eat      | vas a **comer** conmigo?                      |
+| vivir      | to live     |                                               |
+| ir         | to go       |                                               |
+| ver        | to see      |                                               |
+|            |             |                                               |
+|            |             |                                               |
+
+## transformadas sintácticas
+
+| es              | en                     | ex                                    |
+| --------------- | ---------------------- | ------------------------------------- |
+| vas a ...       | you are going to ...   | **cantar** mañana. (tomorrow)         |
+| ¿vas a ...?     | are you going to ... ? | **comer** conmigo? (con yo (with me)) |
+| quiero ...      | I want to ...          | **llamar** mi esposa. (wife)          |
+| necisito ...    | I need to ...          | **ir** al baño.                       |
+| ¿puedo ...?     | can I ... ?            | **ir** también? (also)                |
+| me gustaría ... | I would like to ...    | **jugar** con todos ustedes.          |
+| vamos a ...     | Let's ...              | **ver** la película. (movie)          |
+|                 |                        |                                       |
 
 ## verbos
 
@@ -50,7 +70,7 @@
 
 ## Ser y Estar
 
-A few adjectives have different meanings depending upon which form of "to Be" you use. Generally, if you use Ser, the adjective is a characteristic of the person or thing you are describing; whereas if you use Estar, it is a description of a mood or appearance.
+A few adjectives have different meanings depending upon which form of "to Be" you use. Generally, if you use **Ser**, the adjective is a characteristic of the person or thing you are describing; whereas if you use **Estar**, it is a description of a mood or appearance.
 
 | ser           | estar                       | en                        |
 | ------------- | --------------------------- | ------------------------- |
