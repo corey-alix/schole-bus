@@ -14,3 +14,5 @@
 | ràpido         | lento        | fast/slow    |
 | seco           | mojado       | dry/wet      |
 | vivo           | muerto       | live/die     |
+
+[print](https://gitprint.com/corey-alix/schole-bus/blob/2019/espanola/opuestos.md)
