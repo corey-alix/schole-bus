@@ -1,0 +1,39 @@
+{
+  "name": "schole-bus",
+  "description": "Scholé Bus",
+  "main": "index.ts",
+  "authors": [
+    "coreyalix@hotmail.com"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "education",
+    "travel",
+    "openlayers"
+  ],
+  "homepage": "https://github.com/corey-alix/schole-bus",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ol3-popup": "git://github.com/ca0v/ol3-popup.git#v4.0.1",
+    "ol3-layerswitcher": "git://github.com/ca0v/ol3-layerswitcher#v4.0.1",
+    "ol3-symbolizer": "git://github.com/ca0v/ol3-symbolizer.git#v4.0.1",
+    "ol3-panzoom": "git://github.com/ca0v/ol3-panzoom.git#v3.20.1",
+    "ol3-input": "git://github.com/ca0v/ol3-input.git#v4.0.1",
+    "ol3-grid": "git://github.com/ca0v/ol3-grid.git#v4.0.1",
+    "ol3-fun": "git://github.com/ca0v/ol3-fun.git#v4.0.1",
+    "ol3-draw": "git://github.com/ca0v/ol3-draw.git#v4.0.1",
+    "ol3-search": "git://github.com/ca0v/ol3-search.git#v4.0.1",
+    "ol3-mapquest": "git://github.com/ca0v/ol3-mapquest.git#v4.0.1"
+  },
+  "devDependencies": {
+    "requirejs": "^2.3.2",
+    "jquery": "^3.1.1",
+    "openlayers": "https://github.com/openlayers/openlayers/releases/download/v4.0.1/v4.0.1-dist.zip"
+  }
+}

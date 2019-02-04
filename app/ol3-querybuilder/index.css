@@ -1,0 +1,51 @@
+body {
+    background: rgb(40,40,40);
+    color: rgb(0,255,51);
+    font-size: 12pt;
+    font-family: Courier New, Courier, monospace;    
+}
+
+#workarea {
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px;
+    display: inline-block;
+    border: 1px solid rgb(0,255,51);
+}
+
+operation,
+operator,
+operand {}
+
+operation {}
+
+operation[ops='2'].nested {
+    display: block;
+    margin-left: 10px;
+}
+
+operation[ops='2'].inline {
+    border-color: rgb(0,255,51);
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+operator {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+operand {
+    cursor: pointer;
+}
+
+operator:hover {
+    text-decoration: underline;    
+}
+
+value:hover {
+    text-decoration: underline;    
+}
+

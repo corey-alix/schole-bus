@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "target": "es2015",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "allowJs": false,
+        "outFile": "built/index.js",
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "baseUrl": "./bower_components"
+    },
+    "include": [
+        "index.ts",
+        "app",
+        "typings/index.d.ts"
+    ]
+}

@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Scholé Bus</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style>
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.0.1/ol.css');
+        html, body, .map {
+            background-color: black;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script>
+</head>
+
+<body>
+    <script>
+        (() => {
+            window.module = window.module || {};
+
+            function getParameterByName(name, url = window.location.href) {
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+
+            let debug = getParameterByName("debug") === "1";
+            let localhost = window.location.hostname === "localhost";
+
+            require.config({
+
+                packages: [
+                    {
+                        name: 'openlayers',
+                        location: localhost ? "./bower_components/openlayers" : 'https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.0.1',
+                        main: debug ? 'ol-debug' : 'ol'
+                    },
+                    {
+                        name: 'jquery',
+                        location: localhost ? "./bower_components/jquery/dist" : 'https://cdn.rawgit.com/jquery/jquery-dist/3.1.1/dist',
+                        main: debug ? 'jquery' : 'jquery.min'
+                    }
+                ],
+
+                deps: [
+                    debug ? "built/index" : "built/index"
+                ],
+
+                callback: () => {
+                    window.module = window.module || {};
+                    require([getParameterByName("run") || "index"], test => test.run());
+                }
+            });
+
+        })();
+    </script>
+</body>
+
+</html>
