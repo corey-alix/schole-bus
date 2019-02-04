@@ -1,37 +1,30 @@
-## Welcome to GitHub Pages
+# schole-bus
+Scholé Bus is a POI map-centric application geared toward Road-Trippin' Home Educators
 
-You can use the [editor on GitHub](https://github.com/corey-alix/schole-bus/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Part of the fun is preparing for the trip, and what better way to prepare then to build a website with a backing spatial database before plotting some waypoints!
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```mermaid
+sequenceDiagram
+  you ->> docs:read
+  you ->> server:setup
+  you ->> scholebus:plan routes
+  you ->> trail:traverse
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Features include
+* Extracting road and trail segments from Open Street Map
+* Routing between waypoints
+* Integration with Point of Interest and Geolocating services
 
-### Jekyll Themes
+Let the adventure begin!
+* [Application Design Overview](./app/docs/overview.md)
+* [Server Setup](./app/docs/overview.md)
+* [Database Setup](./app/docs/setup.md)
+* [Routing Setup](todo)
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/corey-alix/schole-bus/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Todo Items
+* Document routing
+* Ability to add custom attributes
+* Ability to style based on attribute values
+* Ability to style an individual feature
+* Ability to import from a geojson endpoint (CORS issues require proxy)
