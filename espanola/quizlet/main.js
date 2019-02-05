@@ -1,37 +1,3 @@
-var keyboardEvent = document.createEvent("KeyboardEvent");
-var initMethod = typeof keyboardEvent.initKeyboardEvent !== "undefined" ? "initKeyboardEvent" : "initKeyEvent";
-
-keyboardEvent[initMethod](
-	"keydown", // event type : keydown, keyup, keypress
-	true, // bubbles
-	true, // cancelable
-	window, // viewArg: should be window
-	false, // ctrlKeyArg
-	false, // altKeyArg
-	false, // shiftKeyArg
-	false, // metaKeyArg
-	40, // keyCodeArg : unsigned long the virtual key code, else 0
-	0 // charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-);
-document.dispatchEvent(keyboardEvent);
-
-/* a better way */
-
-function fireKey(el, key) {
-	if (document.createEventObject) {
-		var eventObj = document.createEventObject();
-		eventObj.keyCode = key;
-		el.fireEvent("onkeydown", eventObj);
-		eventObj.keyCode = key;
-	} else if (document.createEvent) {
-		var eventObj = document.createEvent("Events");
-		eventObj.initEvent("keydown", true, true);
-		eventObj.which = key;
-		eventObj.keyCode = key;
-		el.dispatchEvent(eventObj);
-	}
-}
-
 customElements.define(
 	"qa-input",
 	class extends HTMLElement {
@@ -48,13 +14,19 @@ customElements.define(
 					if (a.toUpperCase() == "E") return true;
 				case "í":
 					if (a.toUpperCase() == "I") return true;
+				case "ñ":
+					if (a.toUpperCase() == "N") return true;
+				case "ú":
+					if (a.toUpperCase() == "U") return true;
 			}
 			return false;
 		}
 
 		constructor() {
 			super();
+		}
 
+		connectedCallback() {
 			const answer = this.getAttribute("answer");
 			const label = document.createElement("label");
 			label.textContent = this.getAttribute("question");
@@ -79,6 +51,7 @@ customElements.define(
 			</style>`;
 			input.onkeypress = ev => {
 				//ev.preventDefault = true;
+				if (input.readOnly) return;
 				let currentKey = ev.key;
 				let currentValue = input.value;
 				let expectedKey = answer[currentValue.length];
@@ -105,3 +78,32 @@ customElements.define(
 		}
 	}
 );
+
+class QaBlock extends HTMLElement {
+	constructor() {
+		super();
+		this.src = this.getAttribute("src");
+		this.load();
+	}
+
+	load() {
+		const shadowRoot = this.attachShadow({ mode: "open" });
+		if (this.src) {
+			require([this.src], data => {
+				let div = document.createElement("div");
+				data.forEach(item => {
+					let qaItem = document.createElement("qa-input", {
+						question: item.q,
+						answer: item.a
+					});
+					qaItem.setAttribute("question", item.q);
+					qaItem.setAttribute("answer", item.a);
+					div.appendChild(qaItem);
+				});
+				shadowRoot.innerHTML = div.innerHTML;
+			});
+		}
+	}
+}
+
+customElements.define("qa-block", QaBlock);
