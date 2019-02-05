@@ -4,63 +4,22 @@
 		<meta charset="utf-8" />
 		<title>Fill in the blank</title>
 		<link rel="stylesheet" href="dark-theme.css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script>
 		<script src="main.js" defer></script>
 		<style>
+			qa-block {
+				display: grid;
+			}
 			qa-input {
 				display: block;
+			}
+			input {
+				font-size: x-large;
 			}
 		</style>
 	</head>
 	<body>
 		<p>Type the answer</p>
-		<qa-input question="The accented letter 'á'" answer="á" hint="alt+0225"></qa-input>
-		<qa-input question="The accented letter 'é'" answer="é" hint="alt+0233"></qa-input>
-		<qa-input question="The accented letter 'í'" answer="í" hint="alt+0237"></qa-input>
-		<qa-input question="The letter 'ñ'" answer="ñ" hint="alt+0241"></qa-input>
-		<qa-input question="walk" answer="caminar"></qa-input>
-		<qa-input question="run" answer="correr"></qa-input>
-		<qa-input question="fast" answer="rápido"></qa-input>
-		<qa-input question="faster" answer="más rápido"></qa-input>
-		<qa-input question="fastest" answer="lo más rápido"></qa-input>
-		<qa-input question="a dog" answer="un perro"></qa-input>
-		<qa-input question="a cat" answer="un gato"></qa-input>
-		<qa-input question="I like dogs" answer="me gustan los perros"></qa-input>
-		<qa-input question="You like cats" answer="te gustan los gatos"></qa-input>
-		<qa-input question="I like you dog" answer="me gustas tu perro"></qa-input>
-		<qa-input question="Your dog likes my cat" answer="tu perro como mi gato"></qa-input>
-		<qa-input question="work" answer="trabajo"></qa-input>
-		<qa-input question="a store" answer="una tienda"></qa-input>
-		<qa-input question="she works in a store" answer="ella trabaja en una tienda"></qa-input>
-		<qa-input question="a store that sells clothes" answer="una tienda que vende ropa"></qa-input>
-		<qa-input question="I must walk please" answer="necesito caminar por favor"></qa-input>
-		<qa-input question="You must walk please" answer="necesitas caminar por favor"></qa-input>
-		<qa-input question="We need to run please" answer="necesitamos correr por favor"></qa-input>
-		<qa-input question="good morning" answer="buenos mañana"></qa-input>
-		<qa-input question="good day" answer="buenos dias"></qa-input>
-		<qa-input question="good afternoon" answer="buenos tardes"></qa-input>
-		<qa-input question="good night" answer="buenos noches"></qa-input>
-		<qa-input question="I would like a bible please" answer="me gustaría una biblia por favor"></qa-input>
-		<qa-input question="I would like to speak spanish" answer="me gustaria hablar español"></qa-input>
-		<qa-input question="We would like to speak spanish" answer="nos gustaria hablar español"></qa-input>
-		<qa-input question="they would like to play soccer" answer="les gustaria jugar futbol"></qa-input>
-		<qa-input question="up and down" answer="arriba y abajo"></qa-input>
-		<qa-input question="ahead or behind" answer="adelante o atrás"></qa-input>
-		<qa-input question="hot or cold" answer="caliente o frío"></qa-input>
-		<qa-input question="die to live" answer="morir para vivir"></qa-input>
-		<qa-input question="I would love to see that" answer="me encantaría ver eso"></qa-input>
-		<qa-input question="He would love to see that" answer="le encantaría ver eso"></qa-input>
-		<qa-input question="She would love to see that" answer="ella encantaría ver eso"></qa-input>
-		<qa-input question="We would love to see that" answer="nos encantaría ver eso"></qa-input>
-		<qa-input question="God would love to see that" answer="Dios amaría ver eso"></qa-input>
-		<qa-input question="a dog is faster than a cat" answer="un perro es mas rapido que un gato"></qa-input>
-		<qa-input question="" answer=""></qa-input>
-		<qa-input question="" answer=""></qa-input>
-		<qa-input question="" answer=""></qa-input>
-		<qa-input question="" answer=""></qa-input>
-		<qa-input question="" answer=""></qa-input>
-		<qa-input question="" answer=""></qa-input>
-		<qa-input question="" answer=""></qa-input>
-		<qa-input question="" answer=""></qa-input>
-		<qa-input question="" answer=""></qa-input>
+		<qa-block src="qa"></qa-block>
 	</body>
 </html>
