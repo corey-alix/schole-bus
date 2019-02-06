@@ -1,3 +1,13 @@
+let score = 100;
+function wrongAnswer() {
+	score--;
+	let elements = document.getElementsByTagName("score-board");
+	for (let i = 0; i < elements.length; i++) {
+		console.log("updating score to ", score);
+		elements[i].setAttribute("score", score);
+	}
+}
+
 customElements.define(
 	"qa-input",
 	class extends HTMLElement {
@@ -36,18 +46,32 @@ customElements.define(
 			input.type = "text";
 			input.maxLength = answer.length;
 			input.innerHTML = `<style>
+			.correct {
+				color: green;
+				border: 1px solid green;
+			}
+			.wrong {
+				border: 1px solid red;
+			}
 			label {
 				padding-right: 10px;
 				display: inline-block;
 				min-width: 240px;
+				max-width: 240px;
+				whitespace:wrap;
 			}
 			input {
+				vertical-align: top;
 				background-color: black;
 				border: none;
 				color: gray;
 				padding-left: 10px;
-				min-width: 240px;
-			}
+				min-height: 64px;
+				max-height: 64px;
+				min-width: 320px;
+				max-width: 320px;
+				height: 48px;
+			}			
 			</style>`;
 			input.onkeypress = ev => {
 				//ev.preventDefault = true;
@@ -57,8 +81,10 @@ customElements.define(
 				let expectedKey = answer[currentValue.length];
 				console.log(currentKey, expectedKey);
 				if (this.matches(currentKey, expectedKey)) {
+					input.classList.remove("wrong");
 					input.value = answer.substring(0, currentValue.length + 1);
 					if (answer.length === currentValue.length + 1) {
+						input.classList.add("correct");
 						input.readOnly = true;
 						let s = this.nextElementSibling;
 						console.log(s);
@@ -67,6 +93,9 @@ customElements.define(
 					}
 					console.log("+");
 					return false;
+				} else {
+					input.classList.add("wrong");
+					wrongAnswer();
 				}
 				console.log("-");
 				return false;
@@ -107,3 +136,20 @@ class QaBlock extends HTMLElement {
 }
 
 customElements.define("qa-block", QaBlock);
+
+class ScoreBoard extends HTMLElement {
+	static get observedAttributes() {
+		return ["score"];
+	}
+
+	connectedCallback() {
+		this.innerHTML = this.getAttribute("score");
+	}
+
+	attributeChangedCallback(name, oldValue, newValue) {
+		console.log("update score");
+		this.innerHTML = this.getAttribute("score");
+	}
+}
+
+customElements.define("score-board", ScoreBoard);

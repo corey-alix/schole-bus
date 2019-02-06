@@ -1,20 +1,20 @@
 const verbs = {
-	llamar: "to call",
-	confiar: "to trust",
-	esperar: "to wait",
-	amar: "to love",
-	quedar: "to stay",
-	comer: "to eat",
-	visitar: "to visit",
-	escuchar: "to hear",
-	caminar: "to walk",
-	limpiar: "to clean",
-	pagar: "to pay",
-	permanecer: "to stay",
-	"llevar {noun}": "to wear {noun}",
-	entrar: "to enter",
-	"nadar {adjective}": "to swim {adjective}",
-	"correr {adjective}": "to run {adjective}"
+	llamar: "call",
+	confiar: "trust",
+	esperar: "wait",
+	amar: "love",
+	quedar: "stay",
+	comer: "eat",
+	visitar: "visit",
+	escuchar: "hear",
+	caminar: "walk",
+	limpiar: "clean",
+	pagar: "pay",
+	permanecer: "stay",
+	"llevar {noun}": "wear {noun}",
+	entrar: "enter",
+	"nadar {adjective}": "swim {adjective}",
+	"correr {adjective}": "run {adjective}"
 };
 
 const nouns = {
@@ -82,6 +82,7 @@ function pluralizeNoun(noun) {
     
     if (startsWith(es, "el ")) es = "los" + es.substring(2);
     else if (startsWith(es, "tú ")) es = "ustedes" + es.substring(2);
+    else if (startsWith(es, "esa ")) es = "esas" + es.substring(3);
     else if (startsWith(es, "usted ")) es = "ustedes" + es.substring(5);
     else if (startsWith(es, "un ")) {
         es = num.es + es.substring(2);
@@ -134,33 +135,36 @@ function shuffle(array) {
 
 const qa = [
 	{ a: "yo necesito", q: "I need" },
-	{ a: "yo necesito {verb}", q: "I need {verb}" },
+	{ a: "yo necesito {verb}", q: "I need to {verb}" },
 	{ a: "yo necesito {noun}", q: "I need {noun}" },
 	{ a: "yo necesito {plural-noun}", q: "I need {plural-noun}" },
-	{ a: "yo necesito {verb} por favor", q: "I need {verb} please" },
+	{ a: "yo necesito {verb} por favor", q: "I need to {verb} please" },
 	{ a: "yo necesito {noun} por favor", q: "I need {noun} please" },
-	{ a: "tú necesitas {verb}", q: "you need {verb}" },
+	{ a: "tú necesitas {verb}", q: "you need to {verb}" },
 	{ a: "tú necesitas {noun}", q: "you need {noun}" },
 	{ a: "nosotros necesitamos {noun}", q: "we need {noun}" },
-	{ a: "nosotros necesitamos {verb}", q: "we need {verb}" },
-	{ a: "me gusta {verb}", q: "I like {verb}" },
+	{ a: "nosotros necesitamos {verb}", q: "we need to {verb}" },
+	{ a: "me gusta {verb}", q: "I like to {verb}" },
 	{ a: "me gusta {noun}", q: "I like {noun}" },
-	{ a: "te gusta {verb}", q: "you like {verb}" },
+	{ a: "te gusta {verb}", q: "you like to {verb}" },
 	{ a: "te gusta {noun}", q: "you like {noun}" },
 	{ a: "me gustan {plural-noun}", q: "I like {plural-noun}" },
-	{ a: "me gustaría {verb}", q: "I would like {verb}" },
+	{ a: "me gustaría {verb}", q: "I would like to {verb}" },
 	{ a: "me gusta {noun}", q: "I would like {noun}" },
+	{ a: "me gustaría {verb} y {noun} {verb}", q: "I would like to {verb} and {noun} to {verb}" },
 	{ a: "me encanta {noun}", q: "I love {noun}" },
 	{ a: "me encantaría {noun}", q: "I would love {noun}" },
 	{ a: "voy a {verb}", q: "I will {verb}" },
-	{ a: "que ero {verb}", q: "I want {verb}" },
-	{ a: "que ero {noun}", q: "I want {noun}" },
+	{ a: "que ero {verb}", q: "I want to {verb}" },
+	{ a: "que ero {noun}", q: "I want to {noun}" },
 	{ a: "me llamo es", q: "my name is" }
 ];
 
 let questions = shuffle(qa).map(item => {
 	let verb = randomVerb();
+	let verb2 = randomVerb();
 	let noun = randomNoun();
+	let noun2 = randomNoun();
 	let num = randomNumber();
 	let pluralNoun = pluralizeNoun(noun);
 	let adjective = randomAdjective();
@@ -168,16 +172,20 @@ let questions = shuffle(qa).map(item => {
 	console.log(verb, noun, adjective, num);
 	let result = {
 		q: item.q
-			.replace("{verb}", verb.en)
-			.replace("{plural-noun}", pluralNoun.en)
-			.replace("{noun}", noun.en)
+		.replace("{verb}", verb.en)
+		.replace("{verb}", verb2.en)
+		.replace("{plural-noun}", pluralNoun.en)
+		.replace("{noun}", noun.en)
+		.replace("{noun}", noun2.en)
 			.replace("{adjective}", adjective.en)
 			.replace("{number}", num.en),
 		a: item.a
-			.replace("{verb}", verb.es)
-			.replace("{plural-noun}", pluralNoun.es)
-			.replace("{noun}", noun.es)
-			.replace("{adjective}", adjective.es)
+		.replace("{verb}", verb.es)
+		.replace("{verb}", verb2.es)
+		.replace("{plural-noun}", pluralNoun.es)
+		.replace("{noun}", noun.es)
+		.replace("{noun}", noun2.es)
+		.replace("{adjective}", adjective.es)
 			.replace("{number}", num.es)
 	};
 	console.log(item, result);
