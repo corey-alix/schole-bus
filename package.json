@@ -5,7 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "ns": "namespace-css ./dist/css/dark-theme.css --selector .soho -o ./dist/css/soho.css",
+    "extract-requirejs": "cp -r ./node_modules/requirejs/require.js ./dist/",
+    "extract-ids-enterprise": "cp -r ./node_modules/ids-enterprise/dist/** ./dist/",
+    "extract": "npm run extract-ids-enterprise && npm run extract-requirejs",
+    "build-espanola": "cd espanola/quizlet && tsc"
   },
   "repository": {
     "type": "git",
@@ -18,8 +23,10 @@
   },
   "homepage": "https://github.com/corey-alix/schole-bus#readme",
   "devDependencies": {
+    "@types/jquery": "^3.3.29",
     "@types/requirejs": "^2.1.31",
     "ids-enterprise": "^4.14.0",
+    "namespace-css": "^0.1.3",
     "nodemon": "^1.18.9",
     "typescript": "^3.3.1"
   },

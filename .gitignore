@@ -5,3 +5,8 @@ node_modules
 typings
 **~
 **.swp
+dist/sass/**
+dist/svg/**
+dist/**/*.min.*
+dist/**/*.map
+dist/js/cultures

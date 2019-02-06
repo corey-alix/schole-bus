@@ -365,11 +365,99 @@ define("qa-block", ["require", "exports", "qa"], function (require, exports, qa_
     }
     exports.QaBlock = QaBlock;
 });
-define("main", ["require", "exports", "score-board", "qa-input", "qa-block"], function (require, exports, score_board_1, qa_input_1, qa_block_1) {
+define("soho-timeline", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    let innerHTML = `<div class="timeline">
+    <div class="timeline-block">
+        <div class="indicator-container">
+            <div class="indicator complete"></div>
+        </div>
+        <div class="date">X</div>
+    </div>
+
+    <div class="timeline-block">
+        <div class="indicator-container">
+            <div class="indicator processing"></div>
+        </div>
+        <div class="content">
+            <div class="sub-heading">Y</div>
+        </div>
+        <div class="date">Y</div>
+    </div>
+
+    <div class="timeline-block">
+        <div class="indicator-container">
+            <div class="indicator"></div>
+        </div>
+        <div class="content">
+            <div class="heading">Z</div>
+        </div>
+        <div class="date">Z</div>
+    </div>
+
+    <div class="timeline-block">
+        <div class="indicator-container">
+            <div class="indicator"></div>
+        </div>
+        <div class="content">
+            <div class="heading">Z2</div>
+        </div>
+        <div class="date">Z2</div>
+    </div>
+
+</div>
+`;
+    class SohoTimeline extends HTMLElement {
+        constructor() {
+            super();
+            this.innerHTML = innerHTML;
+            $(this).initialize();
+        }
+    }
+    exports.SohoTimeline = SohoTimeline;
+});
+define("soho-wizard", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    let innerHTML = `<div class="wizard">
+<div class="wizard-header">
+  <div class="bar">
+    <div class="completed-range"></div>
+    <div class="tick complete">
+      <span class="label">Learn Grammar</span>
+    </div>
+    <div class="tick complete">
+      <span class="label">Codify Rules</span>
+    </div>
+    <div class="tick current">
+      <span class="label">Learn Spanish</span>
+    </div>
+    <div class="tick">
+      <span class="label">Add Vocabulary</span>
+    </div>
+  </div>
+</div>
+</div>`;
+    class SohoWizard extends HTMLElement {
+        constructor() {
+            super();
+            this.innerHTML = innerHTML;
+            $(this).initialize();
+        }
+    }
+    exports.SohoWizard = SohoWizard;
+});
+define("main", ["require", "exports", "score-board", "qa-input", "qa-block", "soho-timeline", "soho-wizard"], function (require, exports, score_board_1, qa_input_1, qa_block_1, soho_timeline_1, soho_wizard_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     customElements.define("qa-input", qa_input_1.QaInput);
     customElements.define("qa-block", qa_block_1.QaBlock);
     customElements.define("score-board", score_board_1.ScoreBoard);
+    customElements.define("soho-timeline", soho_timeline_1.SohoTimeline);
+    let mods = {
+        "soho-wizard": soho_wizard_1.SohoWizard
+    };
+    Object.keys(mods).forEach(key => customElements.define(key, mods[key]));
 });
 //# sourceMappingURL=main.js.map

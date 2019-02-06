@@ -1,8 +1,6 @@
 {
-  "dependencies": {},
-  "globalDependencies": {
-    "jquery": "registry:dt/jquery",
-    "openlayers": "registry:dt/openlayers",
-    "require": "registry:dt/require"
-  }
+	"dependencies": {},
+	"globalDependencies": {
+		"openlayers": "registry:dt/openlayers"
+	}
 }

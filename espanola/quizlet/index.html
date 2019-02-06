@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="EN">
+<html lang="EN" class="schole soho">
 	<head>
 		<meta charset="utf-8" />
 		<title>Fill in the blank</title>
+		<link rel="stylesheet" id="sohoxi-stylesheet" href="../../dist/css/soho.css" type="text/css" />
 		<link rel="stylesheet" href="dark-theme.css" />
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script>
+		<!-- load soho for kicks -->
+		<script src="../../dist/js/d3.v4.js"></script>
+		<script src="../../dist/js/jquery-3.3.1.js"></script>
+		<script src="../../dist/js/sohoxi.js"></script>
+		<!-- load soho for kicks -->
+		<script src="../../dist/require.js"></script>
 		<script src="main.js" defer></script>
 		<script>
 			require(["main"]);
@@ -35,8 +41,12 @@
 		</style>
 	</head>
 	<body>
-		<p>Type the answer</p>
-		<qa-block></qa-block>
-		<score-board score="100"></score-board>
+		<div class="soho" style="right:12em;left:12em;position:absolute">
+			<soho-wizard></soho-wizard>
+			<soho-timeline style="display:none"></soho-timeline>
+			<p>Type the answer</p>
+			<qa-block></qa-block>
+			<score-board score="100"></score-board>
+		</div>
 	</body>
 </html>
