@@ -1,3 +1,6 @@
+type WordMapHash = { [key: string]: string };
+type WordMap = { en: string; es: string };
+
 const verbs = {
 	llamar: "call",
 	confiar: "trust",
@@ -17,6 +20,10 @@ const verbs = {
 	"correr {adjective}": "run {adjective}"
 };
 
+const places = {
+	"a casa": "home"
+};
+
 const nouns = {
 	"una casa": "a house",
 	"esa casa": "that house",
@@ -24,7 +31,7 @@ const nouns = {
 	"una bicicleta": "a bike",
 	"una caminata": "a hike",
 	"un libro": "a book",
-	"{number} personas": "{number} people"
+	"una persona": "a person"
 };
 
 const adjectives = {
@@ -47,58 +54,67 @@ const numbers = {
 	doce: "twelve"
 };
 
-function startsWith(str, val) {
-    return str.indexOf(val) === 0;
+function startsWith(str: string, val: string) {
+	return str.indexOf(val) === 0;
 }
 
-function endsWith(str, val) {
-    return str.lastIndexOf(val) === str.length - val.length;
+function endsWith(str: string, val: string) {
+	return str.lastIndexOf(val) === str.length - val.length;
 }
 
 /*
-If the singular definite article is "el" the plural is "los." 
-The plural of either "tú" or "usted" in Latin America is "ustedes" 
-and will take the same verb endings as "él/la and ellos/ellas respectively. 
+If the singular definite article is "el" the plural is "los."
+The plural of either "tú" or "usted" in Latin America is "ustedes"
+and will take the same verb endings as "él/la and ellos/ellas respectively.
 The plural (ellos/ellas) ending of verbs is "an" for "ar" verbs and "en" for "er/ir verbs.
 
-If a noun ends in a vowel, simply add -s. 
-If a noun ends in a consonant, simply add -es. 
-If a noun ends in a -z, change the z to c before adding -es. 
-If a noun ends in ión, drop the written accent before adding -es. 
+If a noun ends in a vowel, simply add -s.
+If a noun ends in a consonant, simply add -es.
+If a noun ends in a -z, change the z to c before adding -es.
+If a noun ends in ión, drop the written accent before adding -es.
 If the plural refers to a mixed group, use the masculine.
  */
-function pluralizeNoun(noun) {
-    let num = randomNumber();
-    let es = noun.es;
-    let en = noun.en;
+function pluralizeNoun(noun: WordMap) {
+	let num = randomNumber();
+	let es = noun.es;
+	let en = noun.en;
 
-    if (endsWith(es, "a")) es += "s";
-    else if (endsWith(es, "e")) es += "s";
-    else if (endsWith(es, "i")) es += "s";
-    else if (endsWith(es, "o")) es += "s";
-    else if (endsWith(es, "u")) es += "s";
-    else if (endsWith(es, "z")) es.substring(0, es.length - 1) += "ces";
-    else es += "es";
-    
-    if (startsWith(es, "el ")) es = "los" + es.substring(2);
-    else if (startsWith(es, "tú ")) es = "ustedes" + es.substring(2);
-    else if (startsWith(es, "esa ")) es = "esas" + es.substring(3);
-    else if (startsWith(es, "usted ")) es = "ustedes" + es.substring(5);
-    else if (startsWith(es, "un ")) {
-        es = num.es + es.substring(2);
-        en = `${noun.en} (${num.en} of them)`;
-    }
-    else if (startsWith(es, "una ")) {
-        es = num.es + es.substring(3);
-        en = `${noun.en} (${num.en} of them)`;
-    }
-    
+	if (endsWith(es, "a")) es += "s";
+	else if (endsWith(es, "e")) es += "s";
+	else if (endsWith(es, "i")) es += "s";
+	else if (endsWith(es, "o")) es += "s";
+	else if (endsWith(es, "u")) es += "s";
+	else if (endsWith(es, "z")) es = es.substring(0, es.length - 1) + "ces";
+	else es += "es";
+
+	if (startsWith(es, "el ")) {
+		es = "los" + es.substring(2);
+		en += " (plural)";
+	} else if (startsWith(es, "tú ")) {
+		es = "ustedes" + es.substring(2);
+		en += " (plural)";
+	} else if (startsWith(es, "esa ")) {
+		es = "esas" + es.substring(3);
+		en += " (plural)";
+	} else if (startsWith(es, "usted ")) {
+		es = "ustedes" + es.substring(5);
+		en += " (plural)";
+	} else if (startsWith(es, "un ")) {
+		es = num.es + es.substring(2);
+		en = `${noun.en} (${num.en} of them)`;
+	} else if (startsWith(es, "una ")) {
+		es = num.es + es.substring(3);
+		en = `${noun.en} (${num.en} of them)`;
+	} else {
+		en += " (plural)";
+	}
+
 	return {
 		es: es,
 		en: en
 	};
 }
-function randomItem(list) {
+function randomItem(list: WordMapHash) {
 	let keys = Object.keys(list);
 	let index = Math.round(Math.random() * (keys.length - 1));
 	let es = keys[index];
@@ -107,6 +123,10 @@ function randomItem(list) {
 
 function randomVerb() {
 	return randomItem(verbs);
+}
+
+function randomPlace() {
+	return randomItem(places);
 }
 
 function randomNoun() {
@@ -121,7 +141,7 @@ function randomAdjective() {
 	return randomItem(adjectives);
 }
 
-function shuffle(array) {
+function shuffle(array: Array<any>) {
 	let currentIndex = array.length;
 	while (0 !== currentIndex) {
 		let randomIndex = Math.floor(Math.random() * currentIndex);
@@ -155,41 +175,48 @@ const qa = [
 	{ a: "me encanta {noun}", q: "I love {noun}" },
 	{ a: "me encantaría {noun}", q: "I would love {noun}" },
 	{ a: "voy a {verb}", q: "I will {verb}" },
-	{ a: "que ero {verb}", q: "I want to {verb}" },
-	{ a: "que ero {noun}", q: "I want to {noun}" },
-	{ a: "me llamo es", q: "my name is" }
+	{ a: "quiero {verb}", q: "I want to {verb}" },
+	{ a: "quiero {noun}", q: "I want {noun}" },
+	{ a: "quiero {noun} o {noun}", q: "I want {noun} or {noun}" },
+	{ a: "me llamo es", q: "my name is" },
+	{ a: "me voy {place}", q: "I am going {place}" },
+	{ a: "I want to stay", q: "Quiero quedarme" }
 ];
 
 let questions = shuffle(qa).map(item => {
-	let verb = randomVerb();
-	let verb2 = randomVerb();
-	let noun = randomNoun();
-	let noun2 = randomNoun();
-	let num = randomNumber();
-	let pluralNoun = pluralizeNoun(noun);
-	let adjective = randomAdjective();
+	var q = item.q;
+	var a = item.a;
 
-	console.log(verb, noun, adjective, num);
-	let result = {
-		q: item.q
-		.replace("{verb}", verb.en)
-		.replace("{verb}", verb2.en)
-		.replace("{plural-noun}", pluralNoun.en)
-		.replace("{noun}", noun.en)
-		.replace("{noun}", noun2.en)
+	while (true) {
+		let verb = randomVerb();
+		let noun = randomNoun();
+		let place = randomPlace();
+		let num = randomNumber();
+		let pluralNoun = pluralizeNoun(randomNoun());
+		let adjective = randomAdjective();
+
+		var q2 = q
+			.replace("{verb}", verb.en)
+			.replace("{plural-noun}", pluralNoun.en)
+			.replace("{noun}", noun.en)
+			.replace("{place}", place.en)
 			.replace("{adjective}", adjective.en)
-			.replace("{number}", num.en),
-		a: item.a
-		.replace("{verb}", verb.es)
-		.replace("{verb}", verb2.es)
-		.replace("{plural-noun}", pluralNoun.es)
-		.replace("{noun}", noun.es)
-		.replace("{noun}", noun2.es)
-		.replace("{adjective}", adjective.es)
-			.replace("{number}", num.es)
-	};
-	console.log(item, result);
-	return result;
+			.replace("{number}", num.en);
+
+		var a2 = a
+			.replace("{verb}", verb.es)
+			.replace("{plural-noun}", pluralNoun.es)
+			.replace("{noun}", noun.es)
+			.replace("{place}", place.es)
+			.replace("{adjective}", adjective.es)
+			.replace("{number}", num.es);
+
+		if (q2 == q) break;
+		q = q2;
+		a = a2;
+	}
+
+	return { q, a };
 });
 
-define(() => questions.slice(0, 10));
+export = questions.slice(0, 10);

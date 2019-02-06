@@ -6,6 +6,18 @@
 		<link rel="stylesheet" href="dark-theme.css" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.3/require.min.js"></script>
 		<script src="main.js" defer></script>
+		<script>
+			require(["main"]);
+			let score = 100;
+			function wrongAnswer() {
+				score--;
+				let elements = document.getElementsByTagName("score-board");
+				for (let i = 0; i < elements.length; i++) {
+					console.log("updating score to ", score);
+					elements[i].setAttribute("score", score + "");
+				}
+			}
+		</script>
 		<style>
 			qa-block {
 				display: grid;
@@ -16,11 +28,15 @@
 			input {
 				font-size: x-large;
 			}
+			score-board {
+				font-size: xx-large;
+				color: white;
+			}
 		</style>
 	</head>
 	<body>
 		<p>Type the answer</p>
-		<qa-block src="qa"></qa-block>
-		<label>Score&nbsp;</label><score-board score="100"></score-board>
+		<qa-block></qa-block>
+		<score-board score="100"></score-board>
 	</body>
 </html>
