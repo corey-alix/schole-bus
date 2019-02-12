@@ -56,27 +56,25 @@ export class QaInput extends HTMLElement {
             border: 1px solid red;
         }
         label {
-            padding-right: 10px;
-            display: inline-block;
-            min-width: 240px;
-            max-width: 240px;
+			font-size: x-large;
+            display: block;
             whitespace:wrap;
         }
         input {
+			font-size: x-large;
+			display: block;
             vertical-align: top;
             background-color: black;
             border: none;
             color: gray;
             padding-left: 10px;
             min-height: 64px;
-            max-height: 64px;
-            min-width: 320px;
-            max-width: 320px;
-            height: 48px;
+			max-height: 64px;
+			width: 100%;
         }
         </style>`;
 		input.onkeypress = ev => {
-			//ev.preventDefault = true;
+			ev.preventDefault();
 			if (input.readOnly) return;
 			let currentKey = ev.key;
 			let currentValue = input.value;

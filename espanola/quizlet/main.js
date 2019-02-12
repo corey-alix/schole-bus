@@ -78,27 +78,25 @@ define("qa-input", ["require", "exports"], function (require, exports) {
             border: 1px solid red;
         }
         label {
-            padding-right: 10px;
-            display: inline-block;
-            min-width: 240px;
-            max-width: 240px;
+			font-size: x-large;
+            display: block;
             whitespace:wrap;
         }
         input {
+			font-size: x-large;
+			display: block;
             vertical-align: top;
             background-color: black;
             border: none;
             color: gray;
             padding-left: 10px;
             min-height: 64px;
-            max-height: 64px;
-            min-width: 320px;
-            max-width: 320px;
-            height: 48px;
+			max-height: 64px;
+			width: 100%;
         }
         </style>`;
             input.onkeypress = ev => {
-                //ev.preventDefault = true;
+                ev.preventDefault();
                 if (input.readOnly)
                     return;
                 let currentKey = ev.key;
@@ -148,7 +146,7 @@ define("qa", ["require", "exports"], function (require, exports) {
         limpiar: "clean",
         pagar: "pay",
         permanecer: "stay",
-        "llevar {noun}": "wear {noun}",
+        llevar: "wear",
         entrar: "enter",
         "nadar {adjective}": "swim {adjective}",
         "correr {adjective}": "run {adjective}"
@@ -163,7 +161,7 @@ define("qa", ["require", "exports"], function (require, exports) {
         verde: "green",
         negro: "black",
         marrón: "brown",
-        rosado: "pint",
+        rosado: "pink",
         amarillo: "yellow"
     };
     const nouns = {
@@ -324,10 +322,13 @@ define("qa", ["require", "exports"], function (require, exports) {
         { a: "me llamo es", q: "my name is" },
         { a: "me voy {place}", q: "I am going {place}" },
         { a: "I want to stay", q: "Quiero quedarme" },
-        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
-        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
-        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
-        { a: "ellos quieren {verb} {noun} {color}", q: "they want to {verb} {noun} {color}" }
+        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {color} {noun}" },
+        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {color} {noun}" },
+        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {color} {noun}" },
+        { a: "ellos quieren {verb} {noun} {color}", q: "they want to {verb} {color} {noun}" },
+        { a: "es dos mas pequeño que cinco?", q: "is two smaller than five?" },
+        { a: "es {number} mas pequeño que {number}?", q: "is {number} smaller than {number}?" },
+        { a: "es {number} mas mayor que {number}?", q: "is {number} larger than {number}?" }
     ];
     let questions = shuffle(qa).map(item => {
         let q = item.q;

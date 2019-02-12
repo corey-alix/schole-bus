@@ -14,7 +14,7 @@ const verbs = {
 	limpiar: "clean",
 	pagar: "pay",
 	permanecer: "stay",
-	"llevar {noun}": "wear {noun}",
+	llevar: "wear",
 	entrar: "enter",
 	"nadar {adjective}": "swim {adjective}",
 	"correr {adjective}": "run {adjective}"
@@ -31,7 +31,7 @@ const colors = {
 	verde: "green",
 	negro: "black",
 	marrón: "brown",
-	rosado: "pint",
+	rosado: "pink",
 	amarillo: "yellow"
 };
 
@@ -196,10 +196,13 @@ const qa = [
 	{ a: "me llamo es", q: "my name is" },
 	{ a: "me voy {place}", q: "I am going {place}" },
 	{ a: "I want to stay", q: "Quiero quedarme" },
-	{ a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
-	{ a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
-	{ a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
-	{ a: "ellos quieren {verb} {noun} {color}", q: "they want to {verb} {noun} {color}" }
+	{ a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {color} {noun}" },
+	{ a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {color} {noun}" },
+	{ a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {color} {noun}" },
+	{ a: "ellos quieren {verb} {noun} {color}", q: "they want to {verb} {color} {noun}" },
+	{ a: "es dos mas pequeño que cinco?", q: "is two smaller than five?" },
+	{ a: "es {number} mas pequeño que {number}?", q: "is {number} smaller than {number}?" },
+	{ a: "es {number} mas mayor que {number}?", q: "is {number} larger than {number}?" }
 ];
 
 let questions = shuffle(qa).map(item => {
