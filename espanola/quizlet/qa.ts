@@ -24,6 +24,17 @@ const places = {
 	"a casa": "home"
 };
 
+const colors = {
+	anaranjado: "orange",
+	azul: "blue",
+	rojo: "red",
+	verde: "green",
+	negro: "black",
+	marrón: "brown",
+	rosado: "pint",
+	amarillo: "yellow"
+};
+
 const nouns = {
 	"una casa": "a house",
 	"esa casa": "that house",
@@ -137,11 +148,15 @@ function randomNumber() {
 	return randomItem(numbers);
 }
 
+function randomColor() {
+	return randomItem(colors);
+}
+
 function randomAdjective() {
 	return randomItem(adjectives);
 }
 
-function shuffle(array: Array<any>) {
+function shuffle<T>(array: Array<T>) {
 	let currentIndex = array.length;
 	while (0 !== currentIndex) {
 		let randomIndex = Math.floor(Math.random() * currentIndex);
@@ -180,12 +195,17 @@ const qa = [
 	{ a: "quiero {noun} o {noun}", q: "I want {noun} or {noun}" },
 	{ a: "me llamo es", q: "my name is" },
 	{ a: "me voy {place}", q: "I am going {place}" },
-	{ a: "I want to stay", q: "Quiero quedarme" }
+	{ a: "I want to stay", q: "Quiero quedarme" },
+	{ a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
+	{ a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
+	{ a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
+	{ a: "ellos quieren {verb} {noun} {color}", q: "they want to {verb} {noun} {color}" }
 ];
 
 let questions = shuffle(qa).map(item => {
-	var q = item.q;
-	var a = item.a;
+	let q = item.q;
+	let a = item.a;
+	let swap = 0.5 > Math.random();
 
 	while (true) {
 		let verb = randomVerb();
@@ -194,20 +214,23 @@ let questions = shuffle(qa).map(item => {
 		let num = randomNumber();
 		let pluralNoun = pluralizeNoun(randomNoun());
 		let adjective = randomAdjective();
+		let color = randomColor();
 
-		var q2 = q
+		let q2 = q
 			.replace("{verb}", verb.en)
 			.replace("{plural-noun}", pluralNoun.en)
 			.replace("{noun}", noun.en)
 			.replace("{place}", place.en)
+			.replace("{color}", color.en)
 			.replace("{adjective}", adjective.en)
 			.replace("{number}", num.en);
 
-		var a2 = a
+		let a2 = a
 			.replace("{verb}", verb.es)
 			.replace("{plural-noun}", pluralNoun.es)
 			.replace("{noun}", noun.es)
 			.replace("{place}", place.es)
+			.replace("{color}", color.es)
 			.replace("{adjective}", adjective.es)
 			.replace("{number}", num.es);
 
@@ -216,7 +239,7 @@ let questions = shuffle(qa).map(item => {
 		a = a2;
 	}
 
-	return { q, a };
+	return swap ? { q: a, a: q } : { q: q, a: a };
 });
 
 export = questions.slice(0, 10);

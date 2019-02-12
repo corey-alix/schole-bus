@@ -3,13 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Fill in the blank</title>
-		<link rel="stylesheet" id="sohoxi-stylesheet" href="../../dist/css/soho.css" type="text/css" />
 		<link rel="stylesheet" href="dark-theme.css" />
-		<!-- load soho for kicks -->
-		<script src="../../dist/js/d3.v4.js"></script>
-		<script src="../../dist/js/jquery-3.3.1.js"></script>
-		<script src="../../dist/js/sohoxi.js"></script>
-		<!-- load soho for kicks -->
 		<script src="../../dist/require.js"></script>
 		<script src="main.js" defer></script>
 		<script>
@@ -38,13 +32,18 @@
 				font-size: xx-large;
 				color: white;
 			}
+			.center-frame {
+				position: absolute;
+				top: 20px;
+				left: 20px;
+				bottom: 20px;
+				right: 20px;
+				padding: 20px;
+			}
 		</style>
 	</head>
 	<body>
-		<div class="soho" style="right:12em;left:12em;position:absolute">
-			<soho-wizard></soho-wizard>
-			<soho-timeline style="display:none"></soho-timeline>
-			<p>Type the answer</p>
+		<div class="center-frame">
 			<qa-block></qa-block>
 			<score-board score="100"></score-board>
 		</div>

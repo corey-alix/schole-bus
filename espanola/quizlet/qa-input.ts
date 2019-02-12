@@ -22,7 +22,7 @@ export class QaInput extends HTMLElement {
 
 	isMatch(a: string, b: string) {
 		if (a.toUpperCase() === b.toUpperCase()) return true;
-		switch (b) {
+		switch (b.toLocaleLowerCase()) {
 			case "á":
 				if (a.toUpperCase() == "A") return true;
 			case "é":
@@ -31,6 +31,8 @@ export class QaInput extends HTMLElement {
 				if (a.toUpperCase() == "I") return true;
 			case "ñ":
 				if (a.toUpperCase() == "N") return true;
+			case "ó":
+				if (a.toUpperCase() == "O") return true;
 			case "ú":
 				if (a.toUpperCase() == "U") return true;
 		}

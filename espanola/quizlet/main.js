@@ -40,7 +40,7 @@ define("qa-input", ["require", "exports"], function (require, exports) {
         isMatch(a, b) {
             if (a.toUpperCase() === b.toUpperCase())
                 return true;
-            switch (b) {
+            switch (b.toLocaleLowerCase()) {
                 case "á":
                     if (a.toUpperCase() == "A")
                         return true;
@@ -52,6 +52,9 @@ define("qa-input", ["require", "exports"], function (require, exports) {
                         return true;
                 case "ñ":
                     if (a.toUpperCase() == "N")
+                        return true;
+                case "ó":
+                    if (a.toUpperCase() == "O")
                         return true;
                 case "ú":
                     if (a.toUpperCase() == "U")
@@ -152,6 +155,16 @@ define("qa", ["require", "exports"], function (require, exports) {
     };
     const places = {
         "a casa": "home"
+    };
+    const colors = {
+        anaranjado: "orange",
+        azul: "blue",
+        rojo: "red",
+        verde: "green",
+        negro: "black",
+        marrón: "brown",
+        rosado: "pint",
+        amarillo: "yellow"
     };
     const nouns = {
         "una casa": "a house",
@@ -266,6 +279,9 @@ define("qa", ["require", "exports"], function (require, exports) {
     function randomNumber() {
         return randomItem(numbers);
     }
+    function randomColor() {
+        return randomItem(colors);
+    }
     function randomAdjective() {
         return randomItem(adjectives);
     }
@@ -307,11 +323,16 @@ define("qa", ["require", "exports"], function (require, exports) {
         { a: "quiero {noun} o {noun}", q: "I want {noun} or {noun}" },
         { a: "me llamo es", q: "my name is" },
         { a: "me voy {place}", q: "I am going {place}" },
-        { a: "I want to stay", q: "Quiero quedarme" }
+        { a: "I want to stay", q: "Quiero quedarme" },
+        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
+        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
+        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {noun} {color}" },
+        { a: "ellos quieren {verb} {noun} {color}", q: "they want to {verb} {noun} {color}" }
     ];
     let questions = shuffle(qa).map(item => {
-        var q = item.q;
-        var a = item.a;
+        let q = item.q;
+        let a = item.a;
+        let swap = 0.5 > Math.random();
         while (true) {
             let verb = randomVerb();
             let noun = randomNoun();
@@ -319,18 +340,21 @@ define("qa", ["require", "exports"], function (require, exports) {
             let num = randomNumber();
             let pluralNoun = pluralizeNoun(randomNoun());
             let adjective = randomAdjective();
-            var q2 = q
+            let color = randomColor();
+            let q2 = q
                 .replace("{verb}", verb.en)
                 .replace("{plural-noun}", pluralNoun.en)
                 .replace("{noun}", noun.en)
                 .replace("{place}", place.en)
+                .replace("{color}", color.en)
                 .replace("{adjective}", adjective.en)
                 .replace("{number}", num.en);
-            var a2 = a
+            let a2 = a
                 .replace("{verb}", verb.es)
                 .replace("{plural-noun}", pluralNoun.es)
                 .replace("{noun}", noun.es)
                 .replace("{place}", place.es)
+                .replace("{color}", color.es)
                 .replace("{adjective}", adjective.es)
                 .replace("{number}", num.es);
             if (q2 == q)
@@ -338,7 +362,7 @@ define("qa", ["require", "exports"], function (require, exports) {
             q = q2;
             a = a2;
         }
-        return { q, a };
+        return swap ? { q: a, a: q } : { q: q, a: a };
     });
     return questions.slice(0, 10);
 });
@@ -365,99 +389,16 @@ define("qa-block", ["require", "exports", "qa"], function (require, exports, qa_
     }
     exports.QaBlock = QaBlock;
 });
-define("soho-timeline", ["require", "exports"], function (require, exports) {
+define("main", ["require", "exports", "score-board", "qa-input", "qa-block"], function (require, exports, score_board_1, qa_input_1, qa_block_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    let innerHTML = `<div class="timeline">
-    <div class="timeline-block">
-        <div class="indicator-container">
-            <div class="indicator complete"></div>
-        </div>
-        <div class="date">X</div>
-    </div>
-
-    <div class="timeline-block">
-        <div class="indicator-container">
-            <div class="indicator processing"></div>
-        </div>
-        <div class="content">
-            <div class="sub-heading">Y</div>
-        </div>
-        <div class="date">Y</div>
-    </div>
-
-    <div class="timeline-block">
-        <div class="indicator-container">
-            <div class="indicator"></div>
-        </div>
-        <div class="content">
-            <div class="heading">Z</div>
-        </div>
-        <div class="date">Z</div>
-    </div>
-
-    <div class="timeline-block">
-        <div class="indicator-container">
-            <div class="indicator"></div>
-        </div>
-        <div class="content">
-            <div class="heading">Z2</div>
-        </div>
-        <div class="date">Z2</div>
-    </div>
-
-</div>
-`;
-    class SohoTimeline extends HTMLElement {
-        constructor() {
-            super();
-            this.innerHTML = innerHTML;
-            $(this).initialize();
-        }
+    {
+        let mods = {
+            "qa-input": qa_input_1.QaInput,
+            "qa-block": qa_block_1.QaBlock,
+            "score-board": score_board_1.ScoreBoard
+        };
+        Object.keys(mods).forEach(key => customElements.define(key, mods[key]));
     }
-    exports.SohoTimeline = SohoTimeline;
-});
-define("soho-wizard", ["require", "exports"], function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    let innerHTML = `<div class="wizard">
-<div class="wizard-header">
-  <div class="bar">
-    <div class="completed-range"></div>
-    <div class="tick complete">
-      <span class="label">Learn Grammar</span>
-    </div>
-    <div class="tick complete">
-      <span class="label">Codify Rules</span>
-    </div>
-    <div class="tick current">
-      <span class="label">Learn Spanish</span>
-    </div>
-    <div class="tick">
-      <span class="label">Add Vocabulary</span>
-    </div>
-  </div>
-</div>
-</div>`;
-    class SohoWizard extends HTMLElement {
-        constructor() {
-            super();
-            this.innerHTML = innerHTML;
-            $(this).initialize();
-        }
-    }
-    exports.SohoWizard = SohoWizard;
-});
-define("main", ["require", "exports", "score-board", "qa-input", "qa-block", "soho-timeline", "soho-wizard"], function (require, exports, score_board_1, qa_input_1, qa_block_1, soho_timeline_1, soho_wizard_1) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    customElements.define("qa-input", qa_input_1.QaInput);
-    customElements.define("qa-block", qa_block_1.QaBlock);
-    customElements.define("score-board", score_board_1.ScoreBoard);
-    customElements.define("soho-timeline", soho_timeline_1.SohoTimeline);
-    let mods = {
-        "soho-wizard": soho_wizard_1.SohoWizard
-    };
-    Object.keys(mods).forEach(key => customElements.define(key, mods[key]));
 });
 //# sourceMappingURL=main.js.map
