@@ -322,10 +322,8 @@ define("qa", ["require", "exports"], function (require, exports) {
         { a: "me llamo es", q: "my name is" },
         { a: "me voy {place}", q: "I am going {place}" },
         { a: "I want to stay", q: "Quiero quedarme" },
-        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {color} {noun}" },
-        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {color} {noun}" },
-        { a: "nosotros queremos {verb} {noun} {color}", q: "we want to {verb} {color} {noun}" },
-        { a: "ellos quieren {verb} {noun} {color}", q: "they want to {verb} {color} {noun}" },
+        { a: "nosotros queremos {verb} en otro {noun} {color}", q: "we want to {verb} at another {color} {noun}" },
+        { a: "ellos quieren {verb} {noun} {adjective}", q: "they want to {verb} {noun} {adjective}" },
         { a: "es dos mas pequeño que cinco?", q: "is two smaller than five?" },
         { a: "es {number} mas pequeño que {number}?", q: "is {number} smaller than {number}?" },
         { a: "es {number} mas mayor que {number}?", q: "is {number} larger than {number}?" }
