@@ -326,7 +326,8 @@ define("qa", ["require", "exports"], function (require, exports) {
         { a: "ellos quieren {verb} {noun} {adjective}", q: "they want to {verb} {noun} {adjective}" },
         { a: "es dos mas pequeño que cinco?", q: "is two smaller than five?" },
         { a: "es {number} mas pequeño que {number}?", q: "is {number} smaller than {number}?" },
-        { a: "es {number} mas mayor que {number}?", q: "is {number} larger than {number}?" }
+        { a: "es {number} mas mayor que {number}?", q: "is {number} larger than {number}?" },
+        { a: "Que tengas una buena mañana", q: "have a good morning" }
     ];
     let questions = shuffle(qa).map(item => {
         let q = item.q;
