@@ -3,6 +3,7 @@ import { QaInput } from "./qa-input";
 import { QaBlock } from "./qa-block";
 import { WebComponent, getComponent } from "./webcomponent";
 import { SystemEvents } from "./system-events";
+import { ConsoleLog } from "./console-log";
 
 function from(nodes: HTMLCollection) {
 	let result: Array<HTMLElement> = [];
@@ -19,6 +20,7 @@ function visit(node: HTMLElement, cb: (node: HTMLElement) => boolean) {
 
 {
 	let mods: any = {
+		"console-log": ConsoleLog,
 		"qa-input": QaInput,
 		"qa-block": QaBlock,
 		"score-board": ScoreBoard

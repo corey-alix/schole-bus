@@ -59,27 +59,6 @@ define("quizlet/webcomponent", ["require", "exports"], function (require, export
     }
     exports.getComponent = getComponent;
 });
-define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], function (require, exports, webcomponent_1) {
-    "use strict";
-    exports.__esModule = true;
-    var ScoreBoard = /** @class */ (function (_super) {
-        __extends(ScoreBoard, _super);
-        function ScoreBoard() {
-            return _super !== null && _super.apply(this, arguments) || this;
-        }
-        ScoreBoard.prototype.updateScore = function () {
-            this.domNode.innerHTML = this.getAttribute("score") || "0";
-        };
-        ScoreBoard.prototype.connectedCallback = function () {
-            this.updateScore();
-        };
-        ScoreBoard.prototype.attributeChangedCallback = function () {
-            this.updateScore();
-        };
-        return ScoreBoard;
-    }(webcomponent_1.WebComponent));
-    exports.ScoreBoard = ScoreBoard;
-});
 define("quizlet/system-events", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
@@ -119,7 +98,50 @@ define("quizlet/system-events", ["require", "exports"], function (require, expor
     }());
     exports.SystemEvents = SystemEvents;
 });
-define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events"], function (require, exports, webcomponent_2, system_events_1) {
+define("quizlet/console-log", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events"], function (require, exports, webcomponent_1, system_events_1) {
+    "use strict";
+    exports.__esModule = true;
+    var ConsoleLog = /** @class */ (function (_super) {
+        __extends(ConsoleLog, _super);
+        function ConsoleLog(domNode) {
+            var _this = _super.call(this, domNode) || this;
+            system_events_1.SystemEvents.watch("log", function (value) {
+                var logItem = document.createElement("div");
+                logItem.innerHTML = value.message;
+                domNode.insertBefore(logItem, domNode.firstChild);
+            });
+            return _this;
+        }
+        return ConsoleLog;
+    }(webcomponent_1.WebComponent));
+    exports.ConsoleLog = ConsoleLog;
+    function log(message) {
+        system_events_1.SystemEvents.trigger("log", { message: message });
+    }
+    exports.log = log;
+});
+define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], function (require, exports, webcomponent_2) {
+    "use strict";
+    exports.__esModule = true;
+    var ScoreBoard = /** @class */ (function (_super) {
+        __extends(ScoreBoard, _super);
+        function ScoreBoard() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        ScoreBoard.prototype.updateScore = function () {
+            this.domNode.innerHTML = this.getAttribute("score") || "0";
+        };
+        ScoreBoard.prototype.connectedCallback = function () {
+            this.updateScore();
+        };
+        ScoreBoard.prototype.attributeChangedCallback = function () {
+            this.updateScore();
+        };
+        return ScoreBoard;
+    }(webcomponent_2.WebComponent));
+    exports.ScoreBoard = ScoreBoard;
+});
+define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log"], function (require, exports, webcomponent_3, system_events_2, console_log_1) {
     "use strict";
     exports.__esModule = true;
     var QaInput = /** @class */ (function (_super) {
@@ -135,10 +157,10 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             this.input.focus();
         };
         QaInput.prototype.rightAnswer = function () {
-            system_events_1.SystemEvents.trigger("correct", { value: 1 });
+            system_events_2.SystemEvents.trigger("correct", { value: 1 });
         };
         QaInput.prototype.wrongAnswer = function () {
-            system_events_1.SystemEvents.trigger("incorrect", { value: -1 });
+            system_events_2.SystemEvents.trigger("incorrect", { value: -1 });
         };
         QaInput.prototype.isMatch = function (a, b) {
             var A = a.toUpperCase();
@@ -180,46 +202,79 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             var _this = this;
             var label = this.label;
             label.textContent = this.getAttribute("question");
-            label.title = this.getAttribute("hint") || this.getAttribute("answer") || "";
+            label.title = this.getAttribute("hint") || "";
             var input = this.input;
             var answer = this.getAttribute("answer") || "";
             input.maxLength = answer.length;
-            input.innerHTML = "<style>\n        .correct {\n            color: green;\n            border: 1px solid green;\n        }\n        .wrong {\n            border: 1px solid red;\n        }\n        label {\n\t\t\tfont-size: x-large;\n            display: block;\n\t\t\twhitespace:wrap;\n\t\t\tmargin-top: 20px;\n        }\n        input {\n\t\t\tfont-size: x-large;\n\t\t\tdisplay: block;\n            vertical-align: top;\n            background-color: black;\n            border: none;\n            color: gray;\n            padding-left: 10px;\n            min-height: 64px;\n\t\t\tmax-height: 64px;\n\t\t\twidth: 100%;\n        }\n        </style>";
-            input.onkeypress = function (ev) {
-                ev.preventDefault();
-                if (input.readOnly)
-                    return;
-                var currentKey = ev.key;
-                var currentValue = input.value;
-                var expectedKey = answer[currentValue.length];
-                console.log(currentKey, expectedKey);
-                if (_this.isMatch(currentKey, expectedKey)) {
-                    input.classList.remove("wrong");
-                    input.value = answer.substring(0, currentValue.length + 1);
-                    _this.rightAnswer();
-                    if (answer.length === currentValue.length + 1) {
-                        input.classList.add("correct");
-                        input.readOnly = true;
-                        var s_1 = _this.nextElementSibling();
-                        console.log(s_1);
-                        setTimeout(function () { return s_1 && s_1.focus(); }, 200);
+            input.innerHTML = "<style>\n        .correct {\n            color: green;\n            border: 1px solid green;\n        }\n        .wrong {\n            border: 1px solid red;\n        }\n        label {\n\t\t\tfont-size: x-large;\n            display: block;\n\t\t\twhitespace:wrap;\n\t\t\tmargin-top: 20px;\n        }\n        input {\n\t\t\tfont-size: x-large;\n\t\t\tdisplay: block;\n            vertical-align: top;\n            background-color: black;\n            border: none;\n            color: gray;\n            padding-left: 10px;\n            min-height: 64px;\n\t\t\tmax-height: 64px;\n\t\t\twidth: 100%;\n        }\n\t\t</style>";
+            input.onkeydown = function (ev) {
+                try {
+                    ev.preventDefault();
+                    if (input.readOnly)
+                        return;
+                    var currentKey = ev.key;
+                    var currentValue = input.value;
+                    switch (ev.keyCode) {
+                        case 8: // backspace
+                        case 9: // tab
+                        case 13: // enter
+                        case 16: // shift
+                        case 17: // ctrl
+                        case 18: // alt
+                        case 46: // del
+                            return false;
+                        case 112: // F1
+                            input.value = answer.substring(0, currentValue.length + 1);
+                            if (answer.length === currentValue.length + 1) {
+                                input.readOnly = true;
+                                _this.tab();
+                                return false;
+                            }
+                            return false;
+                    }
+                    var expectedKey = answer[currentValue.length];
+                    switch (currentKey) {
+                        case " ":
+                            if (currentKey !== expectedKey)
+                                return;
+                    }
+                    console_log_1.log(ev.keyCode + " " + currentKey + " " + expectedKey);
+                    if (_this.isMatch(currentKey, expectedKey)) {
+                        input.classList.remove("wrong");
+                        input.value = answer.substring(0, currentValue.length + 1);
+                        _this.rightAnswer();
+                        if (answer.length === currentValue.length + 1) {
+                            input.classList.add("correct");
+                            input.readOnly = true;
+                            _this.tab();
+                            return false;
+                        }
                         return false;
+                    }
+                    else {
+                        input.classList.add("wrong");
+                        _this.wrongAnswer();
                     }
                     return false;
                 }
-                else {
-                    input.classList.add("wrong");
-                    _this.wrongAnswer();
-                    input.value = answer.substring(0, currentValue.length + 1);
+                catch (ex) {
+                    console_log_1.log(ex);
                 }
-                return false;
             };
             var shadowRoot = this.attachShadow({ mode: "open" });
             shadowRoot.appendChild(label);
             shadowRoot.appendChild(input);
         };
+        QaInput.prototype.tab = function () {
+            var s = this;
+            s = s.nextElementSibling();
+            while (s && s.input.readOnly)
+                s = s.nextElementSibling();
+            console_log_1.log(s ? "next found" : "no next input");
+            setTimeout(function () { return s && s.focus(); }, 200);
+        };
         return QaInput;
-    }(webcomponent_2.WebComponent));
+    }(webcomponent_3.WebComponent));
     exports.QaInput = QaInput;
 });
 define("verbos/tener", ["require", "exports"], function (require, exports) {
@@ -615,7 +670,6 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         { a: "yo necesito", q: "I need" },
         { a: "yo necesito {verb}", q: "I need to {verb}" },
         { a: "yo necesito {noun}", q: "I need {noun}" },
-        { a: "yo necesito {plural-noun}", q: "I need {plural-noun}" },
         { a: "yo necesito {verb} por favor", q: "I need to {verb} please" },
         { a: "yo necesito {noun} por favor", q: "I need {noun} please" },
         { a: "tú necesitas {verb}", q: "you need to {verb}" },
@@ -626,7 +680,6 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         { a: "me gusta {noun}", q: "I like {noun}" },
         { a: "te gusta {verb}", q: "you like to {verb}" },
         { a: "te gusta {noun}", q: "you like {noun}" },
-        { a: "me gustan {plural-noun}", q: "I like {plural-noun}" },
         { a: "me gustaría {verb}", q: "I would like to {verb}" },
         { a: "me gusta {noun}", q: "I would like {noun}" },
         { a: "me gustaría {verb} y {noun} {verb}", q: "I would like to {verb} and {noun} to {verb}" },
@@ -685,7 +738,7 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
     });
     return questions.slice(0, 5);
 });
-define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/qa"], function (require, exports, webcomponent_3, qa_1) {
+define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/qa"], function (require, exports, webcomponent_4, qa_1) {
     "use strict";
     exports.__esModule = true;
     qa_1 = __importDefault(qa_1);
@@ -708,10 +761,10 @@ define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizl
             shadowRoot.innerHTML = div.innerHTML;
         };
         return QaBlock;
-    }(webcomponent_3.WebComponent));
+    }(webcomponent_4.WebComponent));
     exports.QaBlock = QaBlock;
 });
-define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events"], function (require, exports, score_board_1, qa_input_1, qa_block_1, webcomponent_4, system_events_2) {
+define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log"], function (require, exports, score_board_1, qa_input_1, qa_block_1, webcomponent_5, system_events_3, console_log_2) {
     "use strict";
     exports.__esModule = true;
     function from(nodes) {
@@ -728,6 +781,7 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
     }
     {
         var mods_1 = {
+            "console-log": console_log_2.ConsoleLog,
             "qa-input": qa_input_1.QaInput,
             "qa-block": qa_block_1.QaBlock,
             "score-board": score_board_1.ScoreBoard
@@ -751,11 +805,11 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
             correct += add;
         var elements = from(document.getElementsByTagName("score-board"));
         elements.forEach(function (e) {
-            var score = webcomponent_4.getComponent(e);
+            var score = webcomponent_5.getComponent(e);
             score && score.setAttribute("score", correct + "");
         });
     }
-    system_events_2.SystemEvents.watch("correct", function () { return score(1); });
-    system_events_2.SystemEvents.watch("incorrect", function () { return score(-1); });
+    system_events_3.SystemEvents.watch("correct", function () { return score(1); });
+    system_events_3.SystemEvents.watch("incorrect", function () { return score(-1); });
 });
 //# sourceMappingURL=main.js.map

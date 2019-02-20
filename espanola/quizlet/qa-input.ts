@@ -1,5 +1,6 @@
 import { WebComponent } from "./webcomponent";
 import { SystemEvents } from "./system-events";
+import { log } from "./console-log";
 
 export class QaInput extends WebComponent {
 	input: HTMLInputElement;
@@ -54,7 +55,7 @@ export class QaInput extends WebComponent {
 	connectedCallback() {
 		const label = this.label;
 		label.textContent = this.getAttribute("question");
-		label.title = this.getAttribute("hint") || this.getAttribute("answer") || "";
+		label.title = this.getAttribute("hint") || "";
 
 		const input = this.input;
 		const answer = this.getAttribute("answer") || "";
@@ -85,37 +86,69 @@ export class QaInput extends WebComponent {
 			max-height: 64px;
 			width: 100%;
         }
-        </style>`;
-		input.onkeypress = ev => {
-			ev.preventDefault();
-			if (input.readOnly) return;
-			let currentKey = ev.key;
-			let currentValue = input.value;
-			let expectedKey = answer[currentValue.length];
-			console.log(currentKey, expectedKey);
-			if (this.isMatch(currentKey, expectedKey)) {
-				input.classList.remove("wrong");
-				input.value = answer.substring(0, currentValue.length + 1);
-				this.rightAnswer();
-				if (answer.length === currentValue.length + 1) {
-					input.classList.add("correct");
-					input.readOnly = true;
-					let s = this.nextElementSibling() as QaInput;
-					console.log(s);
-					setTimeout(() => s && s.focus(), 200);
+		</style>`;
+
+		input.onkeydown = ev => {
+			try {
+				ev.preventDefault();
+				if (input.readOnly) return;
+				let currentKey = ev.key;
+				let currentValue = input.value;
+				switch (ev.keyCode) {
+					case 8: // backspace
+					case 9: // tab
+					case 13: // enter
+					case 16: // shift
+					case 17: // ctrl
+					case 18: // alt
+					case 46: // del
+						return false;
+					case 112: // F1
+						input.value = answer.substring(0, currentValue.length + 1);
+						if (answer.length === currentValue.length + 1) {
+							input.readOnly = true;
+							this.tab();
+							return false;
+						}
+						return false;
+				}
+				let expectedKey = answer[currentValue.length];
+				switch (currentKey) {
+					case " ":
+						if (currentKey !== expectedKey) return;
+				}
+				log(`${ev.keyCode} ${currentKey} ${expectedKey}`);
+				if (this.isMatch(currentKey, expectedKey)) {
+					input.classList.remove("wrong");
+					input.value = answer.substring(0, currentValue.length + 1);
+					this.rightAnswer();
+					if (answer.length === currentValue.length + 1) {
+						input.classList.add("correct");
+						input.readOnly = true;
+						this.tab();
+						return false;
+					}
 					return false;
+				} else {
+					input.classList.add("wrong");
+					this.wrongAnswer();
 				}
 				return false;
-			} else {
-				input.classList.add("wrong");
-				this.wrongAnswer();
-				input.value = answer.substring(0, currentValue.length + 1);
+			} catch (ex) {
+				log(ex);
 			}
-			return false;
 		};
 
 		const shadowRoot = this.attachShadow({ mode: "open" });
 		shadowRoot.appendChild(label);
 		shadowRoot.appendChild(input);
+	}
+
+	tab() {
+		let s = this as QaInput;
+		s = s.nextElementSibling() as QaInput;
+		while (s && s.input.readOnly) s = s.nextElementSibling() as QaInput;
+		log(s ? "next found" : "no next input");
+		setTimeout(() => s && s.focus(), 200);
 	}
 }
