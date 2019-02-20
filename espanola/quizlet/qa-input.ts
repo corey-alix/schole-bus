@@ -1,11 +1,12 @@
-declare var wrongAnswer: Function;
+import { WebComponent } from "./webcomponent";
+import { SystemEvents } from "./system-events";
 
-export class QaInput extends HTMLElement {
+export class QaInput extends WebComponent {
 	input: HTMLInputElement;
 	label: HTMLLabelElement;
 
-	constructor() {
-		super();
+	constructor(domNode: HTMLElement) {
+		super(domNode);
 		this.label = document.createElement("label");
 		this.input = document.createElement("input");
 		this.input.type = "text";
@@ -16,13 +17,11 @@ export class QaInput extends HTMLElement {
 	}
 
 	rightAnswer() {
-		// hack into method defined in index.html
-		wrongAnswer(1);
+		SystemEvents.trigger("correct", { value: 1 });
 	}
 
 	wrongAnswer() {
-		// hack into method defined in index.html
-		wrongAnswer(-1);
+		SystemEvents.trigger("incorrect", { value: -1 });
 	}
 
 	isMatch(a: string, b: string) {
@@ -101,7 +100,7 @@ export class QaInput extends HTMLElement {
 				if (answer.length === currentValue.length + 1) {
 					input.classList.add("correct");
 					input.readOnly = true;
-					let s = this.nextElementSibling as QaInput;
+					let s = this.nextElementSibling() as QaInput;
 					console.log(s);
 					setTimeout(() => s && s.focus(), 200);
 					return false;

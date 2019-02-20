@@ -1,8 +1,9 @@
+import { WebComponent } from "./webcomponent";
 import data from "./qa";
 
-export class QaBlock extends HTMLElement {
-	constructor() {
-		super();
+export class QaBlock extends WebComponent {
+	constructor(domNode: HTMLElement) {
+		super(domNode);
 		this.load();
 	}
 

@@ -8,8 +8,7 @@
     "start": "nodemon server.js",
     "ns": "namespace-css ./dist/css/dark-theme.css --selector .soho -o ./dist/css/soho.css",
     "extract-requirejs": "cp -r ./node_modules/requirejs/require.js ./dist/",
-    "extract-ids-enterprise": "cp -r ./node_modules/ids-enterprise/dist/** ./dist/",
-    "extract": "npm run extract-ids-enterprise && npm run extract-requirejs",
+    "extract": "npm run extract-requirejs",
     "build-espanola": "cd espanola/quizlet && tsc"
   },
   "repository": {
@@ -25,13 +24,11 @@
   "devDependencies": {
     "@types/jquery": "^3.3.29",
     "@types/requirejs": "^2.1.31",
-    "ids-enterprise": "^4.14.0",
     "namespace-css": "^0.1.3",
     "nodemon": "^1.18.9",
     "typescript": "^3.3.1"
   },
   "dependencies": {
-    "@webcomponents/webcomponentsjs": "^2.2.7",
     "express": "^4.16.2",
     "requirejs": "^2.3.6"
   }

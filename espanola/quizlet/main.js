@@ -1,49 +1,148 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-define("quizlet/score-board", ["require", "exports"], function (require, exports) {
+define("quizlet/webcomponent", ["require", "exports"], function (require, exports) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class ScoreBoard extends HTMLElement {
-        static get observedAttributes() {
-            return ["score"];
+    exports.__esModule = true;
+    var nextkey = 0;
+    var registry = [];
+    var WebComponent = /** @class */ (function () {
+        function WebComponent(domNode) {
+            this.domNode = domNode;
+            domNode.setAttribute("registry-key", nextkey + "");
+            registry[nextkey++] = this;
         }
-        updateScore() {
-            this.innerHTML = this.getAttribute("score") || "0";
-        }
-        connectedCallback() {
-            this.updateScore();
-        }
-        attributeChangedCallback() {
-            this.updateScore();
-        }
+        WebComponent.prototype.connectedCallback = function () {
+            // added to dom
+        };
+        WebComponent.prototype.attachShadow = function (options) {
+            return this.domNode;
+        };
+        WebComponent.prototype.nextElementSibling = function () {
+            var next = this.domNode.nextElementSibling;
+            if (!next)
+                return null;
+            var key = next.getAttribute("registry-key");
+            if (!key)
+                return null;
+            return registry[parseInt(key)];
+        };
+        WebComponent.prototype.getAttribute = function (name) {
+            return this.domNode.getAttribute(name);
+        };
+        WebComponent.prototype.setAttribute = function (name, value) {
+            this.domNode.setAttribute(name, value);
+            this.attributeChangedCallback();
+        };
+        WebComponent.prototype.attributeChangedCallback = function () { };
+        return WebComponent;
+    }());
+    exports.WebComponent = WebComponent;
+    function getComponent(domNode) {
+        var key = domNode.getAttribute("registry-key");
+        if (!key)
+            return null;
+        return registry[parseInt(key)];
     }
+    exports.getComponent = getComponent;
+});
+define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], function (require, exports, webcomponent_1) {
+    "use strict";
+    exports.__esModule = true;
+    var ScoreBoard = /** @class */ (function (_super) {
+        __extends(ScoreBoard, _super);
+        function ScoreBoard() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        ScoreBoard.prototype.updateScore = function () {
+            this.domNode.innerHTML = this.getAttribute("score") || "0";
+        };
+        ScoreBoard.prototype.connectedCallback = function () {
+            this.updateScore();
+        };
+        ScoreBoard.prototype.attributeChangedCallback = function () {
+            this.updateScore();
+        };
+        return ScoreBoard;
+    }(webcomponent_1.WebComponent));
     exports.ScoreBoard = ScoreBoard;
 });
-define("quizlet/qa-input", ["require", "exports"], function (require, exports) {
+define("quizlet/system-events", ["require", "exports"], function (require, exports) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    class QaInput extends HTMLElement {
-        constructor() {
-            super();
-            this.label = document.createElement("label");
-            this.input = document.createElement("input");
-            this.input.type = "text";
+    exports.__esModule = true;
+    var EventDispatcher = /** @class */ (function () {
+        function EventDispatcher() {
+            this.events = {};
         }
-        focus() {
+        EventDispatcher.prototype.on = function (event, callback) {
+            var _this = this;
+            this.events[event] = this.events[event] || [];
+            this.events[event].push(callback);
+            // inefficient way of removing the callback
+            return function () { return (_this.events[event] = _this.events[event].filter(function (c) { return c != callback; })); };
+        };
+        EventDispatcher.prototype.trigger = function (event, data) {
+            if (!this.events)
+                return;
+            var handlers = this.events[event];
+            if (!handlers)
+                return;
+            handlers.forEach(function (h) { return h(data || null); });
+        };
+        return EventDispatcher;
+    }());
+    exports.EventDispatcher = EventDispatcher;
+    var SystemEvents = /** @class */ (function () {
+        function SystemEvents() {
+        }
+        SystemEvents.trigger = function (name, value) {
+            SystemEvents.events.trigger(name, value);
+        };
+        SystemEvents.watch = function (name, cb) {
+            return SystemEvents.events.on(name, cb);
+        };
+        SystemEvents.events = new EventDispatcher();
+        return SystemEvents;
+    }());
+    exports.SystemEvents = SystemEvents;
+});
+define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events"], function (require, exports, webcomponent_2, system_events_1) {
+    "use strict";
+    exports.__esModule = true;
+    var QaInput = /** @class */ (function (_super) {
+        __extends(QaInput, _super);
+        function QaInput(domNode) {
+            var _this = _super.call(this, domNode) || this;
+            _this.label = document.createElement("label");
+            _this.input = document.createElement("input");
+            _this.input.type = "text";
+            return _this;
+        }
+        QaInput.prototype.focus = function () {
             this.input.focus();
-        }
-        rightAnswer() {
-            // hack into method defined in index.html
-            wrongAnswer(1);
-        }
-        wrongAnswer() {
-            // hack into method defined in index.html
-            wrongAnswer(-1);
-        }
-        isMatch(a, b) {
-            let A = a.toUpperCase();
-            let B = b.toUpperCase();
+        };
+        QaInput.prototype.rightAnswer = function () {
+            system_events_1.SystemEvents.trigger("correct", { value: 1 });
+        };
+        QaInput.prototype.wrongAnswer = function () {
+            system_events_1.SystemEvents.trigger("incorrect", { value: -1 });
+        };
+        QaInput.prototype.isMatch = function (a, b) {
+            var A = a.toUpperCase();
+            var B = b.toUpperCase();
             if (A === B)
                 return true;
             switch (b.toLocaleLowerCase()) {
@@ -76,82 +175,58 @@ define("quizlet/qa-input", ["require", "exports"], function (require, exports) {
                         return true;
             }
             return false;
-        }
-        connectedCallback() {
-            const label = this.label;
+        };
+        QaInput.prototype.connectedCallback = function () {
+            var _this = this;
+            var label = this.label;
             label.textContent = this.getAttribute("question");
             label.title = this.getAttribute("hint") || this.getAttribute("answer") || "";
-            const input = this.input;
-            const answer = this.getAttribute("answer") || "";
+            var input = this.input;
+            var answer = this.getAttribute("answer") || "";
             input.maxLength = answer.length;
-            input.innerHTML = `<style>
-        .correct {
-            color: green;
-            border: 1px solid green;
-        }
-        .wrong {
-            border: 1px solid red;
-        }
-        label {
-			font-size: x-large;
-            display: block;
-			whitespace:wrap;
-			margin-top: 20px;
-        }
-        input {
-			font-size: x-large;
-			display: block;
-            vertical-align: top;
-            background-color: black;
-            border: none;
-            color: gray;
-            padding-left: 10px;
-            min-height: 64px;
-			max-height: 64px;
-			width: 100%;
-        }
-        </style>`;
-            input.onkeypress = ev => {
+            input.innerHTML = "<style>\n        .correct {\n            color: green;\n            border: 1px solid green;\n        }\n        .wrong {\n            border: 1px solid red;\n        }\n        label {\n\t\t\tfont-size: x-large;\n            display: block;\n\t\t\twhitespace:wrap;\n\t\t\tmargin-top: 20px;\n        }\n        input {\n\t\t\tfont-size: x-large;\n\t\t\tdisplay: block;\n            vertical-align: top;\n            background-color: black;\n            border: none;\n            color: gray;\n            padding-left: 10px;\n            min-height: 64px;\n\t\t\tmax-height: 64px;\n\t\t\twidth: 100%;\n        }\n        </style>";
+            input.onkeypress = function (ev) {
                 ev.preventDefault();
                 if (input.readOnly)
                     return;
-                let currentKey = ev.key;
-                let currentValue = input.value;
-                let expectedKey = answer[currentValue.length];
+                var currentKey = ev.key;
+                var currentValue = input.value;
+                var expectedKey = answer[currentValue.length];
                 console.log(currentKey, expectedKey);
-                if (this.isMatch(currentKey, expectedKey)) {
+                if (_this.isMatch(currentKey, expectedKey)) {
                     input.classList.remove("wrong");
                     input.value = answer.substring(0, currentValue.length + 1);
-                    this.rightAnswer();
+                    _this.rightAnswer();
                     if (answer.length === currentValue.length + 1) {
                         input.classList.add("correct");
                         input.readOnly = true;
-                        let s = this.nextElementSibling;
-                        console.log(s);
-                        setTimeout(() => s && s.focus(), 200);
+                        var s_1 = _this.nextElementSibling();
+                        console.log(s_1);
+                        setTimeout(function () { return s_1 && s_1.focus(); }, 200);
                         return false;
                     }
                     return false;
                 }
                 else {
                     input.classList.add("wrong");
-                    this.wrongAnswer();
+                    _this.wrongAnswer();
                     input.value = answer.substring(0, currentValue.length + 1);
                 }
                 return false;
             };
-            const shadowRoot = this.attachShadow({ mode: "open" });
+            var shadowRoot = this.attachShadow({ mode: "open" });
             shadowRoot.appendChild(label);
             shadowRoot.appendChild(input);
-        }
-    }
+        };
+        return QaInput;
+    }(webcomponent_2.WebComponent));
     exports.QaInput = QaInput;
 });
 define("verbos/tener", ["require", "exports"], function (require, exports) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.__esModule = true;
     // applicable infinitives
-    const infinitives = [
+    var infinitives = [
         { es: "comer", en: "eat" },
         { es: "ir", en: "go" },
         { es: "leer", en: "read" },
@@ -165,22 +240,24 @@ define("verbos/tener", ["require", "exports"], function (require, exports) {
         tu: "tienes",
         nosotros: "tenemos"
     };
-    const builder = [
+    var builder = [
         { es: "Tengo que {verb}.", en: "I have to {verb}." },
         { es: "¿Tienes que {verb}?", en: "Do you have to {verb}?" },
         { es: "No tenemos que {verb}.", en: "We don't have to {verb}." }
     ];
     exports.qa = [];
-    infinitives.forEach(verb => {
-        builder.forEach(b => exports.qa.push({
-            q: b.es.replace("{verb}", verb.es),
-            a: b.en.replace("{verb}", verb.en)
-        }));
+    infinitives.forEach(function (verb) {
+        builder.forEach(function (b) {
+            return exports.qa.push({
+                q: b.es.replace("{verb}", verb.es),
+                a: b.en.replace("{verb}", verb.en)
+            });
+        });
     });
 });
 define("sentences/index", ["require", "exports"], function (require, exports) {
     "use strict";
-    const fill_ins = {
+    var fill_ins = {
         gusta: [{ "el chihuahua": "the chihuahua" }, { "beber agua": "to drink water" }, { "el queso": "cheese" }]
     };
     return [
@@ -373,7 +450,7 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
 define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], function (require, exports, tener_1, index_1) {
     "use strict";
     index_1 = __importDefault(index_1);
-    const verbs = {
+    var verbs = {
         llamar: "call",
         confiar: "trust",
         esperar: "wait",
@@ -391,10 +468,10 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         "nadar {adjective}": "swim {adjective}",
         "correr {adjective}": "run {adjective}"
     };
-    const places = {
+    var places = {
         "a casa": "home"
     };
-    const colors = {
+    var colors = {
         anaranjado: "orange",
         azul: "blue",
         rojo: "red",
@@ -404,7 +481,7 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         rosado: "pink",
         amarillo: "yellow"
     };
-    const nouns = {
+    var nouns = {
         "una casa": "a house",
         "esa casa": "that house",
         "otra casa": "another house",
@@ -413,12 +490,12 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         "un libro": "a book",
         "una persona": "a person"
     };
-    const adjectives = {
+    var adjectives = {
         rápido: "fast",
         "más rápido": "faster",
         "lo más rápido": "fastest"
     };
-    const numbers = {
+    var numbers = {
         dos: "two",
         tres: "three",
         quatro: "four",
@@ -450,9 +527,9 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
     If the plural refers to a mixed group, use the masculine.
      */
     function pluralizeNoun(noun) {
-        let num = randomNumber();
-        let es = noun.es;
-        let en = noun.en;
+        var num = randomNumber();
+        var es = noun.es;
+        var en = noun.en;
         if (endsWith(es, "a"))
             es += "s";
         else if (endsWith(es, "e"))
@@ -485,11 +562,11 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         }
         else if (startsWith(es, "un ")) {
             es = num.es + es.substring(2);
-            en = `${noun.en} (${num.en} of them)`;
+            en = noun.en + " (" + num.en + " of them)";
         }
         else if (startsWith(es, "una ")) {
             es = num.es + es.substring(3);
-            en = `${noun.en} (${num.en} of them)`;
+            en = noun.en + " (" + num.en + " of them)";
         }
         else {
             en += " (plural)";
@@ -500,9 +577,9 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         };
     }
     function randomItem(list) {
-        let keys = Object.keys(list);
-        let index = Math.round(Math.random() * (keys.length - 1));
-        let es = keys[index];
+        var keys = Object.keys(list);
+        var index = Math.round(Math.random() * (keys.length - 1));
+        var es = keys[index];
         return { es: es, en: list[es] || es };
     }
     function randomVerb() {
@@ -524,17 +601,17 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         return randomItem(adjectives);
     }
     function shuffle(array) {
-        let currentIndex = array.length;
+        var currentIndex = array.length;
         while (0 !== currentIndex) {
-            let randomIndex = Math.floor(Math.random() * currentIndex);
+            var randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex -= 1;
-            let temporaryValue = array[currentIndex];
+            var temporaryValue = array[currentIndex];
             array[currentIndex] = array[randomIndex];
             array[randomIndex] = temporaryValue;
         }
         return array;
     }
-    const QA = [
+    var QA = [
         { a: "yo necesito", q: "I need" },
         { a: "yo necesito {verb}", q: "I need to {verb}" },
         { a: "yo necesito {noun}", q: "I need {noun}" },
@@ -570,20 +647,20 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         { a: "Que tengas una buena mañana", q: "have a good morning" },
         { a: "¡Que tengas una buena semana!", q: "have a good week!" }
     ];
-    let qa = QA.concat(tener_1.qa, index_1.default.filter(v => !!v.es && !!v.en).map(v => ({ a: v.es, q: v.en })));
-    let questions = shuffle(qa).map(item => {
-        let q = item.q;
-        let a = item.a;
-        let swap = 0.5 > Math.random();
+    var qa = QA.concat(tener_1.qa, index_1["default"].filter(function (v) { return !!v.es && !!v.en; }).map(function (v) { return ({ a: v.es, q: v.en }); }));
+    var questions = shuffle(qa).map(function (item) {
+        var q = item.q;
+        var a = item.a;
+        var swap = 0.5 > Math.random();
         while (true) {
-            let verb = randomVerb();
-            let noun = randomNoun();
-            let place = randomPlace();
-            let num = randomNumber();
-            let pluralNoun = pluralizeNoun(randomNoun());
-            let adjective = randomAdjective();
-            let color = randomColor();
-            let q2 = q
+            var verb = randomVerb();
+            var noun = randomNoun();
+            var place = randomPlace();
+            var num = randomNumber();
+            var pluralNoun = pluralizeNoun(randomNoun());
+            var adjective = randomAdjective();
+            var color = randomColor();
+            var q2 = q
                 .replace("{verb}", verb.en)
                 .replace("{plural-noun}", pluralNoun.en)
                 .replace("{noun}", noun.en)
@@ -591,7 +668,7 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
                 .replace("{color}", color.en)
                 .replace("{adjective}", adjective.en)
                 .replace("{number}", num.en);
-            let a2 = a
+            var a2 = a
                 .replace("{verb}", verb.es)
                 .replace("{plural-noun}", pluralNoun.es)
                 .replace("{noun}", noun.es)
@@ -608,39 +685,77 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
     });
     return questions.slice(0, 5);
 });
-define("quizlet/qa-block", ["require", "exports", "quizlet/qa"], function (require, exports, qa_1) {
+define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/qa"], function (require, exports, webcomponent_3, qa_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.__esModule = true;
     qa_1 = __importDefault(qa_1);
-    class QaBlock extends HTMLElement {
-        constructor() {
-            super();
-            this.load();
+    var QaBlock = /** @class */ (function (_super) {
+        __extends(QaBlock, _super);
+        function QaBlock(domNode) {
+            var _this = _super.call(this, domNode) || this;
+            _this.load();
+            return _this;
         }
-        load() {
-            const shadowRoot = this.attachShadow({ mode: "open" });
-            let div = document.createElement("div");
-            qa_1.default.forEach(item => {
-                let qaItem = document.createElement("qa-input");
+        QaBlock.prototype.load = function () {
+            var shadowRoot = this.attachShadow({ mode: "open" });
+            var div = document.createElement("div");
+            qa_1["default"].forEach(function (item) {
+                var qaItem = document.createElement("qa-input");
                 qaItem.setAttribute("question", item.q);
                 qaItem.setAttribute("answer", item.a);
                 div.appendChild(qaItem);
             });
             shadowRoot.innerHTML = div.innerHTML;
-        }
-    }
+        };
+        return QaBlock;
+    }(webcomponent_3.WebComponent));
     exports.QaBlock = QaBlock;
 });
-define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block"], function (require, exports, score_board_1, qa_input_1, qa_block_1) {
+define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events"], function (require, exports, score_board_1, qa_input_1, qa_block_1, webcomponent_4, system_events_2) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.__esModule = true;
+    function from(nodes) {
+        var result = [];
+        for (var i = 0; i < nodes.length; i++) {
+            result[i] = nodes.item(i);
+        }
+        return result;
+    }
+    function visit(node, cb) {
+        if (!cb(node))
+            return;
+        from(node.children).forEach(function (n) { return visit(n, cb); });
+    }
     {
-        let mods = {
+        var mods_1 = {
             "qa-input": qa_input_1.QaInput,
             "qa-block": qa_block_1.QaBlock,
             "score-board": score_board_1.ScoreBoard
         };
-        Object.keys(mods).forEach(key => customElements.define(key, mods[key]));
+        visit(document.body, function (node) {
+            var className = node.tagName.toLowerCase();
+            if (mods_1[className]) {
+                var C = mods_1[className];
+                var c = new C(node);
+                c.connectedCallback();
+            }
+            return true;
+        });
     }
+    var correct = 0;
+    var incorrect = 0;
+    function score(add) {
+        if (0 > add)
+            incorrect -= add;
+        else
+            correct += add;
+        var elements = from(document.getElementsByTagName("score-board"));
+        elements.forEach(function (e) {
+            var score = webcomponent_4.getComponent(e);
+            score && score.setAttribute("score", correct + "");
+        });
+    }
+    system_events_2.SystemEvents.watch("correct", function () { return score(1); });
+    system_events_2.SystemEvents.watch("incorrect", function () { return score(-1); });
 });
 //# sourceMappingURL=main.js.map
