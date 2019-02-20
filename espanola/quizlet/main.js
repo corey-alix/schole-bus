@@ -120,6 +120,235 @@ define("quizlet/console-log", ["require", "exports", "quizlet/webcomponent", "qu
     }
     exports.log = log;
 });
+define("quizlet/keydown-as-keypress", ["require", "exports"], function (require, exports) {
+    "use strict";
+    var mapping = [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        32,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        59,
+        61,
+        44,
+        45,
+        46,
+        47,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        91,
+        92,
+        93,
+        39
+    ];
+    return { map: mapping };
+});
 define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], function (require, exports, webcomponent_2) {
     "use strict";
     exports.__esModule = true;
@@ -141,7 +370,7 @@ define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], fu
     }(webcomponent_2.WebComponent));
     exports.ScoreBoard = ScoreBoard;
 });
-define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log"], function (require, exports, webcomponent_3, system_events_2, console_log_1) {
+define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/keydown-as-keypress"], function (require, exports, webcomponent_3, system_events_2, console_log_1, keydown_as_keypress_1) {
     "use strict";
     exports.__esModule = true;
     var QaInput = /** @class */ (function (_super) {
@@ -218,11 +447,11 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         };
         QaInput.prototype.connectedCallback = function () {
             var _this = this;
-            var label = this.label;
-            label.textContent = this.getAttribute("question");
-            label.title = this.getAttribute("hint") || "";
             var input = this.input;
             var answer = this.getAttribute("answer") || "";
+            var label = this.label;
+            label.textContent = this.getAttribute("question");
+            label.title = this.getAttribute("hint") || answer;
             input.maxLength = answer.length;
             input.innerHTML = "<style>\n        .correct {\n            color: green;\n            border: 1px solid green;\n        }\n        .wrong {\n            border: 1px solid red;\n        }\n        label {\n\t\t\tfont-size: x-large;\n            display: block;\n\t\t\twhitespace:wrap;\n\t\t\tmargin-top: 20px;\n        }\n        input {\n\t\t\tfont-size: x-large;\n\t\t\tdisplay: block;\n            vertical-align: top;\n            background-color: black;\n            border: none;\n            color: gray;\n            padding-left: 10px;\n            min-height: 64px;\n\t\t\tmax-height: 64px;\n\t\t\twidth: 100%;\n        }\n\t\t</style>";
             input.onkeydown = function (ev) {
@@ -230,13 +459,6 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     ev.preventDefault();
                     if (input.readOnly)
                         return;
-                    var currentKey = ev.key;
-                    // safari on iPhone 4 does not have this value
-                    if (!currentKey) {
-                        currentKey = String.fromCharCode(ev.keyCode);
-                        console_log_1.log(currentKey);
-                    }
-                    var currentValue = input.value;
                     switch (ev.keyCode) {
                         case 8: // backspace
                         case 9: // tab
@@ -252,13 +474,15 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                                 _this.tab();
                             return false;
                     }
+                    var currentValue = input.value;
                     var expectedKey = answer[currentValue.length];
+                    var currentKey = ev.key || String.fromCharCode(keydown_as_keypress_1.map[ev.keyCode] || 0);
                     switch (currentKey) {
                         case " ":
                             if (currentKey !== expectedKey)
                                 return;
                     }
-                    console_log_1.log(ev.keyCode + " " + currentKey + " " + expectedKey);
+                    console_log_1.log(ev.key + "->" + currentKey + " (hint:" + expectedKey + ")");
                     if (_this.isMatch(currentKey, expectedKey)) {
                         input.value = answer.substring(0, currentValue.length + 1);
                         _this.rightAnswer();

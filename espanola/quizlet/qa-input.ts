@@ -1,6 +1,7 @@
 import { WebComponent, getComponent } from "./webcomponent";
 import { SystemEvents } from "./system-events";
 import { log } from "./console-log";
+import { map } from "./keydown-as-keypress";
 
 export class QaInput extends WebComponent {
 	input: HTMLInputElement;
@@ -73,12 +74,13 @@ export class QaInput extends WebComponent {
 	}
 
 	connectedCallback() {
-		const label = this.label;
-		label.textContent = this.getAttribute("question");
-		label.title = this.getAttribute("hint") || "";
-
 		const input = this.input;
 		const answer = this.getAttribute("answer") || "";
+		const label = this.label;
+
+		label.textContent = this.getAttribute("question");
+		label.title = this.getAttribute("hint") || answer;
+
 		input.maxLength = answer.length;
 		input.innerHTML = `<style>
         .correct {
@@ -112,13 +114,6 @@ export class QaInput extends WebComponent {
 			try {
 				ev.preventDefault();
 				if (input.readOnly) return;
-				let currentKey = ev.key;
-				// safari on iPhone 4 does not have this value
-				if (!currentKey) {
-					currentKey = String.fromCharCode(ev.keyCode);
-					log(currentKey);
-				}
-				let currentValue = input.value;
 				switch (ev.keyCode) {
 					case 8: // backspace
 					case 9: // tab
@@ -133,12 +128,17 @@ export class QaInput extends WebComponent {
 						if (this.validate()) this.tab();
 						return false;
 				}
+
+				let currentValue = input.value;
 				let expectedKey = answer[currentValue.length];
+
+				let currentKey = ev.key || String.fromCharCode(map[ev.keyCode] || 0);
+
 				switch (currentKey) {
 					case " ":
 						if (currentKey !== expectedKey) return;
 				}
-				log(`${ev.keyCode} ${currentKey} ${expectedKey}`);
+				log(`${ev.key}->${currentKey} (hint:${expectedKey})`);
 				if (this.isMatch(currentKey, expectedKey)) {
 					input.value = answer.substring(0, currentValue.length + 1);
 					this.rightAnswer();
