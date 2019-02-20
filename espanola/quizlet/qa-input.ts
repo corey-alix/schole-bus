@@ -35,6 +35,10 @@ export class QaInput extends HTMLElement {
 				if (a.toUpperCase() == "O") return true;
 			case "ú":
 				if (a.toUpperCase() == "U") return true;
+			case "¡":
+				if (a.toUpperCase() == "!") return true;
+			case "¿":
+				if (a.toUpperCase() == "?") return true;
 		}
 		return false;
 	}

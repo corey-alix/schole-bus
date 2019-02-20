@@ -1,7 +1,7 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-define("score-board", ["require", "exports"], function (require, exports) {
+define("quizlet/score-board", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class ScoreBoard extends HTMLElement {
@@ -20,7 +20,7 @@ define("score-board", ["require", "exports"], function (require, exports) {
     }
     exports.ScoreBoard = ScoreBoard;
 });
-define("qa-input", ["require", "exports"], function (require, exports) {
+define("quizlet/qa-input", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class QaInput extends HTMLElement {
@@ -58,6 +58,12 @@ define("qa-input", ["require", "exports"], function (require, exports) {
                         return true;
                 case "ú":
                     if (a.toUpperCase() == "U")
+                        return true;
+                case "¡":
+                    if (a.toUpperCase() == "!")
+                        return true;
+                case "¿":
+                    if (a.toUpperCase() == "?")
                         return true;
             }
             return false;
@@ -131,8 +137,233 @@ define("qa-input", ["require", "exports"], function (require, exports) {
     }
     exports.QaInput = QaInput;
 });
-define("qa", ["require", "exports"], function (require, exports) {
+define("verbos/tener", ["require", "exports"], function (require, exports) {
     "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    // applicable infinitives
+    const infinitives = [
+        { es: "comer", en: "eat" },
+        { es: "ir", en: "go" },
+        { es: "leer", en: "read" },
+        { es: "dormir", en: "sleep" },
+        { es: "hacer", en: "do" }
+    ];
+    exports.verbo = {
+        en: "to have",
+        es: "tener",
+        yo: "tengo",
+        tu: "tienes",
+        nosotros: "tenemos"
+    };
+    const builder = [
+        { es: "Tengo que {verb}.", en: "I have to {verb}." },
+        { es: "¿Tienes que {verb}?", en: "Do you have to {verb}?" },
+        { es: "No tenemos que {verb}.", en: "We don't have to {verb}." }
+    ];
+    exports.qa = [];
+    infinitives.forEach(verb => {
+        builder.forEach(b => exports.qa.push({
+            q: b.es.replace("{verb}", verb.es),
+            a: b.en.replace("{verb}", verb.en)
+        }));
+    });
+});
+define("sentences/index", ["require", "exports"], function (require, exports) {
+    "use strict";
+    const fill_ins = {
+        gusta: [{ "el chihuahua": "the chihuahua" }, { "beber agua": "to drink water" }, { "el queso": "cheese" }]
+    };
+    return [
+        { es: "Mi papá ama las papas.", en: "My dad loves potatoes." },
+        { es: "¿nos vamos?", en: "Are we going?" },
+        { es: "¿Eres un hijo de Dios?", en: "Are you a child of God?" },
+        { es: "¿Vas a ir?", en: "Are you going?" },
+        { es: "¿Vas a comer?", en: "Are you going to eat?" },
+        { es: "¿Estás jubilado?", en: "Are you retired?" },
+        { es: "¿Eres el pastor?", en: "Are you the pastor?" },
+        { es: "¡Adiós! Gracias por todo.", en: "Bye! Thanks for everything!" },
+        { es: "¿Puedo orar por ti?", en: "Can I pray for you?" },
+        { es: "¿Puedes hablar inglés?", en: "Can you speak English?" },
+        { es: "¿Puedes hablar más despacio?", en: "Can you speak slower?" },
+        { es: "¿Tienes una biblia?", en: "Do you have a bible?" },
+        { es: "¿Usted tiene un coche?", en: "Do you have a car?" },
+        { es: "¿Tienes un bolígrafo?", en: "Do you have a pen?" },
+        { es: "¿Hijos Tienes?", en: "Do you have children?" },
+        { es: "¿Conoces a Jesus?", en: "Do you know Jesus?" },
+        { es: "¿Te gusta leer?", en: "Do you like to read?" },
+        { es: "¿Vives en Cuba?", en: "Do you live in Cuba?" },
+        { es: "¿Vives con tu mamá?", en: "Do you live with your mom?" },
+        { es: "¿Necesitas una biblia?", en: "Do you need a bible?" },
+        { es: "¿Necesitas más para comer?", en: "Do you need more to eat?" },
+        { es: "¿Necesitas decidir?", en: "Do you need to decide?" },
+        { es: "¿Necesitas comer?", en: "Do you need to eat?" },
+        { es: "¿Necesitas ir?", en: "Do you need to go?" },
+        { es: "¿Necesitas irte?", en: "Do you need to leave?" },
+        { es: "¿Practicas español?", en: "Do you practice Spanish?" },
+        { es: "¿Estudias?", en: "Do you study?" },
+        { es: "¿Quieres a Jesús como tu salvador?", en: "Do you want Jesus as your savior?" },
+        { es: "¿Trabajas?", en: "Do you work?" },
+        { es: "Todas las personas necesitan a Jesús", en: "Every person needs Jesus." },
+        { es: "Todos son muy amables.", en: "Everyone is very kind." },
+        { es: "Perdóneme.", en: "Excuse me." },
+        { es: "Disculpe señor.", en: "Excuse me, Sir." },
+        { es: "¡Gloria a Dios!", en: "Glory to God!" },
+        { es: "Dios siempre es bueno.", en: "God is always good." },
+        { es: "Dios es rey sobre toda la creación.", en: "God is King over all creation." },
+        { es: "Dios es mi padre.", en: "God is my father." },
+        { es: "¡Dios es poderoso!", en: "God is powerful!" },
+        { es: "Dios habla a sus hijos.", en: "God talks to his children." },
+        { es: "¡Buenas noches!", en: "Good evening!" },
+        { es: "¡Buenos dias! Como estas?", en: "Good morning! How are you?" },
+        { es: "¡Genial! ¡Eso es bueno!", en: "Great! That’s good!" },
+        { es: "¡Feliz cumpleaños!", en: "Happy Birthday!" },
+        { es: "El es mi hermano en Cristo.", en: "He is my brother in Christ." },
+        { es: "El es mi amigo.", en: "He is my friend." },
+        { es: "Él está hablando con Mike.", en: "He is talking to Mike." },
+        { es: "Su nombre es Juan.", en: "His name is Juan." },
+        { es: "¿Cómo estás?", en: "How are you?" },
+        { es: "¡Que horrible!", en: "How horrible!" },
+        { es: "¿Cuantos años tienes?", en: "How old are you?" },
+        { es: "Voy a comer.", en: "I will eat." },
+        { es: "Voy a vivir con Jesús por siempre", en: "I am going to live with Jesus forever." },
+        { es: "Voy a practicar Español", en: "I am going to practice Spanish." },
+        { es: "Voy a leer ahora.", en: "I am going to read now." },
+        { es: "Voy a hablar con Todd.", en: "I am going to talk to Todd." },
+        { es: "No voy al café", en: "I am not going to the café." },
+        { es: "No voy.", en: "I am not going." },
+        { es: "No voy a cantar sin Todd", en: "I am not singing without Todd." },
+        { es: "Estoy cantando hoy.", en: "I am singing today." },
+        { es: "soy tu amigo.", en: "I am your friend." },
+        { es: "Yo hablo inglés.", en: "I can speak English." },
+        { es: "No comer queso.", en: "I do not eat cheese." },
+        { es: "No comer chihuahuas.", en: "I do not eat chihuahuas." },
+        { es: "No tengo una pluma.", en: "I do not have a pen." },
+        { es: "No tener hijos.", en: "I do not have children." },
+        { es: "No me gusta ir al hospital.", en: "I do not like to go to the hospital." },
+        { es: "No necesito más comida.", en: "I do not need more food." },
+        { es: "No necesito hacerlo.", en: "I do not need to do it." },
+        { es: "No canto bien.", en: "I do not sing well." },
+        { es: "No entiendo.", en: "I do not understand." },
+        { es: "No quiero comer.", en: "I do not want to eat." },
+        { es: "Tengo hijos.", en: "I have children." },
+        { es: "Tengo dos bicicletas.", en: "I have two bicycles." },
+        { es: "Tengo dos amigos aquí.", en: "I have two friends here." },
+        { es: "me gusta el queso.", en: "I like cheese." },
+        { es: "Me gusta es, gracias.", en: "I like it, thank you." },
+        { es: "Me gusta el chihuahua.", en: "I like the chihuahua." },
+        { es: "Me gusta beber aqua.", en: "I like to drink water." },
+        { es: "Me gusta comer pizza.", en: "I like to eat pizza." },
+        { es: "Me gusta comer.  Te gusta comer?", en: "I like to eat. Do you like to eat?" },
+        { es: "Me gusta alabar a Dios.", en: "I like to praise God." },
+        { es: "Me gusta leer la biblia.", en: "I like to read the bible." },
+        { es: "Vivo en la casa roja.", en: "I live in the red house." },
+        { es: "Amo el chocolate.", en: "I love chocolate." },
+        { es: "Me encanta cantar en la iglesia.", en: "I love to sing in church." },
+        { es: "Necesito una biblia.", en: "I need a bible." },
+        { es: "Necesito una silla.", en: "I need a chair." },
+        { es: "Necesito un poco.", en: "I need a little bit." },
+        { es: "Necesito una papa.", en: "I need a potato." },
+        { es: "Necesito ayuda por favor.", en: "I need help, please." },
+        { es: "Necesito un poco más, por favor.", en: "I need a little more, please." },
+        { es: "Necesito decidir.", en: "I need to decide." },
+        { es: "Necesito comer.", en: "I need to eat." },
+        { es: "Necesito irme por la mañana.", en: "I need to leave in the morning." },
+        { es: "Necesito ir a Cuba.", en: "I need to go to Cuba." },
+        { es: "Necesito ir al baño.", en: "I need to go to the bathroom." },
+        { es: "Necesito pagar.", en: "I need to pay." },
+        { es: "Hablo un poco de español.", en: "I speak a little Spanish." },
+        { es: "Quiero beber agua.", en: "I want to drink water." },
+        { es: "Quiero ir a Cuba con ellos.", en: "I want to go to Cuba with them." },
+        { es: "Quiero hablar.", en: "I want to talk." },
+        { es: "Quiero hablarte de Jesús.", en: "I want to talk to you about Jesus." },
+        { es: "Yo creo en Dios.", en: "I believe in God." },
+        { es: "Me gustaría eso.", en: "I would like that." },
+        { es: "Me gustaría cantar.", en: "I would like to sing." },
+        { es: "Quisiera dos, por favor.", en: "I would like two, please." },
+        { es: "No me gustaría ir.", en: "I would not like to go." },
+        { es: "¿Es Dios tu padre?", en: "Is God your father?" },
+        { es: "¿El va?", en: "Is he going?" },
+        { es: "¿Él es tu hermano?", en: "Is he your brother?" },
+        { es: "¿Es su casa?", en: "Is that his house?" },
+        { es: "¿Es el niño tu hijo?", en: "Is the boy your son?" },
+        { es: "¿Es el chihuahua un niño?", en: "Is the chihuahua a boy?" },
+        { es: "Es una buena idea.", en: "It is a good idea." },
+        { es: "Es un placer conocerte.", en: "It’s good to meet you." },
+        { es: "Jesús es Dios.", en: "Jesus is God." },
+        { es: "Jesús es Rey!", en: "Jesus is King!" },
+        { es: "Jesús es mi roca.", en: "Jesus is my rock." },
+        { es: "Jesús es nuestra única esperanza.", en: "Jesus is our only hope." },
+        { es: "Jesús es el único salvador.", en: "Jesus is the only savior." },
+        { es: "Jesús es el hijo de Dios.", en: "Jesus is the son of God." },
+        { es: "Jesús vive en mí.", en: "Jesus lives in me." },
+        { es: "Jesús ama a todos.", en: "Jesus loves everyone." },
+        { es: "Jesús te ama.", en: "Jesus loves you." },
+        { es: "Comamos!", en: "Let’s eat!" },
+        { es: "Mi madre es muy hermosa.", en: "My mother is very pretty." },
+        { es: 'No, gracias. Como se dice "pollo"?', en: 'No, thank you. How do you say "chicken"?' },
+        { es: "Por favor dime.", en: "Please tell me." },
+        { es: "Orar a Dios es importante.", en: "Praying to God is important." },
+        { es: "Orar es hablar a Dios.", en: "Praying is talking to God." },
+        { es: "Dilo otra vez por favor?", en: "Say that again, please." },
+        { es: "Hasta luego.", en: "See you later." },
+        { es: "Ella es mi hermana en Cristo.", en: "She is my sister in Christ." },
+        { es: "Cantar a Dios es importante.", en: "Singing to God is important." },
+        { es: "", en: "Thank you for everything." },
+        { es: "", en: "Thank you for singing." },
+        { es: "", en: "Thank you for studying with me." },
+        { es: "", en: "Thank you so much!" },
+        { es: "", en: "Thank you, I am fine." },
+        { es: "", en: "That’s bad. I am sorry." },
+        { es: "", en: "That’s so good!" },
+        { es: "", en: "The bible says Jesus is Lord." },
+        { es: "", en: "The car is white." },
+        { es: "", en: "The cat is very white." },
+        { es: "", en: "The cheese is from Chihuahua." },
+        { es: "", en: "The chihuahua is very white" },
+        { es: "", en: "The girl is your daughter?" },
+        { es: "", en: "Todd is with the pastor." },
+        { es: "", en: "Very good!" },
+        { es: "", en: "We are children of God through Christ." },
+        { es: "", en: "We are from the United States." },
+        { es: "", en: "We are going to church." },
+        { es: "", en: "We are going to eat at church." },
+        { es: "", en: "We are going to pray." },
+        { es: "", en: "We are going to sing at church." },
+        { es: "", en: "We are going to study later." },
+        { es: "", en: "We are going tomorrow." },
+        { es: "", en: "We are justified by faith." },
+        { es: "", en: "We are not going." },
+        { es: "", en: "We live by faith." },
+        { es: "", en: "We live in the United States." },
+        { es: "", en: "We need God." },
+        { es: "", en: "We need to pray every day." },
+        { es: "", en: "We need to talk." },
+        { es: "", en: "What do you like?" },
+        { es: "", en: "What does that mean?" },
+        { es: "", en: "What is your name?" },
+        { es: "", en: "What time is it?" },
+        { es: "", en: "When are we going to church?" },
+        { es: "", en: "Where are we eating?" },
+        { es: "", en: "Where are we eating?" },
+        { es: "", en: "Where are you living?" },
+        { es: "", en: "Where is Albert?" },
+        { es: "", en: "Where is he going?" },
+        { es: "", en: "Where is the bathroom?" },
+        { es: "", en: "Where is the boy?" },
+        { es: "", en: "Where is the chihuahua going?" },
+        { es: "", en: "Where is the chihuahua?" },
+        { es: "", en: "Where is the pastor?" },
+        { es: "", en: "With Christ, I am strong." },
+        { es: "", en: "Yes, I want to." },
+        { es: "", en: "Yes, thank you." },
+        { es: "", en: "Yes, you need to go with me." },
+        { es: "", en: "You did very well." },
+        { es: "", en: "Your mom sings well." }
+    ];
+});
+define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], function (require, exports, tener_1, index_1) {
+    "use strict";
+    index_1 = __importDefault(index_1);
     const verbs = {
         llamar: "call",
         confiar: "trust",
@@ -294,7 +525,7 @@ define("qa", ["require", "exports"], function (require, exports) {
         }
         return array;
     }
-    const qa = [
+    const QA = [
         { a: "yo necesito", q: "I need" },
         { a: "yo necesito {verb}", q: "I need to {verb}" },
         { a: "yo necesito {noun}", q: "I need {noun}" },
@@ -327,8 +558,10 @@ define("qa", ["require", "exports"], function (require, exports) {
         { a: "es dos mas pequeño que cinco?", q: "is two smaller than five?" },
         { a: "es {number} mas pequeño que {number}?", q: "is {number} smaller than {number}?" },
         { a: "es {number} mas mayor que {number}?", q: "is {number} larger than {number}?" },
-        { a: "Que tengas una buena mañana", q: "have a good morning" }
+        { a: "Que tengas una buena mañana", q: "have a good morning" },
+        { a: "¡Que tengas una buena semana!", q: "have a good week!" }
     ];
+    let qa = QA.concat(tener_1.qa, index_1.default.filter(v => !!v.es && !!v.en).map(v => ({ a: v.es, q: v.en })));
     let questions = shuffle(qa).map(item => {
         let q = item.q;
         let a = item.a;
@@ -366,7 +599,7 @@ define("qa", ["require", "exports"], function (require, exports) {
     });
     return questions.slice(0, 10);
 });
-define("qa-block", ["require", "exports", "qa"], function (require, exports, qa_1) {
+define("quizlet/qa-block", ["require", "exports", "quizlet/qa"], function (require, exports, qa_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     qa_1 = __importDefault(qa_1);
@@ -389,7 +622,7 @@ define("qa-block", ["require", "exports", "qa"], function (require, exports, qa_
     }
     exports.QaBlock = QaBlock;
 });
-define("main", ["require", "exports", "score-board", "qa-input", "qa-block"], function (require, exports, score_board_1, qa_input_1, qa_block_1) {
+define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block"], function (require, exports, score_board_1, qa_input_1, qa_block_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     {

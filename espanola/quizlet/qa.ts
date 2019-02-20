@@ -1,3 +1,6 @@
+import { verbo as tener, qa as tenerQa } from "../verbos/tener";
+import sentences from "../sentences/index";
+
 type WordMapHash = { [key: string]: string };
 type WordMap = { en: string; es: string };
 
@@ -168,7 +171,7 @@ function shuffle<T>(array: Array<T>) {
 	return array;
 }
 
-const qa = [
+const QA = [
 	{ a: "yo necesito", q: "I need" },
 	{ a: "yo necesito {verb}", q: "I need to {verb}" },
 	{ a: "yo necesito {noun}", q: "I need {noun}" },
@@ -201,8 +204,11 @@ const qa = [
 	{ a: "es dos mas pequeño que cinco?", q: "is two smaller than five?" },
 	{ a: "es {number} mas pequeño que {number}?", q: "is {number} smaller than {number}?" },
 	{ a: "es {number} mas mayor que {number}?", q: "is {number} larger than {number}?" },
-	{ a: "Que tengas una buena mañana", q: "have a good morning" }
+	{ a: "Que tengas una buena mañana", q: "have a good morning" },
+	{ a: "¡Que tengas una buena semana!", q: "have a good week!" }
 ];
+
+let qa = QA.concat(tenerQa, sentences.filter(v => !!v.es && !!v.en).map(v => ({ a: v.es, q: v.en })));
 
 let questions = shuffle(qa).map(item => {
 	let q = item.q;
