@@ -198,6 +198,24 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             }
             return false;
         };
+        QaInput.prototype.provideHelp = function () {
+            var answer = this.getAttribute("answer") || "";
+            var input = this.input;
+            var currentValue = input.value;
+            input.value = answer.substring(0, currentValue.length + 1);
+        };
+        QaInput.prototype.validate = function () {
+            var answer = this.getAttribute("answer") || "";
+            var input = this.input;
+            var currentValue = input.value;
+            if (answer.length === currentValue.length) {
+                input.readOnly = true;
+                input.classList.remove("wrong");
+                input.classList.add("correct");
+                return true;
+            }
+            return false;
+        };
         QaInput.prototype.connectedCallback = function () {
             var _this = this;
             var label = this.label;
@@ -213,6 +231,11 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     if (input.readOnly)
                         return;
                     var currentKey = ev.key;
+                    // safari on iPhone 4 does not have this value
+                    if (!currentKey) {
+                        currentKey = String.fromCharCode(ev.keyCode);
+                        console_log_1.log(currentKey);
+                    }
                     var currentValue = input.value;
                     switch (ev.keyCode) {
                         case 8: // backspace
@@ -224,12 +247,9 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                         case 46: // del
                             return false;
                         case 112: // F1
-                            input.value = answer.substring(0, currentValue.length + 1);
-                            if (answer.length === currentValue.length + 1) {
-                                input.readOnly = true;
+                            _this.provideHelp();
+                            if (_this.validate())
                                 _this.tab();
-                                return false;
-                            }
                             return false;
                     }
                     var expectedKey = answer[currentValue.length];
@@ -240,14 +260,10 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     }
                     console_log_1.log(ev.keyCode + " " + currentKey + " " + expectedKey);
                     if (_this.isMatch(currentKey, expectedKey)) {
-                        input.classList.remove("wrong");
                         input.value = answer.substring(0, currentValue.length + 1);
                         _this.rightAnswer();
-                        if (answer.length === currentValue.length + 1) {
-                            input.classList.add("correct");
-                            input.readOnly = true;
+                        if (_this.validate()) {
                             _this.tab();
-                            return false;
                         }
                         return false;
                     }
@@ -270,6 +286,16 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             s = s.nextElementSibling();
             while (s && s.input.readOnly)
                 s = s.nextElementSibling();
+            // scan again from the top
+            if (!s) {
+                if (this.domNode.parentElement) {
+                    if (this.domNode.parentElement.firstElementChild) {
+                        s = webcomponent_3.getComponent(this.domNode.parentElement.firstElementChild);
+                        while (s && s.input.readOnly)
+                            s = s.nextElementSibling();
+                    }
+                }
+            }
             console_log_1.log(s ? "next found" : "no next input");
             setTimeout(function () { return s && s.focus(); }, 200);
         };

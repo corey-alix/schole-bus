@@ -1,4 +1,4 @@
-import { WebComponent } from "./webcomponent";
+import { WebComponent, getComponent } from "./webcomponent";
 import { SystemEvents } from "./system-events";
 import { log } from "./console-log";
 
@@ -52,6 +52,26 @@ export class QaInput extends WebComponent {
 		return false;
 	}
 
+	provideHelp() {
+		const answer = this.getAttribute("answer") || "";
+		let input = this.input;
+		let currentValue = input.value;
+		input.value = answer.substring(0, currentValue.length + 1);
+	}
+
+	validate() {
+		const answer = this.getAttribute("answer") || "";
+		let input = this.input;
+		let currentValue = input.value;
+		if (answer.length === currentValue.length) {
+			input.readOnly = true;
+			input.classList.remove("wrong");
+			input.classList.add("correct");
+			return true;
+		}
+		return false;
+	}
+
 	connectedCallback() {
 		const label = this.label;
 		label.textContent = this.getAttribute("question");
@@ -93,6 +113,11 @@ export class QaInput extends WebComponent {
 				ev.preventDefault();
 				if (input.readOnly) return;
 				let currentKey = ev.key;
+				// safari on iPhone 4 does not have this value
+				if (!currentKey) {
+					currentKey = String.fromCharCode(ev.keyCode);
+					log(currentKey);
+				}
 				let currentValue = input.value;
 				switch (ev.keyCode) {
 					case 8: // backspace
@@ -104,12 +129,8 @@ export class QaInput extends WebComponent {
 					case 46: // del
 						return false;
 					case 112: // F1
-						input.value = answer.substring(0, currentValue.length + 1);
-						if (answer.length === currentValue.length + 1) {
-							input.readOnly = true;
-							this.tab();
-							return false;
-						}
+						this.provideHelp();
+						if (this.validate()) this.tab();
 						return false;
 				}
 				let expectedKey = answer[currentValue.length];
@@ -119,14 +140,10 @@ export class QaInput extends WebComponent {
 				}
 				log(`${ev.keyCode} ${currentKey} ${expectedKey}`);
 				if (this.isMatch(currentKey, expectedKey)) {
-					input.classList.remove("wrong");
 					input.value = answer.substring(0, currentValue.length + 1);
 					this.rightAnswer();
-					if (answer.length === currentValue.length + 1) {
-						input.classList.add("correct");
-						input.readOnly = true;
+					if (this.validate()) {
 						this.tab();
-						return false;
 					}
 					return false;
 				} else {
@@ -146,8 +163,19 @@ export class QaInput extends WebComponent {
 
 	tab() {
 		let s = this as QaInput;
+
 		s = s.nextElementSibling() as QaInput;
 		while (s && s.input.readOnly) s = s.nextElementSibling() as QaInput;
+
+		// scan again from the top
+		if (!s) {
+			if (this.domNode.parentElement) {
+				if (this.domNode.parentElement.firstElementChild) {
+					s = getComponent(this.domNode.parentElement.firstElementChild as HTMLElement) as QaInput;
+					while (s && s.input.readOnly) s = s.nextElementSibling() as QaInput;
+				}
+			}
+		}
 		log(s ? "next found" : "no next input");
 		setTimeout(() => s && s.focus(), 200);
 	}
