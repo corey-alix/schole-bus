@@ -250,4 +250,4 @@ let questions = shuffle(qa).map(item => {
 	return swap ? { q: a, a: q } : { q: q, a: a };
 });
 
-export = questions.slice(0, 10);
+export = questions.slice(0, 5);

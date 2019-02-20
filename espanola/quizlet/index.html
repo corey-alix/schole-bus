@@ -9,13 +9,14 @@
 		<script src="main.js" defer></script>
 		<script>
 			require(["quizlet/main"]);
-			let score = 100;
-			function wrongAnswer() {
-				score--;
+			let correct = 0;
+			let incorrect = 0;
+			function wrongAnswer(add) {
+				if (0 > add) incorrect -= add;
+				else correct += add;
 				let elements = document.getElementsByTagName("score-board");
 				for (let i = 0; i < elements.length; i++) {
-					console.log("updating score to ", score);
-					elements[i].setAttribute("score", score + "");
+					elements[i].setAttribute("score", correct + "");
 				}
 			}
 		</script>
@@ -46,7 +47,7 @@
 	<body>
 		<div class="center-frame">
 			<qa-block></qa-block>
-			<score-board score="100"></score-board>
+			<score-board score="0"></score-board>
 		</div>
 	</body>
 </html>

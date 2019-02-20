@@ -33,37 +33,46 @@ define("quizlet/qa-input", ["require", "exports"], function (require, exports) {
         focus() {
             this.input.focus();
         }
+        rightAnswer() {
+            // hack into method defined in index.html
+            wrongAnswer(1);
+        }
         wrongAnswer() {
             // hack into method defined in index.html
-            wrongAnswer();
+            wrongAnswer(-1);
         }
         isMatch(a, b) {
-            if (a.toUpperCase() === b.toUpperCase())
+            let A = a.toUpperCase();
+            let B = b.toUpperCase();
+            if (A === B)
                 return true;
             switch (b.toLocaleLowerCase()) {
                 case "á":
-                    if (a.toUpperCase() == "A")
+                    if (A == "A")
                         return true;
                 case "é":
-                    if (a.toUpperCase() == "E")
+                    if (A == "E")
                         return true;
                 case "í":
-                    if (a.toUpperCase() == "I")
+                    if (A == "I")
                         return true;
                 case "ñ":
-                    if (a.toUpperCase() == "N")
+                    if (A == "N")
                         return true;
                 case "ó":
-                    if (a.toUpperCase() == "O")
+                    if (A == "O")
                         return true;
                 case "ú":
-                    if (a.toUpperCase() == "U")
+                    if (A == "U")
                         return true;
                 case "¡":
-                    if (a.toUpperCase() == "!")
+                    if (A == "!")
                         return true;
                 case "¿":
-                    if (a.toUpperCase() == "?")
+                    if (A == "?")
+                        return true;
+                case "’":
+                    if (A == "'")
                         return true;
             }
             return false;
@@ -86,7 +95,8 @@ define("quizlet/qa-input", ["require", "exports"], function (require, exports) {
         label {
 			font-size: x-large;
             display: block;
-            whitespace:wrap;
+			whitespace:wrap;
+			margin-top: 20px;
         }
         input {
 			font-size: x-large;
@@ -112,6 +122,7 @@ define("quizlet/qa-input", ["require", "exports"], function (require, exports) {
                 if (this.isMatch(currentKey, expectedKey)) {
                     input.classList.remove("wrong");
                     input.value = answer.substring(0, currentValue.length + 1);
+                    this.rightAnswer();
                     if (answer.length === currentValue.length + 1) {
                         input.classList.add("correct");
                         input.readOnly = true;
@@ -120,14 +131,13 @@ define("quizlet/qa-input", ["require", "exports"], function (require, exports) {
                         setTimeout(() => s && s.focus(), 200);
                         return false;
                     }
-                    console.log("+");
                     return false;
                 }
                 else {
                     input.classList.add("wrong");
                     this.wrongAnswer();
+                    input.value = answer.substring(0, currentValue.length + 1);
                 }
-                console.log("-");
                 return false;
             };
             const shadowRoot = this.attachShadow({ mode: "open" });
@@ -231,14 +241,14 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "Voy a hablar con Todd.", en: "I am going to talk to Todd." },
         { es: "No voy al café", en: "I am not going to the café." },
         { es: "No voy.", en: "I am not going." },
-        { es: "No voy a cantar sin Todd", en: "I am not singing without Todd." },
+        { es: "No voy a cantar sin Todd.", en: "I will not singing without Todd." },
         { es: "Estoy cantando hoy.", en: "I am singing today." },
         { es: "soy tu amigo.", en: "I am your friend." },
         { es: "Yo hablo inglés.", en: "I can speak English." },
         { es: "No comer queso.", en: "I do not eat cheese." },
         { es: "No comer chihuahuas.", en: "I do not eat chihuahuas." },
         { es: "No tengo una pluma.", en: "I do not have a pen." },
-        { es: "No tener hijos.", en: "I do not have children." },
+        { es: "No tengo hijos.", en: "I do not have children." },
         { es: "No me gusta ir al hospital.", en: "I do not like to go to the hospital." },
         { es: "No necesito más comida.", en: "I do not need more food." },
         { es: "No necesito hacerlo.", en: "I do not need to do it." },
@@ -261,7 +271,7 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "Me encanta cantar en la iglesia.", en: "I love to sing in church." },
         { es: "Necesito una biblia.", en: "I need a bible." },
         { es: "Necesito una silla.", en: "I need a chair." },
-        { es: "Necesito un poco.", en: "I need a little bit." },
+        { es: "Necesito un poco.", en: "I need a little." },
         { es: "Necesito una papa.", en: "I need a potato." },
         { es: "Necesito ayuda por favor.", en: "I need help, please." },
         { es: "Necesito un poco más, por favor.", en: "I need a little more, please." },
@@ -311,54 +321,53 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "", en: "Thank you for everything." },
         { es: "", en: "Thank you for singing." },
         { es: "", en: "Thank you for studying with me." },
-        { es: "¡", en: "Thank you so much!" },
-        { es: "", en: "Thank you, I am fine." },
-        { es: "", en: "That’s bad. I am sorry." },
-        { es: "¡", en: "That’s so good!" },
-        { es: "", en: "The bible says Jesus is Lord." },
-        { es: "", en: "The car is white." },
-        { es: "", en: "The cat is very white." },
-        { es: "", en: "The cheese is from Chihuahua." },
-        { es: "", en: "The chihuahua is very white" },
-        { es: "", en: "The girl is your daughter?" },
-        { es: "", en: "Todd is with the pastor." },
-        { es: "¡", en: "Very good!" },
-        { es: "", en: "We are children of God through Christ." },
-        { es: "", en: "We are from the United States." },
-        { es: "", en: "We are going to church." },
-        { es: "", en: "We are going to eat at church." },
-        { es: "", en: "We are going to pray." },
-        { es: "", en: "We are going to sing at church." },
-        { es: "", en: "We are going to study later." },
-        { es: "", en: "We are going tomorrow." },
-        { es: "", en: "We are justified by faith." },
-        { es: "", en: "We are not going." },
-        { es: "", en: "We live by faith." },
-        { es: "", en: "We live in the United States." },
-        { es: "", en: "We need God." },
-        { es: "", en: "We need to pray every day." },
-        { es: "", en: "We need to talk." },
-        { es: "", en: "What do you like?" },
-        { es: "", en: "What does that mean?" },
-        { es: "", en: "What is your name?" },
-        { es: "", en: "What time is it?" },
-        { es: "", en: "When are we going to church?" },
-        { es: "", en: "Where are we eating?" },
-        { es: "", en: "Where are we eating?" },
-        { es: "", en: "Where are you living?" },
-        { es: "", en: "Where is Albert?" },
-        { es: "", en: "Where is he going?" },
-        { es: "", en: "Where is the bathroom?" },
-        { es: "", en: "Where is the boy?" },
-        { es: "", en: "Where is the chihuahua going?" },
-        { es: "", en: "Where is the chihuahua?" },
-        { es: "", en: "Where is the pastor?" },
-        { es: "", en: "With Christ, I am strong." },
-        { es: "", en: "Yes, I want to." },
-        { es: "", en: "Yes, thank you." },
-        { es: "", en: "Yes, you need to go with me." },
-        { es: "", en: "You did very well." },
-        { es: "", en: "Your mom sings well." }
+        { es: "¡Muy gracias!", en: "Thank you so much!" },
+        { es: "Gracias, estoy bien.", en: "Thank you, I am fine." },
+        { es: "Eso es malo. Lo siento.", en: "That’s bad. I am sorry." },
+        { es: "¡Eso es tan bueno!", en: "That’s so good!" },
+        { es: "La Biblia dice que Jesús es el Señor.", en: "The bible says Jesus is Lord." },
+        { es: "El coche es blanco.", en: "The car is white." },
+        { es: "El gato es muy blanco.", en: "The cat is very white." },
+        { es: "El queso es de Chihuahua.", en: "The cheese is from Chihuahua." },
+        { es: "El chihuahua es muy blanco.", en: "The chihuahua is very white" },
+        { es: "¿La niña es tu hija?", en: "The girl is your daughter?" },
+        { es: "Todd está con el pastor.", en: "Todd is with the pastor." },
+        { es: "¡Muy bien!", en: "Very good!" },
+        { es: "Somos hijos de Dios por medio de Cristo.", en: "We are children of God through Christ." },
+        { es: "Somos de Estados Unidos.", en: "We are from the United States." },
+        { es: "Vamos a la iglesia.", en: "We are going to church." },
+        { es: "Vamos a comer en la iglesia.", en: "We are going to eat at church." },
+        { es: "Vamos a rezar.", en: "We are going to pray." },
+        { es: "Vamos a cantar en la iglesia.", en: "We are going to sing at church." },
+        { es: "Vamos a estudiar más tarde.", en: "We are going to study later." },
+        { es: "Nos vamos mañana.", en: "We are going tomorrow." },
+        { es: "Somos justificados por la fe.", en: "We are justified by faith." },
+        { es: "No vamos.", en: "We are not going." },
+        { es: "Vivir por la fe.", en: "We live by faith." },
+        { es: "Nosotros vivimos en los Estados Unidos.", en: "We live in the United States." },
+        { es: "Necesitamos a Dios.", en: "We need God." },
+        { es: "Necesitamos orar todos los días.", en: "We need to pray every day." },
+        { es: "Necesitamos hablar.", en: "We need to talk." },
+        { es: "¿Qué te gusta?", en: "What do you like?" },
+        { es: "Qué significa eso?", en: "What does that mean?" },
+        { es: "¿Cuál es su nombre?", en: "What is your name?" },
+        { es: "¿Que hora es?", en: "What time is it?" },
+        { es: "¿Cuándo vamos a la iglesia?", en: "When are we going to church?" },
+        { es: "¿Donde estamos comiendo?", en: "Where are we eating?" },
+        { es: "¿Dónde vives?", en: "Where do you live?" },
+        { es: "¿Dónde está Albert?", en: "Where is Albert?" },
+        { es: "¿A dónde él va?", en: "Where is he going?" },
+        { es: "¿Dónde está el baño?", en: "Where is the bathroom?" },
+        { es: "¿Dónde está el niño?", en: "Where is the boy?" },
+        { es: "¿A dónde va el chihuahua?", en: "Where is the chihuahua going?" },
+        { es: "¿Donde esta el chihuahua?", en: "Where is the chihuahua?" },
+        { es: "¿Donde está el pastor?", en: "Where is the pastor?" },
+        { es: "Con Cristo, soy fuerte.", en: "With Christ, I am strong." },
+        { es: "Si, quiero.", en: "Yes, I want to." },
+        { es: "Si, gracias.", en: "Yes, thank you." },
+        { es: "Sí, tienes que ir conmigo.", en: "Yes, you need to go with me." },
+        { es: "Lo hiciste muy bien.", en: "You did very well." },
+        { es: "Tu madre canta bien.", en: "Your mom sings well." }
     ];
 });
 define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], function (require, exports, tener_1, index_1) {
@@ -597,7 +606,7 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         }
         return swap ? { q: a, a: q } : { q: q, a: a };
     });
-    return questions.slice(0, 10);
+    return questions.slice(0, 5);
 });
 define("quizlet/qa-block", ["require", "exports", "quizlet/qa"], function (require, exports, qa_1) {
     "use strict";

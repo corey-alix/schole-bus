@@ -15,30 +15,39 @@ export class QaInput extends HTMLElement {
 		this.input.focus();
 	}
 
+	rightAnswer() {
+		// hack into method defined in index.html
+		wrongAnswer(1);
+	}
+
 	wrongAnswer() {
 		// hack into method defined in index.html
-		wrongAnswer();
+		wrongAnswer(-1);
 	}
 
 	isMatch(a: string, b: string) {
-		if (a.toUpperCase() === b.toUpperCase()) return true;
+		let A = a.toUpperCase();
+		let B = b.toUpperCase();
+		if (A === B) return true;
 		switch (b.toLocaleLowerCase()) {
 			case "á":
-				if (a.toUpperCase() == "A") return true;
+				if (A == "A") return true;
 			case "é":
-				if (a.toUpperCase() == "E") return true;
+				if (A == "E") return true;
 			case "í":
-				if (a.toUpperCase() == "I") return true;
+				if (A == "I") return true;
 			case "ñ":
-				if (a.toUpperCase() == "N") return true;
+				if (A == "N") return true;
 			case "ó":
-				if (a.toUpperCase() == "O") return true;
+				if (A == "O") return true;
 			case "ú":
-				if (a.toUpperCase() == "U") return true;
+				if (A == "U") return true;
 			case "¡":
-				if (a.toUpperCase() == "!") return true;
+				if (A == "!") return true;
 			case "¿":
-				if (a.toUpperCase() == "?") return true;
+				if (A == "?") return true;
+			case "’":
+				if (A == "'") return true;
 		}
 		return false;
 	}
@@ -62,7 +71,8 @@ export class QaInput extends HTMLElement {
         label {
 			font-size: x-large;
             display: block;
-            whitespace:wrap;
+			whitespace:wrap;
+			margin-top: 20px;
         }
         input {
 			font-size: x-large;
@@ -87,6 +97,7 @@ export class QaInput extends HTMLElement {
 			if (this.isMatch(currentKey, expectedKey)) {
 				input.classList.remove("wrong");
 				input.value = answer.substring(0, currentValue.length + 1);
+				this.rightAnswer();
 				if (answer.length === currentValue.length + 1) {
 					input.classList.add("correct");
 					input.readOnly = true;
@@ -95,13 +106,12 @@ export class QaInput extends HTMLElement {
 					setTimeout(() => s && s.focus(), 200);
 					return false;
 				}
-				console.log("+");
 				return false;
 			} else {
 				input.classList.add("wrong");
 				this.wrongAnswer();
+				input.value = answer.substring(0, currentValue.length + 1);
 			}
-			console.log("-");
 			return false;
 		};
 
