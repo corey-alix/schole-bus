@@ -393,7 +393,11 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     var currentValue = input.value;
                     var expectedKey = answer[currentValue.length];
                     var currentKey = keydown_as_keypress_1.mapping.get(ev);
-                    console_log_1.log(ev.key.charCodeAt(0) + "->" + currentKey.charCodeAt(0) + ": currentKey=" + currentKey + ", keyCode=" + ev.keyCode + ", hint=" + expectedKey);
+                    // log(
+                    // 	`${ev.key.charCodeAt(0)}->${currentKey.charCodeAt(0)}: currentKey=${currentKey}, keyCode=${
+                    // 		ev.keyCode
+                    // 	}, hint=${expectedKey}`
+                    // );
                     if (_this.isMatch(currentKey, expectedKey)) {
                         input.value = answer.substring(0, currentValue.length + 1);
                         _this.rightAnswer();
@@ -403,6 +407,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                         return false;
                     }
                     else {
+                        console_log_1.log(expectedKey);
                         input.classList.add("wrong");
                         _this.wrongAnswer();
                     }
@@ -509,7 +514,7 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "¿Estudias?", en: "Do you study?" },
         { es: "¿Quieres a Jesús como tu salvador?", en: "Do you want Jesus as your savior?" },
         { es: "¿Trabajas?", en: "Do you work?" },
-        { es: "Todas las personas necesitan a Jesús", en: "Every person needs Jesus." },
+        { es: "Todas las personas necesitan a Jesús.", en: "Every person needs Jesus." },
         { es: "Todos son muy amables.", en: "Everyone is very kind." },
         { es: "Perdóneme.", en: "Excuse me." },
         { es: "Disculpe señor.", en: "Excuse me, Sir." },

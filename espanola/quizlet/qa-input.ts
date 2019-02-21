@@ -137,11 +137,11 @@ export class QaInput extends WebComponent {
 
 				let currentKey = mapping.get(ev);
 
-				log(
-					`${ev.key.charCodeAt(0)}->${currentKey.charCodeAt(0)}: currentKey=${currentKey}, keyCode=${
-						ev.keyCode
-					}, hint=${expectedKey}`
-				);
+				// log(
+				// 	`${ev.key.charCodeAt(0)}->${currentKey.charCodeAt(0)}: currentKey=${currentKey}, keyCode=${
+				// 		ev.keyCode
+				// 	}, hint=${expectedKey}`
+				// );
 				if (this.isMatch(currentKey, expectedKey)) {
 					input.value = answer.substring(0, currentValue.length + 1);
 					this.rightAnswer();
@@ -150,6 +150,7 @@ export class QaInput extends WebComponent {
 					}
 					return false;
 				} else {
+					log(expectedKey);
 					input.classList.add("wrong");
 					this.wrongAnswer();
 				}

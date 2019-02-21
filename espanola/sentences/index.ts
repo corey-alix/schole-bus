@@ -32,7 +32,7 @@ export = [
 	{ es: "¿Estudias?", en: "Do you study?" },
 	{ es: "¿Quieres a Jesús como tu salvador?", en: "Do you want Jesus as your savior?" },
 	{ es: "¿Trabajas?", en: "Do you work?" },
-	{ es: "Todas las personas necesitan a Jesús", en: "Every person needs Jesus." },
+	{ es: "Todas las personas necesitan a Jesús.", en: "Every person needs Jesus." },
 	{ es: "Todos son muy amables.", en: "Everyone is very kind." },
 	{ es: "Perdóneme.", en: "Excuse me." },
 	{ es: "Disculpe señor.", en: "Excuse me, Sir." },

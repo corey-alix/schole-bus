@@ -6,9 +6,6 @@
 		<link rel="stylesheet" href="dark-theme.css" />
 		<script src="../../dist/require.js"></script>
 		<script src="main.js" defer></script>
-		<script>
-			require(["quizlet/main"]);
-		</script>
 		<style>
 			qa-block {
 				display: grid;
@@ -34,6 +31,9 @@
 		</style>
 	</head>
 	<body>
+		<script>
+			require(["quizlet/main"]);
+		</script>
 		<div class="center-frame">
 			<qa-block></qa-block>
 			<score-board score="0"></score-board>
