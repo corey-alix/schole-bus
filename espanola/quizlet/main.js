@@ -286,6 +286,28 @@ define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], fu
 define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/keydown-as-keypress"], function (require, exports, webcomponent_3, system_events_2, console_log_1, keydown_as_keypress_1) {
     "use strict";
     exports.__esModule = true;
+    function cssin(name, css) {
+        var id = "style-" + name;
+        var styleTag = document.getElementById(id);
+        if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = id;
+            styleTag.type = "text/css";
+            document.head.appendChild(styleTag);
+            styleTag.appendChild(document.createTextNode(css));
+        }
+        var dataset = styleTag.dataset;
+        dataset["count"] = parseInt(dataset["count"] || "0") + 1 + "";
+        return function () {
+            dataset["count"] = parseInt(dataset["count"] || "0") - 1 + "";
+            if (dataset["count"] === "0") {
+                styleTag.remove();
+            }
+        };
+    }
+    exports.cssin = cssin;
+    var css = "<style>\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tmargin-top: 20px;\n\tpadding: 20px;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: white;\n    font-size: large;\n}\nqa-input button[disabled] {\n\tdisplay: none;\n}\n</style>";
+    cssin("qa-input", css);
     var QaInput = /** @class */ (function (_super) {
         __extends(QaInput, _super);
         function QaInput(domNode) {
@@ -293,6 +315,10 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             _this.label = document.createElement("label");
             _this.input = document.createElement("input");
             _this.input.type = "text";
+            _this.help = document.createElement("button");
+            _this.help.tabIndex = -1; // no tab
+            _this.help.type = "button";
+            _this.help.innerHTML = "?";
             return _this;
         }
         QaInput.prototype.focus = function () {
@@ -351,6 +377,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             var input = this.input;
             var currentValue = input.value;
             if (answer.length === currentValue.length) {
+                this.help.disabled = true;
                 input.readOnly = true;
                 input.classList.remove("wrong");
                 input.classList.add("correct");
@@ -366,8 +393,6 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             label.textContent = this.getAttribute("question");
             label.title = this.getAttribute("hint") || answer;
             input.maxLength = answer.length;
-            input.innerHTML = "<style>\n        .correct {\n            color: green;\n            border: 1px solid green;\n        }\n        .wrong {\n            border: 1px solid red;\n        }\n        label {\n\t\t\tfont-size: x-large;\n            display: block;\n\t\t\twhitespace:wrap;\n\t\t\tmargin-top: 20px;\n        }\n        input {\n\t\t\tfont-size: x-large;\n\t\t\tdisplay: block;\n            vertical-align: top;\n            background-color: black;\n            border: none;\n            color: gray;\n            padding-left: 10px;\n            min-height: 64px;\n\t\t\tmax-height: 64px;\n\t\t\twidth: 100%;\n        }\n\t\t</style>";
-            var shiftMap = [];
             input.onkeydown = function (ev) {
                 // mapping.record(ev);
                 try {
@@ -407,7 +432,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                         return false;
                     }
                     else {
-                        console_log_1.log(expectedKey);
+                        console_log_1.log(currentKey + "=(" + currentKey.charCodeAt(0) + ") -> " + expectedKey + "=(" + expectedKey.charCodeAt(0) + ")");
                         input.classList.add("wrong");
                         _this.wrongAnswer();
                     }
@@ -419,7 +444,12 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             };
             var shadowRoot = this.attachShadow({ mode: "open" });
             shadowRoot.appendChild(label);
+            shadowRoot.appendChild(this.help);
             shadowRoot.appendChild(input);
+            this.help.onclick = function () {
+                _this.provideHelp();
+                _this.validate();
+            };
         };
         QaInput.prototype.tab = function () {
             var s = this;

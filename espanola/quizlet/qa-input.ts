@@ -3,15 +3,82 @@ import { SystemEvents } from "./system-events";
 import { log } from "./console-log";
 import { mapping } from "./keydown-as-keypress";
 
+export function cssin(name: string, css: string) {
+	let id = `style-${name}`;
+	let styleTag = <HTMLStyleElement>document.getElementById(id);
+	if (!styleTag) {
+		styleTag = document.createElement("style");
+		styleTag.id = id;
+		styleTag.type = "text/css";
+		document.head.appendChild(styleTag);
+		styleTag.appendChild(document.createTextNode(css));
+	}
+
+	let dataset = styleTag.dataset;
+	dataset["count"] = parseInt(dataset["count"] || "0") + 1 + "";
+
+	return () => {
+		dataset["count"] = parseInt(dataset["count"] || "0") - 1 + "";
+		if (dataset["count"] === "0") {
+			styleTag.remove();
+		}
+	};
+}
+
+const css = `<style>
+qa-input .correct {
+	color: green;
+	border: 1px solid green;
+}
+qa-input .wrong {
+	border: 1px solid red;
+}
+qa-input label {
+	font-size: xx-large;
+	whitespace:wrap;
+	margin-top: 20px;
+	padding: 20px;
+}
+qa-input input {
+	font-size: x-large;
+	display: block;
+	vertical-align: top;
+	background-color: black;
+	border: none;
+	color: gray;
+	padding-left: 10px;
+	min-height: 64px;
+	max-height: 64px;
+	width: 100%;
+	padding: 20px;
+}
+qa-input button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: large;
+}
+qa-input button[disabled] {
+	display: none;
+}
+</style>`;
+
+cssin("qa-input", css);
+
 export class QaInput extends WebComponent {
 	input: HTMLInputElement;
 	label: HTMLLabelElement;
+	help: HTMLButtonElement;
 
 	constructor(domNode: HTMLElement) {
 		super(domNode);
 		this.label = document.createElement("label");
 		this.input = document.createElement("input");
 		this.input.type = "text";
+		this.help = document.createElement("button");
+		this.help.tabIndex = -1; // no tab
+		this.help.type = "button";
+		this.help.innerHTML = "?";
 	}
 
 	focus() {
@@ -65,6 +132,7 @@ export class QaInput extends WebComponent {
 		let input = this.input;
 		let currentValue = input.value;
 		if (answer.length === currentValue.length) {
+			this.help.disabled = true;
 			input.readOnly = true;
 			input.classList.remove("wrong");
 			input.classList.add("correct");
@@ -82,35 +150,7 @@ export class QaInput extends WebComponent {
 		label.title = this.getAttribute("hint") || answer;
 
 		input.maxLength = answer.length;
-		input.innerHTML = `<style>
-        .correct {
-            color: green;
-            border: 1px solid green;
-        }
-        .wrong {
-            border: 1px solid red;
-        }
-        label {
-			font-size: x-large;
-            display: block;
-			whitespace:wrap;
-			margin-top: 20px;
-        }
-        input {
-			font-size: x-large;
-			display: block;
-            vertical-align: top;
-            background-color: black;
-            border: none;
-            color: gray;
-            padding-left: 10px;
-            min-height: 64px;
-			max-height: 64px;
-			width: 100%;
-        }
-		</style>`;
 
-		let shiftMap = [];
 		input.onkeydown = ev => {
 			// mapping.record(ev);
 			try {
@@ -150,7 +190,7 @@ export class QaInput extends WebComponent {
 					}
 					return false;
 				} else {
-					log(expectedKey);
+					log(`${currentKey}=(${currentKey.charCodeAt(0)}) -> ${expectedKey}=(${expectedKey.charCodeAt(0)})`);
 					input.classList.add("wrong");
 					this.wrongAnswer();
 				}
@@ -162,7 +202,13 @@ export class QaInput extends WebComponent {
 
 		const shadowRoot = this.attachShadow({ mode: "open" });
 		shadowRoot.appendChild(label);
+		shadowRoot.appendChild(this.help);
 		shadowRoot.appendChild(input);
+
+		this.help.onclick = () => {
+			this.provideHelp();
+			this.validate();
+		};
 	}
 
 	tab() {
