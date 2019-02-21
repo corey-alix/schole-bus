@@ -69,6 +69,7 @@ class Mapping {
 	shift_mapping = <any>{
 		"16": 83,
 		"32": 32,
+		"47": 63, // safari on iphone ?->/
 		"48": 41,
 		"49": 33,
 		"50": 64,

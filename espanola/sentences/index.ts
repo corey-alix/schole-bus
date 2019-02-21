@@ -60,7 +60,7 @@ export = [
 	{ es: "Voy a hablar con Todd.", en: "I am going to talk to Todd." },
 	{ es: "No voy al café", en: "I am not going to the café." },
 	{ es: "No voy.", en: "I am not going." },
-	{ es: "No voy a cantar sin Todd.", en: "I will not singing without Todd." },
+	{ es: "No voy a cantar sin Todd.", en: "I will not sing without Todd." },
 	{ es: "Estoy cantando hoy.", en: "I am singing today." },
 	{ es: "soy tu amigo.", en: "I am your friend." },
 	{ es: "Yo hablo inglés.", en: "I can speak English." },
