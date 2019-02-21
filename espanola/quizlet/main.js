@@ -122,232 +122,145 @@ define("quizlet/console-log", ["require", "exports", "quizlet/webcomponent", "qu
 });
 define("quizlet/keydown-as-keypress", ["require", "exports"], function (require, exports) {
     "use strict";
-    var mapping = [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        32,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        48,
-        49,
-        50,
-        51,
-        52,
-        53,
-        54,
-        55,
-        56,
-        57,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        97,
-        98,
-        99,
-        100,
-        101,
-        102,
-        103,
-        104,
-        105,
-        106,
-        107,
-        108,
-        109,
-        110,
-        111,
-        112,
-        113,
-        114,
-        115,
-        116,
-        117,
-        118,
-        119,
-        120,
-        121,
-        122,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        59,
-        61,
-        44,
-        45,
-        46,
-        47,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        91,
-        92,
-        93,
-        39
-    ];
-    return { map: mapping };
+    exports.__esModule = true;
+    var Mapping = /** @class */ (function () {
+        function Mapping() {
+            this.mapping = {
+                "8": 66,
+                "9": 84,
+                "13": 69,
+                "32": 32,
+                "48": 48,
+                "49": 49,
+                "50": 50,
+                "51": 51,
+                "52": 52,
+                "53": 53,
+                "54": 54,
+                "55": 55,
+                "56": 56,
+                "57": 57,
+                "65": 97,
+                "66": 98,
+                "67": 99,
+                "68": 100,
+                "69": 101,
+                "70": 102,
+                "71": 103,
+                "72": 104,
+                "73": 105,
+                "74": 106,
+                "75": 107,
+                "76": 108,
+                "77": 109,
+                "78": 110,
+                "79": 111,
+                "80": 112,
+                "81": 113,
+                "82": 114,
+                "83": 115,
+                "84": 116,
+                "85": 117,
+                "86": 118,
+                "87": 119,
+                "88": 120,
+                "89": 121,
+                "90": 122,
+                "97": 49,
+                "98": 50,
+                "99": 51,
+                "100": 52,
+                "101": 53,
+                "102": 54,
+                "103": 55,
+                "104": 56,
+                "105": 57,
+                "106": 42,
+                "107": 43,
+                "109": 45,
+                "111": 47,
+                "112": 70,
+                "186": 59,
+                "187": 61,
+                "188": 44,
+                "189": 45,
+                "190": 46,
+                "191": 47,
+                "219": 91,
+                "220": 92,
+                "221": 93,
+                "222": 39
+            };
+            this.shift_mapping = {
+                "16": 83,
+                "32": 32,
+                "48": 41,
+                "49": 33,
+                "50": 64,
+                "51": 35,
+                "52": 36,
+                "53": 37,
+                "54": 94,
+                "55": 38,
+                "56": 42,
+                "57": 40,
+                "65": 65,
+                "66": 66,
+                "67": 67,
+                "68": 68,
+                "69": 69,
+                "70": 70,
+                "71": 71,
+                "72": 72,
+                "73": 73,
+                "74": 74,
+                "75": 75,
+                "76": 76,
+                "77": 77,
+                "78": 78,
+                "79": 79,
+                "80": 80,
+                "81": 81,
+                "82": 82,
+                "83": 83,
+                "84": 84,
+                "85": 85,
+                "86": 86,
+                "87": 87,
+                "88": 88,
+                "89": 89,
+                "90": 90,
+                "186": 58,
+                "187": 43,
+                "188": 60,
+                "189": 95,
+                "190": 62,
+                "191": 63,
+                "219": 123,
+                "220": 124,
+                "221": 125,
+                "222": 34
+            };
+        }
+        Mapping.prototype.get = function (ev) {
+            var key = ev.shiftKey ? this.shift_mapping[ev.keyCode] : this.mapping[ev.keyCode];
+            return String.fromCharCode(key);
+        };
+        Mapping.prototype.record = function (e) {
+            var target = e.key.charCodeAt(0);
+            if (e.shiftKey) {
+                this.shift_mapping[e.keyCode] = target;
+            }
+            else {
+                this.mapping[e.keyCode] = target;
+            }
+        };
+        Mapping.prototype.play = function () {
+            console.log(JSON.stringify({ mapping: this.mapping, shift_mapping: this.shift_mapping }, null, "\t"));
+        };
+        return Mapping;
+    }());
+    exports.mapping = new Mapping();
 });
 define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], function (require, exports, webcomponent_2) {
     "use strict";
@@ -454,7 +367,9 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             label.title = this.getAttribute("hint") || answer;
             input.maxLength = answer.length;
             input.innerHTML = "<style>\n        .correct {\n            color: green;\n            border: 1px solid green;\n        }\n        .wrong {\n            border: 1px solid red;\n        }\n        label {\n\t\t\tfont-size: x-large;\n            display: block;\n\t\t\twhitespace:wrap;\n\t\t\tmargin-top: 20px;\n        }\n        input {\n\t\t\tfont-size: x-large;\n\t\t\tdisplay: block;\n            vertical-align: top;\n            background-color: black;\n            border: none;\n            color: gray;\n            padding-left: 10px;\n            min-height: 64px;\n\t\t\tmax-height: 64px;\n\t\t\twidth: 100%;\n        }\n\t\t</style>";
+            var shiftMap = [];
             input.onkeydown = function (ev) {
+                // mapping.record(ev);
                 try {
                     ev.preventDefault();
                     if (input.readOnly)
@@ -469,6 +384,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                         case 46: // del
                             return false;
                         case 112: // F1
+                            // mapping.play(); return false;
                             _this.provideHelp();
                             if (_this.validate())
                                 _this.tab();
@@ -476,13 +392,8 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     }
                     var currentValue = input.value;
                     var expectedKey = answer[currentValue.length];
-                    var currentKey = ev.key || String.fromCharCode(keydown_as_keypress_1.map[ev.keyCode] || 0);
-                    switch (currentKey) {
-                        case " ":
-                            if (currentKey !== expectedKey)
-                                return;
-                    }
-                    console_log_1.log(ev.key + "->" + currentKey + " (hint:" + expectedKey + ")");
+                    var currentKey = keydown_as_keypress_1.mapping.get(ev);
+                    console_log_1.log(ev.key.charCodeAt(0) + "->" + currentKey.charCodeAt(0) + ": currentKey=" + currentKey + ", keyCode=" + ev.keyCode + ", hint=" + expectedKey);
                     if (_this.isMatch(currentKey, expectedKey)) {
                         input.value = answer.substring(0, currentValue.length + 1);
                         _this.rightAnswer();
@@ -521,7 +432,10 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 }
             }
             console_log_1.log(s ? "next found" : "no next input");
-            setTimeout(function () { return s && s.focus(); }, 200);
+            if (!s)
+                system_events_2.SystemEvents.trigger("no-more-input", {});
+            else
+                setTimeout(function () { return s && s.focus(); }, 200);
         };
         return QaInput;
     }(webcomponent_3.WebComponent));
@@ -655,7 +569,7 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "Necesito una silla.", en: "I need a chair." },
         { es: "Necesito un poco.", en: "I need a little." },
         { es: "Necesito una papa.", en: "I need a potato." },
-        { es: "Necesito ayuda por favor.", en: "I need help, please." },
+        { es: "Necesito ayuda, por favor.", en: "I need help, please." },
         { es: "Necesito un poco más, por favor.", en: "I need a little more, please." },
         { es: "Necesito decidir.", en: "I need to decide." },
         { es: "Necesito comer.", en: "I need to eat." },
@@ -1061,5 +975,8 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
     }
     system_events_3.SystemEvents.watch("correct", function () { return score(1); });
     system_events_3.SystemEvents.watch("incorrect", function () { return score(-1); });
+    system_events_3.SystemEvents.watch("no-more-input", function () {
+        location.reload();
+    });
 });
 //# sourceMappingURL=main.js.map

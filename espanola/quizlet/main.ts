@@ -52,3 +52,6 @@ function score(add: number) {
 
 SystemEvents.watch("correct", () => score(1));
 SystemEvents.watch("incorrect", () => score(-1));
+SystemEvents.watch("no-more-input", () => {
+	location.reload();
+});

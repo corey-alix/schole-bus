@@ -92,7 +92,7 @@ export = [
 	{ es: "Necesito una silla.", en: "I need a chair." },
 	{ es: "Necesito un poco.", en: "I need a little." },
 	{ es: "Necesito una papa.", en: "I need a potato." },
-	{ es: "Necesito ayuda por favor.", en: "I need help, please." },
+	{ es: "Necesito ayuda, por favor.", en: "I need help, please." },
 	{ es: "Necesito un poco más, por favor.", en: "I need a little more, please." },
 	{ es: "Necesito decidir.", en: "I need to decide." },
 	{ es: "Necesito comer.", en: "I need to eat." },
