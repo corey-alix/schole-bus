@@ -3,6 +3,12 @@ import { SystemEvents } from "./system-events";
 import { log } from "./console-log";
 import { mapping } from "./keydown-as-keypress";
 
+let sound = document.createElement("audio");
+sound.src = "beep-07.wav";
+sound.autoplay = false;
+
+SystemEvents.watch("incorrect", () => sound.play());
+
 export function cssin(name: string, css: string) {
 	let id = `style-${name}`;
 	let styleTag = <HTMLStyleElement>document.getElementById(id);
@@ -23,6 +29,16 @@ export function cssin(name: string, css: string) {
 			styleTag.remove();
 		}
 	};
+}
+
+function dump(o: KeyboardEvent) {
+	let result = <any>{};
+	for (let p in o) {
+		if (p === p.toUpperCase()) continue;
+		let v = (<any>o)[p];
+		if (typeof v === "string" || typeof v === "number") result[p] = v + "";
+	}
+	log(JSON.stringify(result));
 }
 
 const css = `<style>
@@ -55,11 +71,13 @@ qa-input input {
 qa-input button {
     background: transparent;
     border: none;
-    color: white;
-    font-size: large;
+    color: gray;
+	position: relative;
+    bottom: 3px;
+	left: 10px;
 }
 qa-input button[disabled] {
-	display: none;
+	color: green;
 }
 </style>`;
 
@@ -78,7 +96,7 @@ export class QaInput extends WebComponent {
 		this.help = document.createElement("button");
 		this.help.tabIndex = -1; // no tab
 		this.help.type = "button";
-		this.help.innerHTML = "?";
+		this.help.innerHTML = "�";
 	}
 
 	focus() {
@@ -133,6 +151,7 @@ export class QaInput extends WebComponent {
 		let currentValue = input.value;
 		if (answer.length === currentValue.length) {
 			this.help.disabled = true;
+			this.help.innerHTML = "☑";
 			input.readOnly = true;
 			input.classList.remove("wrong");
 			input.classList.add("correct");
@@ -175,7 +194,12 @@ export class QaInput extends WebComponent {
 				let currentValue = input.value;
 				let expectedKey = answer[currentValue.length];
 
-				let currentKey = mapping.get(ev);
+				if (!ev.key) {
+					dump(ev);
+				} else {
+					dump(ev);
+				}
+				let currentKey = ev.key || mapping.get(ev);
 
 				// log(
 				// 	`${ev.key.charCodeAt(0)}->${currentKey.charCodeAt(0)}: currentKey=${currentKey}, keyCode=${
@@ -202,7 +226,7 @@ export class QaInput extends WebComponent {
 
 		const shadowRoot = this.attachShadow({ mode: "open" });
 		shadowRoot.appendChild(label);
-		shadowRoot.appendChild(this.help);
+		label.appendChild(this.help);
 		shadowRoot.appendChild(input);
 
 		this.help.onclick = () => {

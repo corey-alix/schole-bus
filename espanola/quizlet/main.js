@@ -125,139 +125,11 @@ define("quizlet/keydown-as-keypress", ["require", "exports"], function (require,
     exports.__esModule = true;
     var Mapping = /** @class */ (function () {
         function Mapping() {
-            this.mapping = {
-                "8": 66,
-                "9": 84,
-                "13": 69,
-                "32": 32,
-                "48": 48,
-                "49": 49,
-                "50": 50,
-                "51": 51,
-                "52": 52,
-                "53": 53,
-                "54": 54,
-                "55": 55,
-                "56": 56,
-                "57": 57,
-                "65": 97,
-                "66": 98,
-                "67": 99,
-                "68": 100,
-                "69": 101,
-                "70": 102,
-                "71": 103,
-                "72": 104,
-                "73": 105,
-                "74": 106,
-                "75": 107,
-                "76": 108,
-                "77": 109,
-                "78": 110,
-                "79": 111,
-                "80": 112,
-                "81": 113,
-                "82": 114,
-                "83": 115,
-                "84": 116,
-                "85": 117,
-                "86": 118,
-                "87": 119,
-                "88": 120,
-                "89": 121,
-                "90": 122,
-                "97": 49,
-                "98": 50,
-                "99": 51,
-                "100": 52,
-                "101": 53,
-                "102": 54,
-                "103": 55,
-                "104": 56,
-                "105": 57,
-                "106": 42,
-                "107": 43,
-                "109": 45,
-                "111": 47,
-                "112": 70,
-                "186": 59,
-                "187": 61,
-                "188": 44,
-                "189": 45,
-                "190": 46,
-                "191": 47,
-                "219": 91,
-                "220": 92,
-                "221": 93,
-                "222": 39
-            };
-            this.shift_mapping = {
-                "16": 83,
-                "32": 32,
-                "47": 63,
-                "48": 41,
-                "49": 33,
-                "50": 64,
-                "51": 35,
-                "52": 36,
-                "53": 37,
-                "54": 94,
-                "55": 38,
-                "56": 42,
-                "57": 40,
-                "65": 65,
-                "66": 66,
-                "67": 67,
-                "68": 68,
-                "69": 69,
-                "70": 70,
-                "71": 71,
-                "72": 72,
-                "73": 73,
-                "74": 74,
-                "75": 75,
-                "76": 76,
-                "77": 77,
-                "78": 78,
-                "79": 79,
-                "80": 80,
-                "81": 81,
-                "82": 82,
-                "83": 83,
-                "84": 84,
-                "85": 85,
-                "86": 86,
-                "87": 87,
-                "88": 88,
-                "89": 89,
-                "90": 90,
-                "186": 58,
-                "187": 43,
-                "188": 60,
-                "189": 95,
-                "190": 62,
-                "191": 63,
-                "219": 123,
-                "220": 124,
-                "221": 125,
-                "222": 34
-            };
         }
         Mapping.prototype.get = function (ev) {
-            var key = ev.shiftKey ? this.shift_mapping[ev.keyCode] : this.mapping[ev.keyCode];
-            return String.fromCharCode(key);
-        };
-        Mapping.prototype.record = function (e) {
-            var target = e.key.charCodeAt(0);
-            if (e.shiftKey) {
-                this.shift_mapping[e.keyCode] = target;
-            }
-            else {
-                this.mapping[e.keyCode] = target;
-            }
-        };
-        Mapping.prototype.play = function () {
-            console.log(JSON.stringify({ mapping: this.mapping, shift_mapping: this.shift_mapping }, null, "\t"));
+            if (ev.key)
+                return ev.key;
+            return String.fromCharCode(ev.keyCode);
         };
         return Mapping;
     }());
@@ -287,6 +159,10 @@ define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], fu
 define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/keydown-as-keypress"], function (require, exports, webcomponent_3, system_events_2, console_log_1, keydown_as_keypress_1) {
     "use strict";
     exports.__esModule = true;
+    var sound = document.createElement("audio");
+    sound.src = "beep-07.wav";
+    sound.autoplay = false;
+    system_events_2.SystemEvents.watch("incorrect", function () { return sound.play(); });
     function cssin(name, css) {
         var id = "style-" + name;
         var styleTag = document.getElementById(id);
@@ -307,7 +183,18 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         };
     }
     exports.cssin = cssin;
-    var css = "<style>\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tmargin-top: 20px;\n\tpadding: 20px;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: white;\n    font-size: large;\n}\nqa-input button[disabled] {\n\tdisplay: none;\n}\n</style>";
+    function dump(o) {
+        var result = {};
+        for (var p in o) {
+            if (p === p.toUpperCase())
+                continue;
+            var v = o[p];
+            if (typeof v === "string" || typeof v === "number")
+                result[p] = v + "";
+        }
+        console_log_1.log(JSON.stringify(result));
+    }
+    var css = "<style>\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tmargin-top: 20px;\n\tpadding: 20px;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: gray;\n\tposition: relative;\n    bottom: 3px;\n\tleft: 10px;\n}\nqa-input button[disabled] {\n\tcolor: green;\n}\n</style>";
     cssin("qa-input", css);
     var QaInput = /** @class */ (function (_super) {
         __extends(QaInput, _super);
@@ -319,7 +206,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             _this.help = document.createElement("button");
             _this.help.tabIndex = -1; // no tab
             _this.help.type = "button";
-            _this.help.innerHTML = "?";
+            _this.help.innerHTML = "�";
             return _this;
         }
         QaInput.prototype.focus = function () {
@@ -379,6 +266,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             var currentValue = input.value;
             if (answer.length === currentValue.length) {
                 this.help.disabled = true;
+                this.help.innerHTML = "☑";
                 input.readOnly = true;
                 input.classList.remove("wrong");
                 input.classList.add("correct");
@@ -418,7 +306,13 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     }
                     var currentValue = input.value;
                     var expectedKey = answer[currentValue.length];
-                    var currentKey = keydown_as_keypress_1.mapping.get(ev);
+                    if (!ev.key) {
+                        dump(ev);
+                    }
+                    else {
+                        dump(ev);
+                    }
+                    var currentKey = ev.key || keydown_as_keypress_1.mapping.get(ev);
                     // log(
                     // 	`${ev.key.charCodeAt(0)}->${currentKey.charCodeAt(0)}: currentKey=${currentKey}, keyCode=${
                     // 		ev.keyCode
@@ -445,7 +339,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             };
             var shadowRoot = this.attachShadow({ mode: "open" });
             shadowRoot.appendChild(label);
-            shadowRoot.appendChild(this.help);
+            label.appendChild(this.help);
             shadowRoot.appendChild(input);
             this.help.onclick = function () {
                 _this.provideHelp();
@@ -523,7 +417,7 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "¿Vas a comer?", en: "Are you going to eat?" },
         { es: "¿Estás jubilado?", en: "Are you retired?" },
         { es: "¿Eres el pastor?", en: "Are you the pastor?" },
-        { es: "¡Adiós! !Gracias por todo!", en: "Bye! Thanks for everything!" },
+        { es: "¡Adiós! ¡Gracias por todo!", en: "Bye! Thanks for everything!" },
         { es: "¿Puedo orar por ti?", en: "Can I pray for you?" },
         { es: "¿Puedes hablar inglés?", en: "Can you speak English?" },
         { es: "¿Puedes hablar más despacio?", en: "Can you speak slower?" },
@@ -576,9 +470,9 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "No voy a cantar sin Todd.", en: "I will not sing without Todd." },
         { es: "Estoy cantando hoy.", en: "I am singing today." },
         { es: "soy tu amigo.", en: "I am your friend." },
-        { es: "Yo hablo inglés.", en: "I can speak English." },
+        { es: "Yo hablo inglés.", en: "I speak English." },
         { es: "No comer queso.", en: "I do not eat cheese." },
-        { es: "No comer chihuahuas.", en: "I do not eat chihuahuas." },
+        { es: "Yo no como pescado vivo.", en: "I do not eat live fish." },
         { es: "No tengo una pluma.", en: "I do not have a pen." },
         { es: "No tengo hijos.", en: "I do not have children." },
         { es: "No me gusta ir al hospital.", en: "I do not like to go to the hospital." },
@@ -593,7 +487,7 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "me gusta el queso.", en: "I like cheese." },
         { es: "Me gusta es, gracias.", en: "I like it, thank you." },
         { es: "Me gusta el chihuahua.", en: "I like the chihuahua." },
-        { es: "Me gusta beber aqua.", en: "I like to drink water." },
+        { es: "Me gusta beber agua.", en: "I like to drink water." },
         { es: "Me gusta comer pizza.", en: "I like to eat pizza." },
         { es: "Me gusta comer.  Te gusta comer?", en: "I like to eat. Do you like to eat?" },
         { es: "Me gusta alabar a Dios.", en: "I like to praise God." },
@@ -904,7 +798,6 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
     var questions = shuffle(qa).map(function (item) {
         var q = item.q;
         var a = item.a;
-        var swap = 0.5 > Math.random();
         while (true) {
             var verb = randomVerb();
             var noun = randomNoun();
@@ -934,9 +827,19 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
             q = q2;
             a = a2;
         }
+        return { q: q, a: a };
+    });
+    function remove(v, chars) {
+        var result = v;
+        chars.split("").forEach(function (c) { return (result = result.replace(new RegExp("\\" + c, "g"), "")); });
+        result = result.replace(/  /g, " ");
+        return result;
+    }
+    return questions.slice(0, 5).map(function (v) {
+        var swap = 0.1 > Math.random();
+        var _a = [remove(v.q, "!."), remove(v.a, "!.¿¡")], q = _a[0], a = _a[1];
         return swap ? { q: a, a: q } : { q: q, a: a };
     });
-    return questions.slice(0, 5);
 });
 define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/qa"], function (require, exports, webcomponent_4, qa_1) {
     "use strict";

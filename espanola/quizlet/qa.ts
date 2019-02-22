@@ -211,7 +211,6 @@ let qa = QA.concat(tenerQa, sentences.filter(v => !!v.es && !!v.en).map(v => ({ 
 let questions = shuffle(qa).map(item => {
 	let q = item.q;
 	let a = item.a;
-	let swap = 0.5 > Math.random();
 
 	while (true) {
 		let verb = randomVerb();
@@ -245,7 +244,18 @@ let questions = shuffle(qa).map(item => {
 		a = a2;
 	}
 
-	return swap ? { q: a, a: q } : { q: q, a: a };
+	return { q: q, a: a };
 });
 
-export = questions.slice(0, 5);
+function remove(v: string, chars: string) {
+	let result = v;
+	chars.split("").forEach(c => (result = result.replace(new RegExp(`\\${c}`, "g"), "")));
+	result = result.replace(/  /g, " ");
+	return result;
+}
+
+export = questions.slice(0, 5).map(v => {
+	let swap = 0.1 > Math.random();
+	let [q, a] = [remove(v.q, "!."), remove(v.a, "!.¿¡")];
+	return swap ? { q: a, a: q } : { q, a };
+});
