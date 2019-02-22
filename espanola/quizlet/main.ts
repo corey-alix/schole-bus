@@ -46,12 +46,24 @@ function score(add: number) {
 	let elements = from(document.getElementsByTagName("score-board"));
 	elements.forEach(e => {
 		let score = getComponent(e);
-		score && score.setAttribute("score", correct + "");
+		score && score.setAttribute("score", Math.round(100 * (correct / (correct + incorrect))) + "");
 	});
 }
 
 SystemEvents.watch("correct", () => score(1));
 SystemEvents.watch("incorrect", () => score(-1));
+SystemEvents.watch("hint", (result: { hint: string }) => {
+	from(document.getElementsByTagName("hint-slider")).forEach(n => {
+		n.innerHTML = result.hint;
+		n.classList.add("visible");
+		n.classList.remove("hidden");
+		setTimeout(() => {
+			n.classList.remove("visible");
+			n.classList.add("hidden");
+		}, 2000);
+	});
+});
+
 SystemEvents.watch("no-more-input", () => {
 	location.reload();
 });

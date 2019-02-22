@@ -280,7 +280,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             var answer = this.getAttribute("answer") || "";
             var label = this.label;
             label.textContent = this.getAttribute("question");
-            label.title = this.getAttribute("hint") || answer;
+            var hint = this.getAttribute("hint") || answer;
             input.maxLength = answer.length;
             input.onkeydown = function (ev) {
                 // mapping.record(ev);
@@ -306,10 +306,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     }
                     var currentValue = input.value;
                     var expectedKey = answer[currentValue.length];
-                    if (!ev.key) {
-                        dump(ev);
-                    }
-                    else {
+                    if (!ev.key || ev.key.length > 1) {
                         dump(ev);
                     }
                     var currentKey = ev.key || keydown_as_keypress_1.mapping.get(ev);
@@ -327,7 +324,6 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                         return false;
                     }
                     else {
-                        console_log_1.log(currentKey + "=(" + currentKey.charCodeAt(0) + ") -> " + expectedKey + "=(" + expectedKey.charCodeAt(0) + ")");
                         input.classList.add("wrong");
                         _this.wrongAnswer();
                     }
@@ -342,8 +338,10 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             label.appendChild(this.help);
             shadowRoot.appendChild(input);
             this.help.onclick = function () {
+                _this.input.focus();
                 _this.provideHelp();
                 _this.validate();
+                system_events_2.SystemEvents.trigger("hint", { hint: hint });
             };
         };
         QaInput.prototype.tab = function () {
@@ -361,7 +359,6 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     }
                 }
             }
-            console_log_1.log(s ? "next found" : "no next input");
             if (!s)
                 system_events_2.SystemEvents.trigger("no-more-input", {});
             else
@@ -371,17 +368,85 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
     }(webcomponent_3.WebComponent));
     exports.QaInput = QaInput;
 });
-define("verbos/tener", ["require", "exports"], function (require, exports) {
+define("verbos/haber", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
+    exports.verbo = {
+        en: "to have",
+        es: "haber",
+        yo: "he",
+        tu: "has",
+        nosotros: "hemos"
+    };
     // applicable infinitives
-    var infinitives = [
+    exports.infinitives = [
         { es: "comer", en: "eat" },
         { es: "ir", en: "go" },
         { es: "leer", en: "read" },
         { es: "dormir", en: "sleep" },
         { es: "hacer", en: "do" }
     ];
+    // applicable sentence templates
+    exports.builder = [
+        { es: "Tengo que {verb}.", en: "I have to {verb}." },
+        { es: "¿Tienes que {verb}?", en: "Do you have to {verb}?" },
+        { es: "No tenemos que {verb}.", en: "We do not have to {verb}." }
+    ];
+});
+define("verbos/poder", ["require", "exports"], function (require, exports) {
+    "use strict";
+    exports.__esModule = true;
+    exports.verbo = {
+        en: "can",
+        es: "poder",
+        yo: "puedo",
+        tu: "puedes",
+        nosotros: "podemos"
+    };
+    // applicable infinitives
+    exports.infinitives = [
+        { es: "comer", en: "eat" },
+        { es: "ir", en: "go" },
+        { es: "leer", en: "read" },
+        { es: "dormir", en: "sleep" },
+        { es: "hacer", en: "do" }
+    ];
+    // applicable sentence templates
+    exports.builder = [
+        { es: "Puedo {verb}.", en: "I can {verb}." },
+        { es: "¿Puedes {verb}?", en: "Can you {verb}?" },
+        { es: "No podemos {verb}.", en: "We cannot {verb}." }
+    ];
+});
+define("verbos/querer", ["require", "exports"], function (require, exports) {
+    "use strict";
+    exports.__esModule = true;
+    exports.verbo = {
+        en: "to want",
+        es: "querer",
+        yo: "quiero",
+        tu: "quieres",
+        nosotros: "queremos"
+    };
+    // applicable infinitives
+    exports.infinitives = [
+        { es: "comido", en: "eaten" },
+        { es: "ido", en: "gone" },
+        { es: "leido", en: "read" },
+        { es: "dormido", en: "slept" },
+        { es: "hecho", en: "done" }
+    ];
+    // applicable sentence templates
+    exports.builder = [
+        { es: "Yo he {verb}.", en: "I have {verb}." },
+        { es: "Tú has {verb}?", en: "Have you {verb}?" },
+        { es: "No hemos {verb}.", en: "We have not {verb}." }
+    ];
+});
+define("verbos/tener", ["require", "exports"], function (require, exports) {
+    "use strict";
+    exports.__esModule = true;
+    // verb forms
     exports.verbo = {
         en: "to have",
         es: "tener",
@@ -389,20 +454,20 @@ define("verbos/tener", ["require", "exports"], function (require, exports) {
         tu: "tienes",
         nosotros: "tenemos"
     };
-    var builder = [
+    // applicable infinitives
+    exports.infinitives = [
+        { es: "comer", en: "eat" },
+        { es: "ir", en: "go" },
+        { es: "leer", en: "read" },
+        { es: "dormir", en: "sleep" },
+        { es: "hacer", en: "do" }
+    ];
+    // applicable sentence templates
+    exports.builder = [
         { es: "Tengo que {verb}.", en: "I have to {verb}." },
         { es: "¿Tienes que {verb}?", en: "Do you have to {verb}?" },
-        { es: "No tenemos que {verb}.", en: "We don't have to {verb}." }
+        { es: "No tenemos que {verb}.", en: "We do not have to {verb}." }
     ];
-    exports.qa = [];
-    infinitives.forEach(function (verb) {
-        builder.forEach(function (b) {
-            return exports.qa.push({
-                q: b.es.replace("{verb}", verb.es),
-                a: b.en.replace("{verb}", verb.en)
-            });
-        });
-    });
 });
 define("sentences/index", ["require", "exports"], function (require, exports) {
     "use strict";
@@ -596,9 +661,25 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "Tu madre canta bien.", en: "Your mom sings well." }
     ];
 });
-define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], function (require, exports, tener_1, index_1) {
+define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "verbos/querer", "verbos/tener", "sentences/index"], function (require, exports, haber_1, poder_1, querer_1, tener_1, index_1) {
     "use strict";
     index_1 = __importDefault(index_1);
+    function build(infinitives, builder) {
+        var qa = [];
+        infinitives.forEach(function (verb) {
+            builder.forEach(function (b) {
+                return qa.push({
+                    a: b.es.replace("{verb}", verb.es),
+                    q: b.en.replace("{verb}", verb.en)
+                });
+            });
+        });
+        return qa;
+    }
+    var haberQa = build(haber_1.infinitives, haber_1.builder);
+    var poderQa = build(poder_1.infinitives, poder_1.builder);
+    var quererQa = build(querer_1.infinitives, querer_1.builder);
+    var tenerQa = build(tener_1.infinitives, tener_1.builder);
     var verbs = {
         llamar: "call",
         confiar: "trust",
@@ -762,14 +843,17 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
     }
     var QA = [
         { a: "yo necesito", q: "I need" },
-        { a: "yo necesito {verb}", q: "I need to {verb}" },
-        { a: "yo necesito {noun}", q: "I need {noun}" },
-        { a: "yo necesito {verb} por favor", q: "I need to {verb} please" },
-        { a: "yo necesito {noun} por favor", q: "I need {noun} please" },
-        { a: "tú necesitas {verb}", q: "you need to {verb}" },
-        { a: "tú necesitas {noun}", q: "you need {noun}" },
-        { a: "nosotros necesitamos {noun}", q: "we need {noun}" },
-        { a: "nosotros necesitamos {verb}", q: "we need to {verb}" },
+        { a: "tú necesitas", q: "you need" },
+        { a: "me gusta", q: "I like" },
+        { a: "nosotros necesitamos", q: "we need" },
+        { a: "necesito {verb}", q: "I need to {verb}" },
+        { a: "necesito {noun}", q: "I need {noun}" },
+        { a: "necesito {verb} por favor", q: "I need to {verb} please" },
+        { a: "necesito {noun} por favor", q: "I need {noun} please" },
+        { a: "necesitas {verb}", q: "you need to {verb}" },
+        { a: "necesitas {noun}", q: "you need {noun}" },
+        { a: "necesitamos {noun}", q: "we need {noun}" },
+        { a: "necesitamos {verb}", q: "we need to {verb}" },
         { a: "me gusta {verb}", q: "I like to {verb}" },
         { a: "me gusta {noun}", q: "I like {noun}" },
         { a: "te gusta {verb}", q: "you like to {verb}" },
@@ -786,7 +870,7 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         { a: "me llamo es", q: "my name is" },
         { a: "me voy {place}", q: "I am going {place}" },
         { a: "I want to stay", q: "Quiero quedarme" },
-        { a: "nosotros queremos {verb} en otro {noun} {color}", q: "we want to {verb} at another {color} {noun}" },
+        { a: "nosotros queremos {verb} en otro {noun} {color}", q: "we want to {verb} at {noun} that is {color}" },
         { a: "ellos quieren {verb} {noun} {adjective}", q: "they want to {verb} {noun} {adjective}" },
         { a: "es dos mas pequeño que cinco?", q: "is two smaller than five?" },
         { a: "es {number} mas pequeño que {number}?", q: "is {number} smaller than {number}?" },
@@ -794,7 +878,7 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         { a: "Que tengas una buena mañana", q: "have a good morning" },
         { a: "¡Que tengas una buena semana!", q: "have a good week!" }
     ];
-    var qa = QA.concat(tener_1.qa, index_1["default"].filter(function (v) { return !!v.es && !!v.en; }).map(function (v) { return ({ a: v.es, q: v.en }); }));
+    var qa = QA.concat(haberQa, poderQa, quererQa, tenerQa, index_1["default"].filter(function (v) { return !!v.es && !!v.en; }).map(function (v) { return ({ a: v.es, q: v.en }); }));
     var questions = shuffle(qa).map(function (item) {
         var q = item.q;
         var a = item.a;
@@ -835,9 +919,19 @@ define("quizlet/qa", ["require", "exports", "verbos/tener", "sentences/index"], 
         result = result.replace(/  /g, " ");
         return result;
     }
-    return questions.slice(0, 5).map(function (v) {
-        var swap = 0.1 > Math.random();
+    function spacesIn(v) {
+        var result = 0;
+        for (var i = 0; i < v.length; i++)
+            if (v.charAt(i) === " ")
+                result++;
+        return result;
+    }
+    return questions
+        .slice(0, 5)
+        .sort(function (a, b) { return spacesIn(a.a) - spacesIn(b.a); })
+        .map(function (v) {
         var _a = [remove(v.q, "!."), remove(v.a, "!.¿¡")], q = _a[0], a = _a[1];
+        var swap = 0.1 > Math.random(); // show spanish 10% of the time
         return swap ? { q: a, a: q } : { q: q, a: a };
     });
 });
@@ -909,11 +1003,22 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
         var elements = from(document.getElementsByTagName("score-board"));
         elements.forEach(function (e) {
             var score = webcomponent_5.getComponent(e);
-            score && score.setAttribute("score", correct + "");
+            score && score.setAttribute("score", Math.round(100 * (correct / (correct + incorrect))) + "");
         });
     }
     system_events_3.SystemEvents.watch("correct", function () { return score(1); });
     system_events_3.SystemEvents.watch("incorrect", function () { return score(-1); });
+    system_events_3.SystemEvents.watch("hint", function (result) {
+        from(document.getElementsByTagName("hint-slider")).forEach(function (n) {
+            n.innerHTML = result.hint;
+            n.classList.add("visible");
+            n.classList.remove("hidden");
+            setTimeout(function () {
+                n.classList.remove("visible");
+                n.classList.add("hidden");
+            }, 2000);
+        });
+    });
     system_events_3.SystemEvents.watch("no-more-input", function () {
         location.reload();
     });

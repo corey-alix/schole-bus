@@ -166,7 +166,7 @@ export class QaInput extends WebComponent {
 		const label = this.label;
 
 		label.textContent = this.getAttribute("question");
-		label.title = this.getAttribute("hint") || answer;
+		let hint = this.getAttribute("hint") || answer;
 
 		input.maxLength = answer.length;
 
@@ -194,9 +194,7 @@ export class QaInput extends WebComponent {
 				let currentValue = input.value;
 				let expectedKey = answer[currentValue.length];
 
-				if (!ev.key) {
-					dump(ev);
-				} else {
+				if (!ev.key || ev.key.length > 1) {
 					dump(ev);
 				}
 				let currentKey = ev.key || mapping.get(ev);
@@ -214,7 +212,6 @@ export class QaInput extends WebComponent {
 					}
 					return false;
 				} else {
-					log(`${currentKey}=(${currentKey.charCodeAt(0)}) -> ${expectedKey}=(${expectedKey.charCodeAt(0)})`);
 					input.classList.add("wrong");
 					this.wrongAnswer();
 				}
@@ -230,8 +227,10 @@ export class QaInput extends WebComponent {
 		shadowRoot.appendChild(input);
 
 		this.help.onclick = () => {
+			this.input.focus();
 			this.provideHelp();
 			this.validate();
+			SystemEvents.trigger("hint", { hint: hint });
 		};
 	}
 
@@ -250,7 +249,6 @@ export class QaInput extends WebComponent {
 				}
 			}
 		}
-		log(s ? "next found" : "no next input");
 		if (!s) SystemEvents.trigger("no-more-input", {});
 		else setTimeout(() => s && s.focus(), 200);
 	}
