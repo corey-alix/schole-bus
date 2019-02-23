@@ -1,7 +1,3 @@
-const fill_ins = {
-	gusta: [{ "el chihuahua": "the chihuahua" }, { "beber agua": "to drink water" }, { "el queso": "cheese" }]
-};
-
 export = [
 	{ es: "Mi papá ama las papas.", en: "My dad loves potatoes." },
 	{ es: "¿nos vamos?", en: "Are we going?" },
@@ -137,9 +133,9 @@ export = [
 	{ es: "Hasta luego.", en: "See you later." },
 	{ es: "Ella es mi hermana en Cristo.", en: "She is my sister in Christ." },
 	{ es: "Cantar a Dios es importante.", en: "Singing to God is important." },
-	{ es: "", en: "Thank you for everything." },
-	{ es: "", en: "Thank you for singing." },
-	{ es: "", en: "Thank you for studying with me." },
+	{ es: "Gracia por todo.", en: "Thank you for everything." },
+	{ es: "Gracias por cantar.", en: "Thank you for singing." },
+	{ es: "Gracias por estudiar conmigo.", en: "Thank you for studying with me." },
 	{ es: "¡Muy gracias!", en: "Thank you so much!" },
 	{ es: "Gracias, estoy bien.", en: "Thank you, I am fine." },
 	{ es: "Eso es malo. Lo siento.", en: "That’s bad. I am sorry." },
@@ -162,7 +158,7 @@ export = [
 	{ es: "Nos vamos mañana.", en: "We are going tomorrow." },
 	{ es: "Somos justificados por la fe.", en: "We are justified by faith." },
 	{ es: "No vamos.", en: "We are not going." },
-	{ es: "Vivir por la fe.", en: "We live by faith." },
+	{ es: "Vivimos por la fe.", en: "We live by faith." },
 	{ es: "Nosotros vivimos en los Estados Unidos.", en: "We live in the United States." },
 	{ es: "Necesitamos a Dios.", en: "We need God." },
 	{ es: "Necesitamos orar todos los días.", en: "We need to pray every day." },
@@ -186,5 +182,6 @@ export = [
 	{ es: "Si, gracias.", en: "Yes, thank you." },
 	{ es: "Sí, tienes que ir conmigo.", en: "Yes, you need to go with me." },
 	{ es: "Lo hiciste muy bien.", en: "You did very well." },
-	{ es: "Tu madre canta bien.", en: "Your mom sings well." }
+	{ es: "Tu madre canta bien.", en: "Your mom sings well." },
+	{ es: "te gusta tu comida?", en: "do you like your food?" }
 ];

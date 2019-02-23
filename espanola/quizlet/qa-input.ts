@@ -87,6 +87,7 @@ export class QaInput extends WebComponent {
 	input: HTMLInputElement;
 	label: HTMLLabelElement;
 	help: HTMLButtonElement;
+	score = 0;
 
 	constructor(domNode: HTMLElement) {
 		super(domNode);
@@ -104,10 +105,12 @@ export class QaInput extends WebComponent {
 	}
 
 	rightAnswer() {
+		this.score++;
 		SystemEvents.trigger("correct", { value: 1 });
 	}
 
 	wrongAnswer() {
+		this.score--;
 		SystemEvents.trigger("incorrect", { value: -1 });
 	}
 
@@ -155,6 +158,7 @@ export class QaInput extends WebComponent {
 			input.readOnly = true;
 			input.classList.remove("wrong");
 			input.classList.add("correct");
+			SystemEvents.trigger("xp", { score: this.score, question: this.getAttribute("question") });
 			return true;
 		}
 		return false;
@@ -166,7 +170,8 @@ export class QaInput extends WebComponent {
 		const label = this.label;
 
 		label.textContent = this.getAttribute("question");
-		let hint = this.getAttribute("hint") || answer;
+		let hint = this.getAttribute("hint");
+		label.title = hint || "";
 
 		input.maxLength = answer.length;
 
@@ -185,7 +190,6 @@ export class QaInput extends WebComponent {
 					case 46: // del
 						return false;
 					case 112: // F1
-						// mapping.play(); return false;
 						this.provideHelp();
 						if (this.validate()) this.tab();
 						return false;
@@ -230,7 +234,7 @@ export class QaInput extends WebComponent {
 			this.input.focus();
 			this.provideHelp();
 			this.validate();
-			SystemEvents.trigger("hint", { hint: hint });
+			SystemEvents.trigger("hint", { hint: answer });
 		};
 	}
 

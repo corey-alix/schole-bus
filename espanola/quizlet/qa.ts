@@ -290,11 +290,25 @@ function spacesIn(v: string) {
 	return result;
 }
 
-export = questions
-	.slice(0, 5)
-	.sort((a, b) => spacesIn(a.a) - spacesIn(b.a))
+let scoreboard = JSON.parse(localStorage.getItem("scoreboard") || ({} as any));
+
+function getScore(question: string) {
+	let score = scoreboard[question] || 0;
+	console.log(question, score);
+	return score;
+}
+
+questions = questions
+	//.sort((a, b) => (a.a < b.a ? -1 : 0))
+	//.sort((a, b) => spacesIn(a.a) - spacesIn(b.a))
 	.map(v => {
 		let [q, a] = [remove(v.q, "!."), remove(v.a, "!.¿¡")];
 		let swap = 0.1 > Math.random(); // show spanish 10% of the time
-		return swap ? { q: a, a: q } : { q, a };
-	});
+		return swap ? { q: a, a: q, hint: getScore(a) } : { q, a, hint: getScore(q) };
+	})
+	.filter(a => 100 > getScore(a.q))
+	.sort((a, b) => -(getScore(a.q) - getScore(b.q)));
+
+console.log(questions.map(q => `${q.q} = ${getScore(q.q)}`));
+
+export = questions.slice(0, 5);

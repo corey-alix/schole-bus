@@ -67,3 +67,9 @@ SystemEvents.watch("hint", (result: { hint: string }) => {
 SystemEvents.watch("no-more-input", () => {
 	location.reload();
 });
+
+SystemEvents.watch("xp", (result: { question: string; score: number }) => {
+	let scoreboard = JSON.parse(localStorage.getItem("scoreboard") || "{}");
+	scoreboard[result.question] = (scoreboard[result.question] || 0) + result.score;
+	localStorage.setItem("scoreboard", JSON.stringify(scoreboard, null, "\t"));
+});

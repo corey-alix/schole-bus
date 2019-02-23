@@ -200,6 +200,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         __extends(QaInput, _super);
         function QaInput(domNode) {
             var _this = _super.call(this, domNode) || this;
+            _this.score = 0;
             _this.label = document.createElement("label");
             _this.input = document.createElement("input");
             _this.input.type = "text";
@@ -213,9 +214,11 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             this.input.focus();
         };
         QaInput.prototype.rightAnswer = function () {
+            this.score++;
             system_events_2.SystemEvents.trigger("correct", { value: 1 });
         };
         QaInput.prototype.wrongAnswer = function () {
+            this.score--;
             system_events_2.SystemEvents.trigger("incorrect", { value: -1 });
         };
         QaInput.prototype.isMatch = function (a, b) {
@@ -270,6 +273,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 input.readOnly = true;
                 input.classList.remove("wrong");
                 input.classList.add("correct");
+                system_events_2.SystemEvents.trigger("xp", { score: this.score, question: this.getAttribute("question") });
                 return true;
             }
             return false;
@@ -280,7 +284,8 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             var answer = this.getAttribute("answer") || "";
             var label = this.label;
             label.textContent = this.getAttribute("question");
-            var hint = this.getAttribute("hint") || answer;
+            var hint = this.getAttribute("hint");
+            label.title = hint || "";
             input.maxLength = answer.length;
             input.onkeydown = function (ev) {
                 // mapping.record(ev);
@@ -298,7 +303,6 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                         case 46: // del
                             return false;
                         case 112: // F1
-                            // mapping.play(); return false;
                             _this.provideHelp();
                             if (_this.validate())
                                 _this.tab();
@@ -341,7 +345,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 _this.input.focus();
                 _this.provideHelp();
                 _this.validate();
-                system_events_2.SystemEvents.trigger("hint", { hint: hint });
+                system_events_2.SystemEvents.trigger("hint", { hint: answer });
             };
         };
         QaInput.prototype.tab = function () {
@@ -471,9 +475,6 @@ define("verbos/tener", ["require", "exports"], function (require, exports) {
 });
 define("sentences/index", ["require", "exports"], function (require, exports) {
     "use strict";
-    var fill_ins = {
-        gusta: [{ "el chihuahua": "the chihuahua" }, { "beber agua": "to drink water" }, { "el queso": "cheese" }]
-    };
     return [
         { es: "Mi papá ama las papas.", en: "My dad loves potatoes." },
         { es: "¿nos vamos?", en: "Are we going?" },
@@ -609,9 +610,9 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "Hasta luego.", en: "See you later." },
         { es: "Ella es mi hermana en Cristo.", en: "She is my sister in Christ." },
         { es: "Cantar a Dios es importante.", en: "Singing to God is important." },
-        { es: "", en: "Thank you for everything." },
-        { es: "", en: "Thank you for singing." },
-        { es: "", en: "Thank you for studying with me." },
+        { es: "Gracia por todo.", en: "Thank you for everything." },
+        { es: "Gracias por cantar.", en: "Thank you for singing." },
+        { es: "Gracias por estudiar conmigo.", en: "Thank you for studying with me." },
         { es: "¡Muy gracias!", en: "Thank you so much!" },
         { es: "Gracias, estoy bien.", en: "Thank you, I am fine." },
         { es: "Eso es malo. Lo siento.", en: "That’s bad. I am sorry." },
@@ -634,7 +635,7 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "Nos vamos mañana.", en: "We are going tomorrow." },
         { es: "Somos justificados por la fe.", en: "We are justified by faith." },
         { es: "No vamos.", en: "We are not going." },
-        { es: "Vivir por la fe.", en: "We live by faith." },
+        { es: "Vivimos por la fe.", en: "We live by faith." },
         { es: "Nosotros vivimos en los Estados Unidos.", en: "We live in the United States." },
         { es: "Necesitamos a Dios.", en: "We need God." },
         { es: "Necesitamos orar todos los días.", en: "We need to pray every day." },
@@ -658,7 +659,8 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "Si, gracias.", en: "Yes, thank you." },
         { es: "Sí, tienes que ir conmigo.", en: "Yes, you need to go with me." },
         { es: "Lo hiciste muy bien.", en: "You did very well." },
-        { es: "Tu madre canta bien.", en: "Your mom sings well." }
+        { es: "Tu madre canta bien.", en: "Your mom sings well." },
+        { es: "te gusta tu comida?", en: "do you like your food?" }
     ];
 });
 define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "verbos/querer", "verbos/tener", "sentences/index"], function (require, exports, haber_1, poder_1, querer_1, tener_1, index_1) {
@@ -926,14 +928,24 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
                 result++;
         return result;
     }
-    return questions
-        .slice(0, 5)
-        .sort(function (a, b) { return spacesIn(a.a) - spacesIn(b.a); })
+    var scoreboard = JSON.parse(localStorage.getItem("scoreboard") || {});
+    function getScore(question) {
+        var score = scoreboard[question] || 0;
+        console.log(question, score);
+        return score;
+    }
+    questions = questions
+        //.sort((a, b) => (a.a < b.a ? -1 : 0))
+        //.sort((a, b) => spacesIn(a.a) - spacesIn(b.a))
         .map(function (v) {
         var _a = [remove(v.q, "!."), remove(v.a, "!.¿¡")], q = _a[0], a = _a[1];
         var swap = 0.1 > Math.random(); // show spanish 10% of the time
-        return swap ? { q: a, a: q } : { q: q, a: a };
-    });
+        return swap ? { q: a, a: q, hint: getScore(a) } : { q: q, a: a, hint: getScore(q) };
+    })
+        .filter(function (a) { return 100 > getScore(a.q); })
+        .sort(function (a, b) { return -(getScore(a.q) - getScore(b.q)); });
+    console.log(questions.map(function (q) { return q.q + " = " + getScore(q.q); }));
+    return questions.slice(0, 5);
 });
 define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/qa"], function (require, exports, webcomponent_4, qa_1) {
     "use strict";
@@ -953,6 +965,7 @@ define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizl
                 var qaItem = document.createElement("qa-input");
                 qaItem.setAttribute("question", item.q);
                 qaItem.setAttribute("answer", item.a);
+                qaItem.setAttribute("hint", item.hint || "");
                 div.appendChild(qaItem);
             });
             shadowRoot.innerHTML = div.innerHTML;
@@ -1021,6 +1034,11 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
     });
     system_events_3.SystemEvents.watch("no-more-input", function () {
         location.reload();
+    });
+    system_events_3.SystemEvents.watch("xp", function (result) {
+        var scoreboard = JSON.parse(localStorage.getItem("scoreboard") || "{}");
+        scoreboard[result.question] = (scoreboard[result.question] || 0) + result.score;
+        localStorage.setItem("scoreboard", JSON.stringify(scoreboard, null, "\t"));
     });
 });
 //# sourceMappingURL=main.js.map
