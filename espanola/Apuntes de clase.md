@@ -1,3 +1,10 @@
+| es       | en                            |
+| -------- | ----------------------------- |
+| Tú eres  | You are                       |
+| Te gusta | is pleasing to you (you like) |
+| a ti     | to you                        |
+| tu       | your                          |
+
 Homework...
 
 -   Stick-It notes, some ideas include:

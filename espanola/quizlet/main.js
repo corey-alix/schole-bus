@@ -58,6 +58,26 @@ define("quizlet/webcomponent", ["require", "exports"], function (require, export
         return registry[parseInt(key)];
     }
     exports.getComponent = getComponent;
+    function cssin(name, css) {
+        var id = "style-" + name;
+        var styleTag = document.getElementById(id);
+        if (!styleTag) {
+            styleTag = document.createElement("style");
+            styleTag.id = id;
+            styleTag.type = "text/css";
+            document.head.appendChild(styleTag);
+            styleTag.appendChild(document.createTextNode(css));
+        }
+        var dataset = styleTag.dataset;
+        dataset["count"] = parseInt(dataset["count"] || "0") + 1 + "";
+        return function () {
+            dataset["count"] = parseInt(dataset["count"] || "0") - 1 + "";
+            if (dataset["count"] === "0") {
+                styleTag.remove();
+            }
+        };
+    }
+    exports.cssin = cssin;
 });
 define("quizlet/system-events", ["require", "exports"], function (require, exports) {
     "use strict";
@@ -159,30 +179,11 @@ define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], fu
 define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/keydown-as-keypress"], function (require, exports, webcomponent_3, system_events_2, console_log_1, keydown_as_keypress_1) {
     "use strict";
     exports.__esModule = true;
+    webcomponent_3.cssin("qa-input", "qa-input {\n\tpadding: 20px;\n}\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tmargin-top: 20px;\n\tpadding: 20px;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: gray;\n\tposition: relative;\n    bottom: 3px;\n\tleft: 10px;\n}\nqa-input button[disabled] {\n\tcolor: green;\n}");
     var sound = document.createElement("audio");
     sound.src = "beep-07.wav";
     sound.autoplay = false;
     system_events_2.SystemEvents.watch("incorrect", function () { return sound.play(); });
-    function cssin(name, css) {
-        var id = "style-" + name;
-        var styleTag = document.getElementById(id);
-        if (!styleTag) {
-            styleTag = document.createElement("style");
-            styleTag.id = id;
-            styleTag.type = "text/css";
-            document.head.appendChild(styleTag);
-            styleTag.appendChild(document.createTextNode(css));
-        }
-        var dataset = styleTag.dataset;
-        dataset["count"] = parseInt(dataset["count"] || "0") + 1 + "";
-        return function () {
-            dataset["count"] = parseInt(dataset["count"] || "0") - 1 + "";
-            if (dataset["count"] === "0") {
-                styleTag.remove();
-            }
-        };
-    }
-    exports.cssin = cssin;
     function dump(o) {
         var result = {};
         for (var p in o) {
@@ -194,16 +195,15 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         }
         console_log_1.log(JSON.stringify(result));
     }
-    var css = "<style>\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tmargin-top: 20px;\n\tpadding: 20px;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: gray;\n\tposition: relative;\n    bottom: 3px;\n\tleft: 10px;\n}\nqa-input button[disabled] {\n\tcolor: green;\n}\n</style>";
-    cssin("qa-input", css);
     var QaInput = /** @class */ (function (_super) {
         __extends(QaInput, _super);
         function QaInput(domNode) {
             var _this = _super.call(this, domNode) || this;
-            _this.score = 0;
+            _this.score = [0, 0];
             _this.label = document.createElement("label");
             _this.input = document.createElement("input");
             _this.input.type = "text";
+            _this.input.spellcheck = false;
             _this.help = document.createElement("button");
             _this.help.tabIndex = -1; // no tab
             _this.help.type = "button";
@@ -214,11 +214,11 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             this.input.focus();
         };
         QaInput.prototype.rightAnswer = function () {
-            this.score++;
+            this.score[0]++;
             system_events_2.SystemEvents.trigger("correct", { value: 1 });
         };
         QaInput.prototype.wrongAnswer = function () {
-            this.score--;
+            this.score[1]++;
             system_events_2.SystemEvents.trigger("incorrect", { value: -1 });
         };
         QaInput.prototype.isMatch = function (a, b) {
@@ -273,7 +273,13 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 input.readOnly = true;
                 input.classList.remove("wrong");
                 input.classList.add("correct");
-                system_events_2.SystemEvents.trigger("xp", { score: this.score, question: this.getAttribute("question") });
+                var score = this.score[0];
+                // bonus points if no mistakes
+                if (this.score[1] == 0)
+                    score += 5 * Math.min(10, input.value.length / 2);
+                else
+                    score -= this.score[1];
+                system_events_2.SystemEvents.trigger("xp", { score: score, question: this.getAttribute("question") });
                 return true;
             }
             return false;
@@ -303,6 +309,9 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                         case 46: // del
                             return false;
                         case 112: // F1
+                            system_events_2.SystemEvents.trigger("hint", { hint: answer });
+                            return false;
+                        case 113: // F2
                             _this.provideHelp();
                             if (_this.validate())
                                 _this.tab();
@@ -343,8 +352,6 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             shadowRoot.appendChild(input);
             this.help.onclick = function () {
                 _this.input.focus();
-                _this.provideHelp();
-                _this.validate();
                 system_events_2.SystemEvents.trigger("hint", { hint: answer });
             };
         };
@@ -384,17 +391,17 @@ define("verbos/haber", ["require", "exports"], function (require, exports) {
     };
     // applicable infinitives
     exports.infinitives = [
-        { es: "comer", en: "eat" },
-        { es: "ir", en: "go" },
-        { es: "leer", en: "read" },
-        { es: "dormir", en: "sleep" },
-        { es: "hacer", en: "do" }
+        { es: "comido", en: "eaten" },
+        { es: "ido", en: "gone" },
+        { es: "leido", en: "read" },
+        { es: "dormido", en: "slept" },
+        { es: "hecho", en: "done" }
     ];
     // applicable sentence templates
     exports.builder = [
-        { es: "Tengo que {verb}.", en: "I have to {verb}." },
-        { es: "¿Tienes que {verb}?", en: "Do you have to {verb}?" },
-        { es: "No tenemos que {verb}.", en: "We do not have to {verb}." }
+        { es: "Yo he {verb}.", en: "I have {verb}." },
+        { es: "Tú has {verb}?", en: "Have you {verb}?" },
+        { es: "No hemos {verb}.", en: "We have not {verb}." }
     ];
 });
 define("verbos/poder", ["require", "exports"], function (require, exports) {
@@ -434,17 +441,17 @@ define("verbos/querer", ["require", "exports"], function (require, exports) {
     };
     // applicable infinitives
     exports.infinitives = [
-        { es: "comido", en: "eaten" },
-        { es: "ido", en: "gone" },
-        { es: "leido", en: "read" },
-        { es: "dormido", en: "slept" },
-        { es: "hecho", en: "done" }
+        { es: "comer", en: "eat" },
+        { es: "ir", en: "go" },
+        { es: "leer", en: "read" },
+        { es: "dormir", en: "sleep" },
+        { es: "hacer", en: "do" }
     ];
     // applicable sentence templates
     exports.builder = [
-        { es: "Yo he {verb}.", en: "I have {verb}." },
-        { es: "Tú has {verb}?", en: "Have you {verb}?" },
-        { es: "No hemos {verb}.", en: "We have not {verb}." }
+        { es: "Yo quiero {verb}.", en: "I want to {verb}." },
+        { es: "Quieres {verb}?", en: "Do you want to {verb}?" },
+        { es: "No queremos {verb}.", en: "We do not want to {verb}." }
     ];
 });
 define("verbos/tener", ["require", "exports"], function (require, exports) {
@@ -473,9 +480,56 @@ define("verbos/tener", ["require", "exports"], function (require, exports) {
         { es: "No tenemos que {verb}.", en: "We do not have to {verb}." }
     ];
 });
-define("sentences/index", ["require", "exports"], function (require, exports) {
+define("sentences/opuesto", ["require", "exports"], function (require, exports) {
     "use strict";
-    return [
+    function isMale(noun) {
+        if (0 === noun.indexOf("el "))
+            return true;
+        if (0 === noun.indexOf("la "))
+            return false;
+        var last = noun.charAt(noun.length - 1);
+        switch (last) {
+            case "a":
+            case "e":
+                return false;
+            case "o":
+                return true;
+        }
+        return true;
+    }
+    var builder = function (data) {
+        var es1 = data.es[0];
+        es1 = isMale(es1) ? "al " : "a " + es1;
+        return { es: "lo opuesto a " + es1 + " es " + data.es[1], en: "the opposite of " + data.en[0] + " is " + data.en[1] };
+    };
+    var opuestos = [
+        {
+            es: ["arriba", "abajo"],
+            en: ["up", "down"]
+        },
+        {
+            es: ["atràs", "adelante"],
+            en: ["behind", "ahead"]
+        },
+        {
+            es: ["caliente", "frio"],
+            en: ["hot", "cold"]
+        },
+        {
+            es: ["corre", "camina"],
+            en: ["run", "walk"]
+        },
+        {
+            es: ["en", "fuera"],
+            en: ["in", "out"]
+        }
+    ];
+    return opuestos.map(builder);
+});
+define("sentences/index", ["require", "exports", "sentences/opuesto"], function (require, exports, opuesto_1) {
+    "use strict";
+    opuesto_1 = __importDefault(opuesto_1);
+    var baseline = [
         { es: "Mi papá ama las papas.", en: "My dad loves potatoes." },
         { es: "¿nos vamos?", en: "Are we going?" },
         { es: "¿Eres un hijo de Dios?", en: "Are you a child of God?" },
@@ -662,8 +716,39 @@ define("sentences/index", ["require", "exports"], function (require, exports) {
         { es: "Tu madre canta bien.", en: "Your mom sings well." },
         { es: "te gusta tu comida?", en: "do you like your food?" }
     ];
+    var sentences = baseline.concat(opuesto_1["default"]);
+    return sentences;
 });
-define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "verbos/querer", "verbos/tener", "sentences/index"], function (require, exports, haber_1, poder_1, querer_1, tener_1, index_1) {
+define("quizlet/storage", ["require", "exports"], function (require, exports) {
+    "use strict";
+    exports.__esModule = true;
+    var LocalStorage = /** @class */ (function () {
+        function LocalStorage() {
+            this.data = this.upgrade();
+        }
+        LocalStorage.prototype.upgrade = function () {
+            return {
+                scoreboard: this.upgradeScoreboard()
+            };
+        };
+        LocalStorage.prototype.upgradeScoreboard = function () {
+            return JSON.parse(localStorage.getItem("scoreboard") || "{}");
+        };
+        LocalStorage.prototype.save = function () {
+            localStorage.setItem("scoreboard", JSON.stringify(this.data.scoreboard));
+        };
+        LocalStorage.prototype.getScore = function (data) {
+            return this.data.scoreboard[data.question] || 0;
+        };
+        LocalStorage.prototype.setScore = function (data) {
+            this.data.scoreboard[data.question] = (this.data.scoreboard[data.question] || 0) + data.score;
+            this.save();
+        };
+        return LocalStorage;
+    }());
+    exports.storage = new LocalStorage();
+});
+define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "verbos/querer", "verbos/tener", "sentences/index", "quizlet/storage"], function (require, exports, haber_1, poder_1, querer_1, tener_1, index_1, storage_1) {
     "use strict";
     index_1 = __importDefault(index_1);
     function build(infinitives, builder) {
@@ -881,7 +966,7 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
         { a: "¡Que tengas una buena semana!", q: "have a good week!" }
     ];
     var qa = QA.concat(haberQa, poderQa, quererQa, tenerQa, index_1["default"].filter(function (v) { return !!v.es && !!v.en; }).map(function (v) { return ({ a: v.es, q: v.en }); }));
-    var questions = shuffle(qa).map(function (item) {
+    var questions = qa.map(function (item) {
         var q = item.q;
         var a = item.a;
         while (true) {
@@ -928,26 +1013,30 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
                 result++;
         return result;
     }
-    var scoreboard = JSON.parse(localStorage.getItem("scoreboard") || {});
-    function getScore(question) {
-        var score = scoreboard[question] || 0;
-        console.log(question, score);
-        return score;
-    }
-    questions = questions
+    var scores = questions
         //.sort((a, b) => (a.a < b.a ? -1 : 0))
         //.sort((a, b) => spacesIn(a.a) - spacesIn(b.a))
         .map(function (v) {
         var _a = [remove(v.q, "!."), remove(v.a, "!.¿¡")], q = _a[0], a = _a[1];
         var swap = 0.1 > Math.random(); // show spanish 10% of the time
-        return swap ? { q: a, a: q, hint: getScore(a) } : { q: q, a: a, hint: getScore(q) };
-    })
-        .filter(function (a) { return 100 > getScore(a.q); })
-        .sort(function (a, b) { return -(getScore(a.q) - getScore(b.q)); });
-    console.log(questions.map(function (q) { return q.q + " = " + getScore(q.q); }));
-    return questions.slice(0, 5);
+        if (swap) {
+            var x = q;
+            q = a;
+            a = x;
+        }
+        var score = storage_1.storage.getScore({ question: q });
+        return { q: q, a: a, score: score, hint: score };
+    });
+    scores = scores.sort(function (a, b) { return b.score - a.score; });
+    // exclude items that exceed the worst score by 100 points
+    var minScore = scores[scores.length - 1].score;
+    scores = scores.filter(function (s) { return s.score < minScore + 100; });
+    // skip the top scorer, take the next 10 best, scramble and return 5
+    scores = scores.slice(1, 11);
+    scores = shuffle(scores);
+    return scores.slice(0, 5);
 });
-define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/qa"], function (require, exports, webcomponent_4, qa_1) {
+define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/qa", "quizlet/system-events"], function (require, exports, webcomponent_4, qa_1, system_events_3) {
     "use strict";
     exports.__esModule = true;
     qa_1 = __importDefault(qa_1);
@@ -960,21 +1049,25 @@ define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizl
         }
         QaBlock.prototype.load = function () {
             var shadowRoot = this.attachShadow({ mode: "open" });
-            var div = document.createElement("div");
-            qa_1["default"].forEach(function (item) {
+            var div = shadowRoot; // could create a div if real shadow
+            var items = qa_1["default"].map(function (item) {
                 var qaItem = document.createElement("qa-input");
                 qaItem.setAttribute("question", item.q);
                 qaItem.setAttribute("answer", item.a);
                 qaItem.setAttribute("hint", item.hint || "");
                 div.appendChild(qaItem);
+                return qaItem;
             });
-            shadowRoot.innerHTML = div.innerHTML;
+            system_events_3.SystemEvents.watch("start", function () {
+                var input = webcomponent_4.getComponent(items[0]);
+                input && input.focus();
+            });
         };
         return QaBlock;
     }(webcomponent_4.WebComponent));
     exports.QaBlock = QaBlock;
 });
-define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log"], function (require, exports, score_board_1, qa_input_1, qa_block_1, webcomponent_5, system_events_3, console_log_2) {
+define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage"], function (require, exports, score_board_1, qa_input_1, qa_block_1, webcomponent_5, system_events_4, console_log_2, storage_2) {
     "use strict";
     exports.__esModule = true;
     function from(nodes) {
@@ -1005,6 +1098,8 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
             }
             return true;
         });
+        // fade the screen before beginning
+        setTimeout(function () { return system_events_4.SystemEvents.trigger("start", {}); }, 200);
     }
     var correct = 0;
     var incorrect = 0;
@@ -1019,9 +1114,9 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
             score && score.setAttribute("score", Math.round(100 * (correct / (correct + incorrect))) + "");
         });
     }
-    system_events_3.SystemEvents.watch("correct", function () { return score(1); });
-    system_events_3.SystemEvents.watch("incorrect", function () { return score(-1); });
-    system_events_3.SystemEvents.watch("hint", function (result) {
+    system_events_4.SystemEvents.watch("correct", function () { return score(1); });
+    system_events_4.SystemEvents.watch("incorrect", function () { return score(-1); });
+    system_events_4.SystemEvents.watch("hint", function (result) {
         from(document.getElementsByTagName("hint-slider")).forEach(function (n) {
             n.innerHTML = result.hint;
             n.classList.add("visible");
@@ -1032,13 +1127,11 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
             }, 2000);
         });
     });
-    system_events_3.SystemEvents.watch("no-more-input", function () {
+    system_events_4.SystemEvents.watch("no-more-input", function () {
         location.reload();
     });
-    system_events_3.SystemEvents.watch("xp", function (result) {
-        var scoreboard = JSON.parse(localStorage.getItem("scoreboard") || "{}");
-        scoreboard[result.question] = (scoreboard[result.question] || 0) + result.score;
-        localStorage.setItem("scoreboard", JSON.stringify(scoreboard, null, "\t"));
+    system_events_4.SystemEvents.watch("xp", function (result) {
+        storage_2.storage.setScore(result);
     });
 });
 //# sourceMappingURL=main.js.map

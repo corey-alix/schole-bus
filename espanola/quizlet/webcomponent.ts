@@ -39,3 +39,25 @@ export function getComponent(domNode: HTMLElement) {
 	if (!key) return null;
 	return registry[parseInt(key)];
 }
+
+export function cssin(name: string, css: string) {
+	let id = `style-${name}`;
+	let styleTag = <HTMLStyleElement>document.getElementById(id);
+	if (!styleTag) {
+		styleTag = document.createElement("style");
+		styleTag.id = id;
+		styleTag.type = "text/css";
+		document.head.appendChild(styleTag);
+		styleTag.appendChild(document.createTextNode(css));
+	}
+
+	let dataset = styleTag.dataset;
+	dataset["count"] = parseInt(dataset["count"] || "0") + 1 + "";
+
+	return () => {
+		dataset["count"] = parseInt(dataset["count"] || "0") - 1 + "";
+		if (dataset["count"] === "0") {
+			styleTag.remove();
+		}
+	};
+}

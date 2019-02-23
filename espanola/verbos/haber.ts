@@ -8,16 +8,16 @@ export const verbo = {
 
 // applicable infinitives
 export const infinitives = [
-	{ es: "comer", en: "eat" },
-	{ es: "ir", en: "go" },
-	{ es: "leer", en: "read" },
-	{ es: "dormir", en: "sleep" },
-	{ es: "hacer", en: "do" }
+	{ es: "comido", en: "eaten" },
+	{ es: "ido", en: "gone" },
+	{ es: "leido", en: "read" },
+	{ es: "dormido", en: "slept" },
+	{ es: "hecho", en: "done" }
 ];
 
 // applicable sentence templates
 export const builder = [
-	{ es: "Tengo que {verb}.", en: "I have to {verb}." },
-	{ es: "¿Tienes que {verb}?", en: "Do you have to {verb}?" },
-	{ es: "No tenemos que {verb}.", en: "We do not have to {verb}." }
+	{ es: "Yo he {verb}.", en: "I have {verb}." },
+	{ es: "Tú has {verb}?", en: "Have you {verb}?" },
+	{ es: "No hemos {verb}.", en: "We have not {verb}." }
 ];

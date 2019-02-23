@@ -1,4 +1,6 @@
-export = [
+import opuesto from "./opuesto";
+
+const baseline = [
 	{ es: "Mi papá ama las papas.", en: "My dad loves potatoes." },
 	{ es: "¿nos vamos?", en: "Are we going?" },
 	{ es: "¿Eres un hijo de Dios?", en: "Are you a child of God?" },
@@ -185,3 +187,7 @@ export = [
 	{ es: "Tu madre canta bien.", en: "Your mom sings well." },
 	{ es: "te gusta tu comida?", en: "do you like your food?" }
 ];
+
+let sentences = baseline.concat(opuesto);
+
+export = sentences;

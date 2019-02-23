@@ -4,6 +4,7 @@ import { QaBlock } from "./qa-block";
 import { WebComponent, getComponent } from "./webcomponent";
 import { SystemEvents } from "./system-events";
 import { ConsoleLog } from "./console-log";
+import { storage } from "./storage";
 
 function from(nodes: HTMLCollection) {
 	let result: Array<HTMLElement> = [];
@@ -35,6 +36,9 @@ function visit(node: HTMLElement, cb: (node: HTMLElement) => boolean) {
 		}
 		return true;
 	});
+
+	// fade the screen before beginning
+	setTimeout(() => SystemEvents.trigger("start", {}), 200);
 }
 
 let correct = 0;
@@ -69,7 +73,5 @@ SystemEvents.watch("no-more-input", () => {
 });
 
 SystemEvents.watch("xp", (result: { question: string; score: number }) => {
-	let scoreboard = JSON.parse(localStorage.getItem("scoreboard") || "{}");
-	scoreboard[result.question] = (scoreboard[result.question] || 0) + result.score;
-	localStorage.setItem("scoreboard", JSON.stringify(scoreboard, null, "\t"));
+	storage.setScore(result);
 });

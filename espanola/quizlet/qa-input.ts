@@ -1,47 +1,13 @@
-import { WebComponent, getComponent } from "./webcomponent";
+import { WebComponent, getComponent, cssin } from "./webcomponent";
 import { SystemEvents } from "./system-events";
 import { log } from "./console-log";
 import { mapping } from "./keydown-as-keypress";
 
-let sound = document.createElement("audio");
-sound.src = "beep-07.wav";
-sound.autoplay = false;
-
-SystemEvents.watch("incorrect", () => sound.play());
-
-export function cssin(name: string, css: string) {
-	let id = `style-${name}`;
-	let styleTag = <HTMLStyleElement>document.getElementById(id);
-	if (!styleTag) {
-		styleTag = document.createElement("style");
-		styleTag.id = id;
-		styleTag.type = "text/css";
-		document.head.appendChild(styleTag);
-		styleTag.appendChild(document.createTextNode(css));
-	}
-
-	let dataset = styleTag.dataset;
-	dataset["count"] = parseInt(dataset["count"] || "0") + 1 + "";
-
-	return () => {
-		dataset["count"] = parseInt(dataset["count"] || "0") - 1 + "";
-		if (dataset["count"] === "0") {
-			styleTag.remove();
-		}
-	};
+cssin(
+	"qa-input",
+	`qa-input {
+	padding: 20px;
 }
-
-function dump(o: KeyboardEvent) {
-	let result = <any>{};
-	for (let p in o) {
-		if (p === p.toUpperCase()) continue;
-		let v = (<any>o)[p];
-		if (typeof v === "string" || typeof v === "number") result[p] = v + "";
-	}
-	log(JSON.stringify(result));
-}
-
-const css = `<style>
 qa-input .correct {
 	color: green;
 	border: 1px solid green;
@@ -78,22 +44,37 @@ qa-input button {
 }
 qa-input button[disabled] {
 	color: green;
-}
-</style>`;
+}`
+);
 
-cssin("qa-input", css);
+let sound = document.createElement("audio");
+sound.src = "beep-07.wav";
+sound.autoplay = false;
+
+SystemEvents.watch("incorrect", () => sound.play());
+
+function dump(o: KeyboardEvent) {
+	let result = <any>{};
+	for (let p in o) {
+		if (p === p.toUpperCase()) continue;
+		let v = (<any>o)[p];
+		if (typeof v === "string" || typeof v === "number") result[p] = v + "";
+	}
+	log(JSON.stringify(result));
+}
 
 export class QaInput extends WebComponent {
 	input: HTMLInputElement;
 	label: HTMLLabelElement;
 	help: HTMLButtonElement;
-	score = 0;
+	score = [0, 0];
 
 	constructor(domNode: HTMLElement) {
 		super(domNode);
 		this.label = document.createElement("label");
 		this.input = document.createElement("input");
 		this.input.type = "text";
+		this.input.spellcheck = false;
 		this.help = document.createElement("button");
 		this.help.tabIndex = -1; // no tab
 		this.help.type = "button";
@@ -105,12 +86,12 @@ export class QaInput extends WebComponent {
 	}
 
 	rightAnswer() {
-		this.score++;
+		this.score[0]++;
 		SystemEvents.trigger("correct", { value: 1 });
 	}
 
 	wrongAnswer() {
-		this.score--;
+		this.score[1]++;
 		SystemEvents.trigger("incorrect", { value: -1 });
 	}
 
@@ -158,7 +139,11 @@ export class QaInput extends WebComponent {
 			input.readOnly = true;
 			input.classList.remove("wrong");
 			input.classList.add("correct");
-			SystemEvents.trigger("xp", { score: this.score, question: this.getAttribute("question") });
+			let score = this.score[0];
+			// bonus points if no mistakes
+			if (this.score[1] == 0) score += 5 * Math.min(10, input.value.length / 2);
+			else score -= this.score[1];
+			SystemEvents.trigger("xp", { score, question: this.getAttribute("question") });
 			return true;
 		}
 		return false;
@@ -190,6 +175,9 @@ export class QaInput extends WebComponent {
 					case 46: // del
 						return false;
 					case 112: // F1
+						SystemEvents.trigger("hint", { hint: answer });
+						return false;
+					case 113: // F2
 						this.provideHelp();
 						if (this.validate()) this.tab();
 						return false;
@@ -232,8 +220,6 @@ export class QaInput extends WebComponent {
 
 		this.help.onclick = () => {
 			this.input.focus();
-			this.provideHelp();
-			this.validate();
 			SystemEvents.trigger("hint", { hint: answer });
 		};
 	}

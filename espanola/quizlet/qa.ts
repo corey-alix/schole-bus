@@ -3,6 +3,7 @@ import { infinitives as poderInfinitive, builder as poderBuilder } from "../verb
 import { infinitives as quererInfinitive, builder as quererBuilder } from "../verbos/querer";
 import { infinitives as tenerInfinitive, builder as tenerBuilder } from "../verbos/tener";
 import sentences from "../sentences/index";
+import { storage } from "./storage";
 
 function build(infinitives: Array<{ es: string; en: string }>, builder: Array<{ es: string; en: string }>) {
 	let qa: Array<{ q: string; a: string }> = [];
@@ -238,7 +239,7 @@ let qa = QA.concat(
 	sentences.filter(v => !!v.es && !!v.en).map(v => ({ a: v.es, q: v.en }))
 );
 
-let questions = shuffle(qa).map(item => {
+let questions = qa.map(item => {
 	let q = item.q;
 	let a = item.a;
 
@@ -290,25 +291,28 @@ function spacesIn(v: string) {
 	return result;
 }
 
-let scoreboard = JSON.parse(localStorage.getItem("scoreboard") || ({} as any));
-
-function getScore(question: string) {
-	let score = scoreboard[question] || 0;
-	console.log(question, score);
-	return score;
-}
-
-questions = questions
+let scores = questions
 	//.sort((a, b) => (a.a < b.a ? -1 : 0))
 	//.sort((a, b) => spacesIn(a.a) - spacesIn(b.a))
 	.map(v => {
 		let [q, a] = [remove(v.q, "!."), remove(v.a, "!.¿¡")];
 		let swap = 0.1 > Math.random(); // show spanish 10% of the time
-		return swap ? { q: a, a: q, hint: getScore(a) } : { q, a, hint: getScore(q) };
-	})
-	.filter(a => 100 > getScore(a.q))
-	.sort((a, b) => -(getScore(a.q) - getScore(b.q)));
+		if (swap) {
+			let x = q;
+			q = a;
+			a = x;
+		}
+		let score = storage.getScore({ question: q });
+		return { q, a, score, hint: score };
+	});
 
-console.log(questions.map(q => `${q.q} = ${getScore(q.q)}`));
+scores = scores.sort((a, b) => b.score - a.score);
 
-export = questions.slice(0, 5);
+// exclude items that exceed the worst score by 100 points
+let minScore = scores[scores.length - 1].score;
+scores = scores.filter(s => s.score < minScore + 100);
+
+// skip the top scorer, take the next 10 best, scramble and return 5
+scores = scores.slice(1, 11);
+scores = shuffle(scores);
+export = scores.slice(0, 5);
