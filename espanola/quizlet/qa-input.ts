@@ -83,6 +83,17 @@ export class QaInput extends WebComponent {
 
 	focus() {
 		this.input.focus();
+		this.play();
+	}
+
+	hint() {
+		this.score[1]++;
+		SystemEvents.trigger("hint", { hint: this.getAttribute("answer") });
+		SystemEvents.trigger("play", { es: this.getAttribute("answer") });
+	}
+
+	play() {
+		SystemEvents.trigger("play", { en: this.getAttribute("question") });
 	}
 
 	rightAnswer() {
@@ -144,6 +155,9 @@ export class QaInput extends WebComponent {
 			if (this.score[1] == 0) score += 5 * Math.min(10, input.value.length / 2);
 			else score -= this.score[1];
 			SystemEvents.trigger("xp", { score, question: this.getAttribute("question") });
+			SystemEvents.trigger("play", { es: this.getAttribute("answer") });
+			let priorScore = parseFloat(this.getAttribute("score") || "0");
+			this.label.title = score + priorScore + "";
 			return true;
 		}
 		return false;
@@ -152,11 +166,12 @@ export class QaInput extends WebComponent {
 	connectedCallback() {
 		const input = this.input;
 		const answer = this.getAttribute("answer") || "";
+		const question = this.getAttribute("question") || "";
+		const hint = this.getAttribute("hint") || "";
 		const label = this.label;
 
-		label.textContent = this.getAttribute("question");
-		let hint = this.getAttribute("hint");
-		label.title = hint || "";
+		label.textContent = question;
+		label.title = this.getAttribute("score") || "";
 
 		input.maxLength = answer.length;
 
@@ -175,7 +190,7 @@ export class QaInput extends WebComponent {
 					case 46: // del
 						return false;
 					case 112: // F1
-						SystemEvents.trigger("hint", { hint: answer });
+						this.hint();
 						return false;
 					case 113: // F2
 						this.provideHelp();
@@ -239,7 +254,11 @@ export class QaInput extends WebComponent {
 				}
 			}
 		}
-		if (!s) SystemEvents.trigger("no-more-input", {});
-		else setTimeout(() => s && s.focus(), 200);
+		if (!s) {
+			SystemEvents.trigger("no-more-input", {});
+			return;
+		}
+
+		setTimeout(() => s && s.focus(), 200);
 	}
 }

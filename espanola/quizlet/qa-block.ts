@@ -16,6 +16,7 @@ export class QaBlock extends WebComponent {
 			let qaItem = document.createElement("qa-input");
 			qaItem.setAttribute("question", item.q);
 			qaItem.setAttribute("answer", item.a);
+			qaItem.setAttribute("score", item.score + "");
 			qaItem.setAttribute("hint", (<any>item).hint || "");
 			div.appendChild(qaItem);
 			return qaItem;

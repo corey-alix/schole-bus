@@ -212,6 +212,15 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         }
         QaInput.prototype.focus = function () {
             this.input.focus();
+            this.play();
+        };
+        QaInput.prototype.hint = function () {
+            this.score[1]++;
+            system_events_2.SystemEvents.trigger("hint", { hint: this.getAttribute("answer") });
+            system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer") });
+        };
+        QaInput.prototype.play = function () {
+            system_events_2.SystemEvents.trigger("play", { en: this.getAttribute("question") });
         };
         QaInput.prototype.rightAnswer = function () {
             this.score[0]++;
@@ -280,6 +289,9 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 else
                     score -= this.score[1];
                 system_events_2.SystemEvents.trigger("xp", { score: score, question: this.getAttribute("question") });
+                system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer") });
+                var priorScore = parseFloat(this.getAttribute("score") || "0");
+                this.label.title = score + priorScore + "";
                 return true;
             }
             return false;
@@ -288,10 +300,11 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             var _this = this;
             var input = this.input;
             var answer = this.getAttribute("answer") || "";
+            var question = this.getAttribute("question") || "";
+            var hint = this.getAttribute("hint") || "";
             var label = this.label;
-            label.textContent = this.getAttribute("question");
-            var hint = this.getAttribute("hint");
-            label.title = hint || "";
+            label.textContent = question;
+            label.title = this.getAttribute("score") || "";
             input.maxLength = answer.length;
             input.onkeydown = function (ev) {
                 // mapping.record(ev);
@@ -309,7 +322,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                         case 46: // del
                             return false;
                         case 112: // F1
-                            system_events_2.SystemEvents.trigger("hint", { hint: answer });
+                            _this.hint();
                             return false;
                         case 113: // F2
                             _this.provideHelp();
@@ -370,10 +383,11 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     }
                 }
             }
-            if (!s)
+            if (!s) {
                 system_events_2.SystemEvents.trigger("no-more-input", {});
-            else
-                setTimeout(function () { return s && s.focus(); }, 200);
+                return;
+            }
+            setTimeout(function () { return s && s.focus(); }, 200);
         };
         return QaInput;
     }(webcomponent_3.WebComponent));
@@ -946,7 +960,7 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
         { a: "te gusta {verb}", q: "you like to {verb}" },
         { a: "te gusta {noun}", q: "you like {noun}" },
         { a: "me gustaría {verb}", q: "I would like to {verb}" },
-        { a: "me gusta {noun}", q: "I would like {noun}" },
+        { a: "me gustaría {noun}", q: "I would like {noun}" },
         { a: "me gustaría {verb} y {noun} {verb}", q: "I would like to {verb} and {noun} to {verb}" },
         { a: "me encanta {noun}", q: "I love {noun}" },
         { a: "me encantaría {noun}", q: "I would love {noun}" },
@@ -1018,14 +1032,9 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
         //.sort((a, b) => spacesIn(a.a) - spacesIn(b.a))
         .map(function (v) {
         var _a = [remove(v.q, "!."), remove(v.a, "!.¿¡")], q = _a[0], a = _a[1];
-        var swap = 0.1 > Math.random(); // show spanish 10% of the time
-        if (swap) {
-            var x = q;
-            q = a;
-            a = x;
-        }
+        var hint = v.q; // english
         var score = storage_1.storage.getScore({ question: q });
-        return { q: q, a: a, score: score, hint: score };
+        return { q: q, a: a, score: score, hint: hint };
     });
     scores = scores.sort(function (a, b) { return b.score - a.score; });
     // exclude items that exceed the worst score by 100 points
@@ -1054,6 +1063,7 @@ define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizl
                 var qaItem = document.createElement("qa-input");
                 qaItem.setAttribute("question", item.q);
                 qaItem.setAttribute("answer", item.a);
+                qaItem.setAttribute("score", item.score + "");
                 qaItem.setAttribute("hint", item.hint || "");
                 div.appendChild(qaItem);
                 return qaItem;
@@ -1067,7 +1077,32 @@ define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizl
     }(webcomponent_4.WebComponent));
     exports.QaBlock = QaBlock;
 });
-define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage"], function (require, exports, score_board_1, qa_input_1, qa_block_1, webcomponent_5, system_events_4, console_log_2, storage_2) {
+define("quizlet/player", ["require", "exports"], function (require, exports) {
+    "use strict";
+    exports.__esModule = true;
+    var Player = /** @class */ (function () {
+        function Player() {
+            this.audio = new Audio();
+            this.synth = new SpeechSynthesisUtterance();
+        }
+        Player.prototype.play = function (text) {
+            if (text.en) {
+                this.synth.lang = "en-US";
+                this.synth.text = text.en;
+                window.speechSynthesis.speak(this.synth);
+            }
+            else if (text.es) {
+                debugger;
+                this.synth.lang = "es-MX";
+                this.synth.text = text.es;
+                window.speechSynthesis.speak(this.synth);
+            }
+        };
+        return Player;
+    }());
+    exports.player = new Player();
+});
+define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage", "quizlet/player"], function (require, exports, score_board_1, qa_input_1, qa_block_1, webcomponent_5, system_events_4, console_log_2, storage_2, player_1) {
     "use strict";
     exports.__esModule = true;
     function from(nodes) {
@@ -1133,5 +1168,7 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
     system_events_4.SystemEvents.watch("xp", function (result) {
         storage_2.storage.setScore(result);
     });
+    system_events_4.SystemEvents.watch("play", function (data) { return player_1.player.play(data); });
 });
+//SystemEvents.watch("hint", (data: { hint: string }) => player.play({ en: data.hint }));
 //# sourceMappingURL=main.js.map

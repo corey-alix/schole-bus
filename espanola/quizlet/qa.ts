@@ -211,7 +211,7 @@ const QA = [
 	{ a: "te gusta {verb}", q: "you like to {verb}" },
 	{ a: "te gusta {noun}", q: "you like {noun}" },
 	{ a: "me gustaría {verb}", q: "I would like to {verb}" },
-	{ a: "me gusta {noun}", q: "I would like {noun}" },
+	{ a: "me gustaría {noun}", q: "I would like {noun}" },
 	{ a: "me gustaría {verb} y {noun} {verb}", q: "I would like to {verb} and {noun} to {verb}" },
 	{ a: "me encanta {noun}", q: "I love {noun}" },
 	{ a: "me encantaría {noun}", q: "I would love {noun}" },
@@ -296,14 +296,9 @@ let scores = questions
 	//.sort((a, b) => spacesIn(a.a) - spacesIn(b.a))
 	.map(v => {
 		let [q, a] = [remove(v.q, "!."), remove(v.a, "!.¿¡")];
-		let swap = 0.1 > Math.random(); // show spanish 10% of the time
-		if (swap) {
-			let x = q;
-			q = a;
-			a = x;
-		}
+		let hint = v.q; // english
 		let score = storage.getScore({ question: q });
-		return { q, a, score, hint: score };
+		return { q, a, score, hint: hint };
 	});
 
 scores = scores.sort((a, b) => b.score - a.score);

@@ -5,6 +5,7 @@ import { WebComponent, getComponent } from "./webcomponent";
 import { SystemEvents } from "./system-events";
 import { ConsoleLog } from "./console-log";
 import { storage } from "./storage";
+import { player } from "./player";
 
 function from(nodes: HTMLCollection) {
 	let result: Array<HTMLElement> = [];
@@ -75,3 +76,6 @@ SystemEvents.watch("no-more-input", () => {
 SystemEvents.watch("xp", (result: { question: string; score: number }) => {
 	storage.setScore(result);
 });
+
+SystemEvents.watch("play", (data: { es?: string; en?: string }) => player.play(data));
+//SystemEvents.watch("hint", (data: { hint: string }) => player.play({ en: data.hint }));
