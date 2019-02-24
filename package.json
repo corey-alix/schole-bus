@@ -9,7 +9,7 @@
     "ns": "namespace-css ./dist/css/dark-theme.css --selector .soho -o ./dist/css/soho.css",
     "extract-requirejs": "cp -r ./node_modules/requirejs/require.js ./dist/",
     "extract": "npm run extract-requirejs",
-    "build-espanola": "cd espanola/quizlet && tsc"
+    "espanola": "tsc -p espanola/quizlet/tsconfig.json -w"
   },
   "repository": {
     "type": "git",

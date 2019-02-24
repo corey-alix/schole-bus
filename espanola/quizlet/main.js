@@ -346,6 +346,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     // );
                     if (_this.isMatch(currentKey, expectedKey)) {
                         input.value = answer.substring(0, currentValue.length + 1);
+                        system_events_2.SystemEvents.trigger("play", { action: "stop" });
                         _this.rightAnswer();
                         if (_this.validate()) {
                             _this.tab();
@@ -608,7 +609,7 @@ define("sentences/index", ["require", "exports", "sentences/opuesto"], function 
         { es: "Estoy cantando hoy.", en: "I am singing today." },
         { es: "soy tu amigo.", en: "I am your friend." },
         { es: "Yo hablo inglés.", en: "I speak English." },
-        { es: "No comer queso.", en: "I do not eat cheese." },
+        { es: "No como queso.", en: "I do not eat cheese." },
         { es: "Yo no como pescado vivo.", en: "I do not eat live fish." },
         { es: "No tengo una pluma.", en: "I do not have a pen." },
         { es: "No tengo hijos.", en: "I do not have children." },
@@ -1092,7 +1093,11 @@ define("quizlet/player", ["require", "exports"], function (require, exports) {
             this.audio = new Audio();
             this.synth = new SpeechSynthesisUtterance();
         }
+        Player.prototype.stop = function () {
+            window.speechSynthesis.cancel();
+        };
         Player.prototype.play = function (text) {
+            this.synth.volume = 1;
             if (text.en) {
                 this.synth.lang = "en-US";
                 this.synth.text = text.en;
@@ -1175,7 +1180,13 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
     system_events_4.SystemEvents.watch("xp", function (result) {
         storage_2.storage.setScore(result);
     });
-    system_events_4.SystemEvents.watch("play", function (data) { return player_1.player.play(data); });
+    system_events_4.SystemEvents.watch("play", function (data) {
+        if (data.action === "stop") {
+            player_1.player.stop();
+            return;
+        }
+        player_1.player.play(data);
+    });
 });
 //SystemEvents.watch("hint", (data: { hint: string }) => player.play({ en: data.hint }));
 //# sourceMappingURL=main.js.map

@@ -78,5 +78,11 @@ SystemEvents.watch("xp", (result: { question: string; score: number }) => {
 	storage.setScore(result);
 });
 
-SystemEvents.watch("play", (data: { es?: string; en?: string }) => player.play(data));
+SystemEvents.watch("play", (data: { action?: string; es?: string; en?: string }) => {
+	if (data.action === "stop") {
+		player.stop();
+		return;
+	}
+	player.play(data);
+});
 //SystemEvents.watch("hint", (data: { hint: string }) => player.play({ en: data.hint }));

@@ -213,6 +213,7 @@ export class QaInput extends WebComponent {
 				// );
 				if (this.isMatch(currentKey, expectedKey)) {
 					input.value = answer.substring(0, currentValue.length + 1);
+					SystemEvents.trigger("play", { action: "stop" });
 					this.rightAnswer();
 					if (this.validate()) {
 						this.tab();

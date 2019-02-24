@@ -62,7 +62,7 @@ const baseline = [
 	{ es: "Estoy cantando hoy.", en: "I am singing today." },
 	{ es: "soy tu amigo.", en: "I am your friend." },
 	{ es: "Yo hablo inglés.", en: "I speak English." },
-	{ es: "No comer queso.", en: "I do not eat cheese." },
+	{ es: "No como queso.", en: "I do not eat cheese." },
 	{ es: "Yo no como pescado vivo.", en: "I do not eat live fish." },
 	{ es: "No tengo una pluma.", en: "I do not have a pen." },
 	{ es: "No tengo hijos.", en: "I do not have children." },
