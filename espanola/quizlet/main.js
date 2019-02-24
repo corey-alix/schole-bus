@@ -261,6 +261,9 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 case "’":
                     if (A == "'")
                         return true;
+                case ",":
+                    if (A == " ")
+                        return true;
             }
             return false;
         };
@@ -339,11 +342,12 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                         dump(ev);
                     }
                     var currentKey = ev.key || keydown_as_keypress_1.mapping.get(ev);
-                    // log(
-                    // 	`${ev.key.charCodeAt(0)}->${currentKey.charCodeAt(0)}: currentKey=${currentKey}, keyCode=${
-                    // 		ev.keyCode
-                    // 	}, hint=${expectedKey}`
-                    // );
+                    // if current key is "," pass next key so if user forgets
+                    // the comma we can assume it and skip the next space
+                    // "si, senor" == "si senor"
+                    // also "?si" == "si", "!si" == "si"
+                    // also "si, senor." == "sisenor"<enter>
+                    // maybe auto-advance after "si" to "si " and eat the users " " if pressed.
                     if (_this.isMatch(currentKey, expectedKey)) {
                         input.value = answer.substring(0, currentValue.length + 1);
                         system_events_2.SystemEvents.trigger("play", { action: "stop" });

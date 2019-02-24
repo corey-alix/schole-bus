@@ -125,6 +125,8 @@ export class QaInput extends WebComponent {
 				if (A == "?") return true;
 			case "’":
 				if (A == "'") return true;
+			case ",":
+				if (A == " ") return true;
 		}
 		return false;
 	}
@@ -206,11 +208,13 @@ export class QaInput extends WebComponent {
 				}
 				let currentKey = ev.key || mapping.get(ev);
 
-				// log(
-				// 	`${ev.key.charCodeAt(0)}->${currentKey.charCodeAt(0)}: currentKey=${currentKey}, keyCode=${
-				// 		ev.keyCode
-				// 	}, hint=${expectedKey}`
-				// );
+				// if current key is "," pass next key so if user forgets
+				// the comma we can assume it and skip the next space
+				// "si, senor" == "si senor"
+				// also "?si" == "si", "!si" == "si"
+				// also "si, senor." == "sisenor"<enter>
+				// maybe auto-advance after "si" to "si " and eat the users " " if pressed.
+
 				if (this.isMatch(currentKey, expectedKey)) {
 					input.value = answer.substring(0, currentValue.length + 1);
 					SystemEvents.trigger("play", { action: "stop" });
