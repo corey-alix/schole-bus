@@ -93,6 +93,7 @@ export class QaInput extends WebComponent {
 	}
 
 	play() {
+		document.title = this.getAttribute("question") || "?";
 		SystemEvents.trigger("play", { en: this.getAttribute("question") });
 	}
 
@@ -146,7 +147,6 @@ export class QaInput extends WebComponent {
 		let currentValue = input.value;
 		if (answer.length === currentValue.length) {
 			this.help.disabled = true;
-			this.help.innerHTML = "☑";
 			input.readOnly = true;
 			input.classList.remove("wrong");
 			input.classList.add("correct");
@@ -154,6 +154,11 @@ export class QaInput extends WebComponent {
 			// bonus points if no mistakes
 			if (this.score[1] == 0) score += 5 * Math.min(10, input.value.length / 2);
 			else score -= this.score[1];
+			if (score > 0) {
+				this.help.innerHTML = `+${score} ☑`;
+			} else {
+				this.help.innerHTML = `☑`;
+			}
 			SystemEvents.trigger("xp", { score, question: this.getAttribute("question") });
 			SystemEvents.trigger("play", { es: this.getAttribute("answer") });
 			let priorScore = parseFloat(this.getAttribute("score") || "0");

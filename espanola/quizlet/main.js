@@ -220,6 +220,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer") });
         };
         QaInput.prototype.play = function () {
+            document.title = this.getAttribute("question") || "?";
             system_events_2.SystemEvents.trigger("play", { en: this.getAttribute("question") });
         };
         QaInput.prototype.rightAnswer = function () {
@@ -278,7 +279,6 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             var currentValue = input.value;
             if (answer.length === currentValue.length) {
                 this.help.disabled = true;
-                this.help.innerHTML = "☑";
                 input.readOnly = true;
                 input.classList.remove("wrong");
                 input.classList.add("correct");
@@ -288,6 +288,12 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     score += 5 * Math.min(10, input.value.length / 2);
                 else
                     score -= this.score[1];
+                if (score > 0) {
+                    this.help.innerHTML = "+" + score + " \u2611";
+                }
+                else {
+                    this.help.innerHTML = "\u2611";
+                }
                 system_events_2.SystemEvents.trigger("xp", { score: score, question: this.getAttribute("question") });
                 system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer") });
                 var priorScore = parseFloat(this.getAttribute("score") || "0");
@@ -723,7 +729,8 @@ define("sentences/index", ["require", "exports", "sentences/opuesto"], function 
         { es: "¿Donde esta el chihuahua?", en: "Where is the chihuahua?" },
         { es: "¿Donde está el pastor?", en: "Where is the pastor?" },
         { es: "Con Cristo, soy fuerte.", en: "With Christ, I am strong." },
-        { es: "Si, quiero.", en: "Yes, I want to." },
+        { es: "Quiero.", en: "I want." },
+        { es: "Si yo quiero.", en: "Yes I want to." },
         { es: "Si, gracias.", en: "Yes, thank you." },
         { es: "Sí, tienes que ir conmigo.", en: "Yes, you need to go with me." },
         { es: "Lo hiciste muy bien.", en: "You did very well." },
@@ -943,6 +950,8 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
         return array;
     }
     var QA = [
+        { a: "voy", q: "I go" },
+        { a: "voy a", q: "I will" },
         { a: "yo necesito", q: "I need" },
         { a: "tú necesitas", q: "you need" },
         { a: "me gusta", q: "I like" },
@@ -976,8 +985,8 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
         { a: "es dos mas pequeño que cinco?", q: "is two smaller than five?" },
         { a: "es {number} mas pequeño que {number}?", q: "is {number} smaller than {number}?" },
         { a: "es {number} mas mayor que {number}?", q: "is {number} larger than {number}?" },
-        { a: "Que tengas una buena mañana", q: "have a good morning" },
-        { a: "¡Que tengas una buena semana!", q: "have a good week!" }
+        { a: "Tengas una buena mañana", q: "have a good morning" },
+        { a: "¡Que tengas una buena semana!", q: "you have a good week!" }
     ];
     var qa = QA.concat(haberQa, poderQa, quererQa, tenerQa, index_1["default"].filter(function (v) { return !!v.es && !!v.en; }).map(function (v) { return ({ a: v.es, q: v.en }); }));
     var questions = qa.map(function (item) {
@@ -1092,7 +1101,6 @@ define("quizlet/player", ["require", "exports"], function (require, exports) {
                 window.speechSynthesis.speak(this.synth);
             }
             else if (text.es) {
-                debugger;
                 this.synth.lang = "es-MX";
                 this.synth.text = text.es;
                 window.speechSynthesis.speak(this.synth);
@@ -1163,7 +1171,8 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
         });
     });
     system_events_4.SystemEvents.watch("no-more-input", function () {
-        location.reload();
+        document.body.classList.add("hidden");
+        setTimeout(function () { return location.reload(); }, 2000);
     });
     system_events_4.SystemEvents.watch("xp", function (result) {
         storage_2.storage.setScore(result);

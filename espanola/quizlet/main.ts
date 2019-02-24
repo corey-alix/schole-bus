@@ -70,7 +70,8 @@ SystemEvents.watch("hint", (result: { hint: string }) => {
 });
 
 SystemEvents.watch("no-more-input", () => {
-	location.reload();
+	document.body.classList.add("hidden");
+	setTimeout(() => location.reload(), 2000);
 });
 
 SystemEvents.watch("xp", (result: { question: string; score: number }) => {

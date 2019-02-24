@@ -194,6 +194,8 @@ function shuffle<T>(array: Array<T>) {
 }
 
 const QA = [
+	{ a: "voy", q: "I go" },
+	{ a: "voy a", q: "I will" },
 	{ a: "yo necesito", q: "I need" },
 	{ a: "tú necesitas", q: "you need" },
 	{ a: "me gusta", q: "I like" },
@@ -227,8 +229,8 @@ const QA = [
 	{ a: "es dos mas pequeño que cinco?", q: "is two smaller than five?" },
 	{ a: "es {number} mas pequeño que {number}?", q: "is {number} smaller than {number}?" },
 	{ a: "es {number} mas mayor que {number}?", q: "is {number} larger than {number}?" },
-	{ a: "Que tengas una buena mañana", q: "have a good morning" },
-	{ a: "¡Que tengas una buena semana!", q: "have a good week!" }
+	{ a: "Tengas una buena mañana", q: "have a good morning" },
+	{ a: "¡Que tengas una buena semana!", q: "you have a good week!" }
 ];
 
 let qa = QA.concat(
