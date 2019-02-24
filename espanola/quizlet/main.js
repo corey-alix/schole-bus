@@ -180,10 +180,6 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
     "use strict";
     exports.__esModule = true;
     webcomponent_3.cssin("qa-input", "qa-input {\n\tpadding: 20px;\n}\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tmargin-top: 20px;\n\tpadding: 20px;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: gray;\n\tposition: relative;\n    bottom: 3px;\n\tleft: 10px;\n}\nqa-input button[disabled] {\n\tcolor: green;\n}");
-    var sound = document.createElement("audio");
-    sound.src = "beep-07.wav";
-    sound.autoplay = false;
-    system_events_2.SystemEvents.watch("incorrect", function () { return sound.play(); });
     function dump(o) {
         var result = {};
         for (var p in o) {
@@ -221,7 +217,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         };
         QaInput.prototype.play = function () {
             document.title = this.getAttribute("question") || "?";
-            system_events_2.SystemEvents.trigger("play", { en: this.getAttribute("question") });
+            system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer") });
         };
         QaInput.prototype.rightAnswer = function () {
             this.score[0]++;
@@ -230,6 +226,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         QaInput.prototype.wrongAnswer = function () {
             this.score[1]++;
             system_events_2.SystemEvents.trigger("incorrect", { value: -1 });
+            this.play();
         };
         QaInput.prototype.isMatch = function (a, b) {
             var A = a.toUpperCase();
@@ -988,7 +985,8 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
         { a: "Tengas una buena mañana", q: "have a good morning" },
         { a: "¡Que tengas una buena semana!", q: "you have a good week!" }
     ];
-    var qa = QA.concat(haberQa, poderQa, quererQa, tenerQa, index_1["default"].filter(function (v) { return !!v.es && !!v.en; }).map(function (v) { return ({ a: v.es, q: v.en }); }));
+    // dropping QA temporarily
+    var qa = index_1["default"].map(function (v) { return ({ a: v.es, q: v.en }); }).concat(haberQa, poderQa, quererQa, tenerQa);
     var questions = qa.map(function (item) {
         var q = item.q;
         var a = item.a;

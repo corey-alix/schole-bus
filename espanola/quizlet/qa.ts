@@ -233,13 +233,8 @@ const QA = [
 	{ a: "¡Que tengas una buena semana!", q: "you have a good week!" }
 ];
 
-let qa = QA.concat(
-	haberQa,
-	poderQa,
-	quererQa,
-	tenerQa,
-	sentences.filter(v => !!v.es && !!v.en).map(v => ({ a: v.es, q: v.en }))
-);
+// dropping QA temporarily
+let qa = sentences.map(v => ({ a: v.es, q: v.en })).concat(haberQa, poderQa, quererQa, tenerQa);
 
 let questions = qa.map(item => {
 	let q = item.q;

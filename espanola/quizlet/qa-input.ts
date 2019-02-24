@@ -47,12 +47,6 @@ qa-input button[disabled] {
 }`
 );
 
-let sound = document.createElement("audio");
-sound.src = "beep-07.wav";
-sound.autoplay = false;
-
-SystemEvents.watch("incorrect", () => sound.play());
-
 function dump(o: KeyboardEvent) {
 	let result = <any>{};
 	for (let p in o) {
@@ -94,7 +88,7 @@ export class QaInput extends WebComponent {
 
 	play() {
 		document.title = this.getAttribute("question") || "?";
-		SystemEvents.trigger("play", { en: this.getAttribute("question") });
+		SystemEvents.trigger("play", { es: this.getAttribute("answer") });
 	}
 
 	rightAnswer() {
@@ -105,6 +99,7 @@ export class QaInput extends WebComponent {
 	wrongAnswer() {
 		this.score[1]++;
 		SystemEvents.trigger("incorrect", { value: -1 });
+		this.play();
 	}
 
 	isMatch(a: string, b: string) {
