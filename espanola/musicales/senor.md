@@ -10,7 +10,7 @@ Alabaré al Señor (Anástasis)
 | En el sepulcro reposó           | In the grave he rested           |
 | En soledad él se quedó          | In solitude he remained          |
 | Jesús, Mesías, el Señor         | Jesus, Mesiah, the Lord          |
-| Alabaré al Señor, mi Dios       | I will prase the Lord, my God    |
+| Alabaré al Señor, mi Dios       | I will praise the Lord, my God   |
 | Tu nombre yo proclamaré         | Your name I will proclaim        |
 | Eternamente te cantaré          | Eternally I will sing to you     |
 | Señor, Señor, mi Dios           | Lord, Lord, my God               |

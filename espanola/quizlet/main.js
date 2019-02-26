@@ -140,6 +140,53 @@ define("quizlet/console-log", ["require", "exports", "quizlet/webcomponent", "qu
     }
     exports.log = log;
 });
+define("quizlet/fun", ["require", "exports"], function (require, exports) {
+    "use strict";
+    exports.__esModule = true;
+    function isMale(noun) {
+        if (0 === noun.indexOf("el "))
+            return true;
+        if (0 === noun.indexOf("la "))
+            return false;
+        var last = noun.charAt(noun.length - 1);
+        switch (last) {
+            case "á":
+            case "é":
+            case "í":
+            case "ó":
+            case "ú":
+            case "o":
+                return true;
+            case "a":
+                return noun.charAt(noun.length - 2) === "m";
+            case "d":
+            case "z":
+                return false;
+        }
+        return true;
+    }
+    exports.isMale = isMale;
+    function forceGender(noun) {
+        if (0 === noun.indexOf("el "))
+            return noun;
+        if (0 === noun.indexOf("la "))
+            return noun;
+        return (isMale(noun) ? "el " : "la ") + noun;
+    }
+    exports.forceGender = forceGender;
+    function shuffle(array) {
+        var currentIndex = array.length;
+        while (0 !== currentIndex) {
+            var randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            var temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+    exports.shuffle = shuffle;
+});
 define("quizlet/keydown-as-keypress", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
@@ -285,7 +332,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 var score = this.score[0];
                 // bonus points if no mistakes
                 if (this.score[1] == 0)
-                    score += 5 * Math.min(10, input.value.length / 2);
+                    score += 5 * Math.max(10, Math.pow(1.2, input.value.length));
                 else
                     score -= this.score[1];
                 if (score > 0) {
@@ -401,6 +448,189 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
     }(webcomponent_3.WebComponent));
     exports.QaInput = QaInput;
 });
+define("quizlet/storage", ["require", "exports"], function (require, exports) {
+    "use strict";
+    exports.__esModule = true;
+    var LocalStorage = /** @class */ (function () {
+        function LocalStorage() {
+            this.data = this.upgrade();
+        }
+        LocalStorage.prototype.upgrade = function () {
+            return {
+                scoreboard: this.upgradeScoreboard()
+            };
+        };
+        LocalStorage.prototype.upgradeScoreboard = function () {
+            return JSON.parse(localStorage.getItem("scoreboard") || "{}");
+        };
+        LocalStorage.prototype.save = function () {
+            localStorage.setItem("scoreboard", JSON.stringify(this.data.scoreboard));
+        };
+        LocalStorage.prototype.getScore = function (data) {
+            return this.data.scoreboard[data.question] || 0;
+        };
+        LocalStorage.prototype.setScore = function (data) {
+            this.data.scoreboard[data.question] = (this.data.scoreboard[data.question] || 0) + data.score;
+            this.save();
+        };
+        return LocalStorage;
+    }());
+    exports.storage = new LocalStorage();
+});
+define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/qa-input", "quizlet/fun", "quizlet/storage"], function (require, exports, webcomponent_4, system_events_3, qa_input_1, fun_1, storage_1) {
+    "use strict";
+    exports.__esModule = true;
+    function score(question) {
+        return storage_1.storage.getScore({ question: question });
+    }
+    var QaBlock = /** @class */ (function (_super) {
+        __extends(QaBlock, _super);
+        function QaBlock(domNode) {
+            var _this = _super.call(this, domNode) || this;
+            _this.load();
+            return _this;
+        }
+        QaBlock.prototype.load = function () {
+            var _this = this;
+            var packet = this.getAttribute("packet");
+            system_events_3.SystemEvents.watch("start", function () {
+                require(["quizlet/packs/" + packet], function (data) {
+                    var shadowRoot = _this.attachShadow({ mode: "open" });
+                    var div = shadowRoot; // could create a div if real shadow
+                    var qa = data.map(function (d) { return ({ a: d.a, q: d.q, score: score(d.q) }); });
+                    var minScore = qa[0].score;
+                    qa.forEach(function (d) { return (minScore = Math.min(minScore, d.score)); });
+                    qa = qa.filter(function (d) { return d.score <= minScore + 100; });
+                    if (qa.length > 10) {
+                        qa = qa.slice(1, 10);
+                    }
+                    qa = fun_1.shuffle(qa).slice(0, 5);
+                    var items = qa.map(function (item) {
+                        var qaItem = document.createElement("qa-input");
+                        qaItem.setAttribute("question", item.q);
+                        qaItem.setAttribute("answer", item.a);
+                        qaItem.setAttribute("score", item.score + "");
+                        var input = new qa_input_1.QaInput(qaItem);
+                        div.appendChild(qaItem);
+                        input.connectedCallback();
+                        return input;
+                    });
+                    var input = items[0];
+                    input && input.focus();
+                });
+            });
+        };
+        return QaBlock;
+    }(webcomponent_4.WebComponent));
+    exports.QaBlock = QaBlock;
+});
+define("quizlet/player", ["require", "exports"], function (require, exports) {
+    "use strict";
+    exports.__esModule = true;
+    var Player = /** @class */ (function () {
+        function Player() {
+            this.audio = new Audio();
+            this.synth = new SpeechSynthesisUtterance();
+            this.synth.rate = 1.1 + Math.random() * 0.1;
+            this.synth.pitch = 0.6 + Math.random() * 0.1;
+            ///log(this.synth.voice.name);
+        }
+        Player.prototype.stop = function () {
+            window.speechSynthesis.cancel();
+        };
+        Player.prototype.play = function (text) {
+            this.synth.volume = 1;
+            if (text.en) {
+                this.synth.lang = "en-US";
+                this.synth.text = text.en;
+                window.speechSynthesis.speak(this.synth);
+            }
+            else if (text.es) {
+                this.synth.lang = "es-US";
+                this.synth.text = text.es;
+                window.speechSynthesis.speak(this.synth);
+            }
+        };
+        return Player;
+    }());
+    exports.player = new Player();
+});
+define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage", "quizlet/player"], function (require, exports, score_board_1, qa_input_2, qa_block_1, webcomponent_5, system_events_4, console_log_2, storage_2, player_1) {
+    "use strict";
+    exports.__esModule = true;
+    function from(nodes) {
+        var result = [];
+        for (var i = 0; i < nodes.length; i++) {
+            result[i] = nodes.item(i);
+        }
+        return result;
+    }
+    function visit(node, cb) {
+        if (!cb(node))
+            return;
+        from(node.children).forEach(function (n) { return visit(n, cb); });
+    }
+    {
+        var mods_1 = {
+            "console-log": console_log_2.ConsoleLog,
+            "qa-input": qa_input_2.QaInput,
+            "qa-block": qa_block_1.QaBlock,
+            "score-board": score_board_1.ScoreBoard
+        };
+        visit(document.body, function (node) {
+            var className = node.tagName.toLowerCase();
+            if (mods_1[className]) {
+                var C = mods_1[className];
+                var c = new C(node);
+                c.connectedCallback();
+            }
+            return true;
+        });
+        // fade the screen before beginning
+        setTimeout(function () { return system_events_4.SystemEvents.trigger("start", {}); }, 200);
+    }
+    var correct = 0;
+    var incorrect = 0;
+    function score(add) {
+        if (0 > add)
+            incorrect -= add;
+        else
+            correct += add;
+        var elements = from(document.getElementsByTagName("score-board"));
+        elements.forEach(function (e) {
+            var score = webcomponent_5.getComponent(e);
+            score && score.setAttribute("score", Math.round(100 * (correct / (correct + incorrect))) + "");
+        });
+    }
+    system_events_4.SystemEvents.watch("correct", function () { return score(1); });
+    system_events_4.SystemEvents.watch("incorrect", function () { return score(-1); });
+    system_events_4.SystemEvents.watch("hint", function (result) {
+        from(document.getElementsByTagName("hint-slider")).forEach(function (n) {
+            n.innerHTML = result.hint;
+            n.classList.add("visible");
+            n.classList.remove("hidden");
+            setTimeout(function () {
+                n.classList.remove("visible");
+                n.classList.add("hidden");
+            }, 2000);
+        });
+    });
+    system_events_4.SystemEvents.watch("no-more-input", function () {
+        document.body.classList.add("hidden");
+        setTimeout(function () { return location.reload(); }, 2000);
+    });
+    system_events_4.SystemEvents.watch("xp", function (result) {
+        storage_2.storage.setScore(result);
+    });
+    system_events_4.SystemEvents.watch("play", function (data) {
+        if (data.action === "stop") {
+            player_1.player.stop();
+            return;
+        }
+        player_1.player.play(data);
+    });
+});
+//SystemEvents.watch("hint", (data: { hint: string }) => player.play({ en: data.hint }));
 define("verbos/haber", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
@@ -742,36 +972,7 @@ define("sentences/index", ["require", "exports", "sentences/opuesto"], function 
     var sentences = baseline.concat(opuesto_1["default"]);
     return sentences;
 });
-define("quizlet/storage", ["require", "exports"], function (require, exports) {
-    "use strict";
-    exports.__esModule = true;
-    var LocalStorage = /** @class */ (function () {
-        function LocalStorage() {
-            this.data = this.upgrade();
-        }
-        LocalStorage.prototype.upgrade = function () {
-            return {
-                scoreboard: this.upgradeScoreboard()
-            };
-        };
-        LocalStorage.prototype.upgradeScoreboard = function () {
-            return JSON.parse(localStorage.getItem("scoreboard") || "{}");
-        };
-        LocalStorage.prototype.save = function () {
-            localStorage.setItem("scoreboard", JSON.stringify(this.data.scoreboard));
-        };
-        LocalStorage.prototype.getScore = function (data) {
-            return this.data.scoreboard[data.question] || 0;
-        };
-        LocalStorage.prototype.setScore = function (data) {
-            this.data.scoreboard[data.question] = (this.data.scoreboard[data.question] || 0) + data.score;
-            this.save();
-        };
-        return LocalStorage;
-    }());
-    exports.storage = new LocalStorage();
-});
-define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "verbos/querer", "verbos/tener", "sentences/index", "quizlet/storage"], function (require, exports, haber_1, poder_1, querer_1, tener_1, index_1, storage_1) {
+define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "verbos/querer", "verbos/tener", "sentences/index", "quizlet/storage", "quizlet/fun"], function (require, exports, haber_1, poder_1, querer_1, tener_1, index_1, storage_3, fun_2) {
     "use strict";
     index_1 = __importDefault(index_1);
     function build(infinitives, builder) {
@@ -940,17 +1141,6 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
     function randomAdjective() {
         return randomItem(adjectives);
     }
-    function shuffle(array) {
-        var currentIndex = array.length;
-        while (0 !== currentIndex) {
-            var randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex -= 1;
-            var temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-        return array;
-    }
     var QA = [
         { a: "voy", q: "I go" },
         { a: "voy a", q: "I will" },
@@ -1045,7 +1235,7 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
         .map(function (v) {
         var _a = [remove(v.q, "!."), remove(v.a, "!.¿¡")], q = _a[0], a = _a[1];
         var hint = v.q; // english
-        var score = storage_1.storage.getScore({ question: q });
+        var score = storage_3.storage.getScore({ question: q });
         return { q: q, a: a, score: score, hint: hint };
     });
     scores = scores.sort(function (a, b) { return b.score - a.score; });
@@ -1054,143 +1244,147 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
     scores = scores.filter(function (s) { return s.score < minScore + 100; });
     // skip the top scorer, take the next 10 best, scramble and return 5
     scores = scores.slice(1, 11);
-    scores = shuffle(scores);
+    scores = fun_2.shuffle(scores);
     return scores.slice(0, 5);
 });
-define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/qa", "quizlet/system-events"], function (require, exports, webcomponent_4, qa_1, system_events_3) {
+define("verbos/index", ["require", "exports"], function (require, exports) {
     "use strict";
-    exports.__esModule = true;
+    var regular_postfix = {
+        ar: {
+            yo: "o",
+            tú: "as",
+            él: "a",
+            nosotros: "amos"
+        },
+        er: {
+            yo: "o",
+            tú: "es",
+            él: "e",
+            nosotros: "imos"
+        },
+        ir: {
+            yo: "o",
+            tú: "es",
+            él: "e",
+            nosotros: "imos"
+        }
+    };
+    function regular(infinitive, en_base) {
+        var ch2 = infinitive.substring(infinitive.length - 2).toLowerCase();
+        var base = infinitive.substring(0, infinitive.length - 2);
+        var postfix = regular_postfix[ch2];
+        en_base.i = en_base.i || en_base.infinitive;
+        en_base.you = en_base.you || en_base.i;
+        en_base.he = en_base.he || en_base.you + "s";
+        en_base.we = en_base.we || en_base.you;
+        return {
+            i: { es: infinitive, en: "to " + en_base.infinitive },
+            yo: { es: base + postfix.yo, en: "I " + en_base.i },
+            tú: { es: base + postfix.tú, en: "you " + en_base.you },
+            él: { es: base + postfix.él, en: "he " + en_base.he },
+            nosotros: { es: base + postfix.nosotros, en: "we " + en_base.we }
+        };
+    }
+    return [
+        {
+            i: { es: "caminar", en: "to walk" },
+            yo: { es: "camino", en: "I walk" },
+            tú: { es: "caminas", en: "you walk" },
+            él: { es: "camina", en: "he walks" },
+            ella: { es: "camina", en: "she walks" },
+            nosotros: { es: "caminamos", en: "we walk" }
+        },
+        {
+            i: { es: "correr", en: "to run" },
+            yo: { es: "corro", en: "I run" },
+            tú: { es: "corres", en: "you run" },
+            él: { es: "corre", en: "he runs" },
+            ella: { es: "corre", en: "she runs" },
+            nosotros: { es: "corremos", en: "we run" }
+        },
+        {
+            i: { es: "dicir", en: "to say" },
+            yo: { es: "digo", en: "I say" },
+            tú: { es: "dices", en: "you say" },
+            él: { es: "dice", en: "he says" },
+            ella: { es: "dice", en: "she says" },
+            nosotros: { es: "dicimos", en: "we say" }
+        },
+        regular("escribir", { infinitive: "write" }),
+        regular("esperar", { infinitive: "expect" }),
+        regular("esparcir", { infinitive: "spread" }),
+        regular("escuchar", { infinitive: "listen" }),
+        regular("entregar", { infinitive: "deliver" }),
+        regular("descubrir", { infinitive: "discover" })
+    ];
+});
+define("quizlet/packs/yo-packet", ["require", "exports", "verbos/index"], function (require, exports, index_2) {
+    "use strict";
+    index_2 = __importDefault(index_2);
+    return index_2["default"].map(function (v) { return ({ q: v.yo.en, a: v.yo.es }); });
+});
+define("quizlet/packs/t\u00FA-packet", ["require", "exports", "verbos/index"], function (require, exports, index_3) {
+    "use strict";
+    index_3 = __importDefault(index_3);
+    return index_3["default"].map(function (v) { return ({ q: v.tú.en, a: v.tú.es }); });
+});
+define("quizlet/packs/\u00E9l-packet", ["require", "exports", "verbos/index"], function (require, exports, index_4) {
+    "use strict";
+    index_4 = __importDefault(index_4);
+    return index_4["default"].map(function (v) { return ({ q: v.él.en, a: v.él.es }); });
+});
+define("quizlet/packs/nosotros-packet", ["require", "exports", "verbos/index"], function (require, exports, index_5) {
+    "use strict";
+    index_5 = __importDefault(index_5);
+    return index_5["default"].map(function (v) { return ({ q: v.nosotros.en, a: v.nosotros.es }); });
+});
+define("quizlet/packs/pronoun-packet", ["require", "exports", "quizlet/packs/yo-packet", "quizlet/packs/t\u00FA-packet", "quizlet/packs/\u00E9l-packet", "quizlet/packs/nosotros-packet"], function (require, exports, yo_packet_1, t__packet_1, _l_packet_1, nosotros_packet_1) {
+    "use strict";
+    yo_packet_1 = __importDefault(yo_packet_1);
+    t__packet_1 = __importDefault(t__packet_1);
+    _l_packet_1 = __importDefault(_l_packet_1);
+    nosotros_packet_1 = __importDefault(nosotros_packet_1);
+    var pronouns = [
+        { en: "I", es: "yo" },
+        { en: "you", es: "tú" },
+        { en: "he", es: "él" },
+        { en: "she", es: "ella" },
+        { en: "it", es: "ello" },
+        { en: "we", es: "nosotros" },
+        { en: "they are", es: "ellos" },
+        { en: "they are (f)", es: "ellas" }
+    ];
+    var qa = pronouns.map(function (v) { return ({ a: v.es, q: v.en }); }).concat(yo_packet_1["default"], t__packet_1["default"], _l_packet_1["default"], nosotros_packet_1["default"]);
+    return qa;
+});
+define("sustantivo/index", ["require", "exports", "quizlet/fun"], function (require, exports, fun_3) {
+    "use strict";
+    return [
+        { es: "gato", en: "cat" },
+        { es: "perro", en: "dog" },
+        { es: "árbol", en: "tree" },
+        { es: "cielo", en: "heaven" },
+        { es: "tierra", en: "earth" },
+        { es: "cruz", en: "cross" },
+        { es: "cuerpo", en: "body" },
+        { es: "sepulcro", en: "grave" },
+        { es: "estruendo", en: "roar" },
+        { es: "rostro", en: "face" },
+        { es: "Dios", en: "God" },
+        { es: "amanecer", en: "dawn" },
+        { es: "muerte", en: "death" }
+    ].map(function (v) { return ({ es: fun_3.forceGender(v.es), en: "the " + v.en }); });
+});
+define("quizlet/packs/sustantivo-packet", ["require", "exports", "sustantivo/index"], function (require, exports, index_6) {
+    "use strict";
+    index_6 = __importDefault(index_6);
+    return index_6["default"].map(function (v) { return ({ q: v.en, a: v.es }); });
+});
+define("quizlet/packs/index", ["require", "exports", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/qa"], function (require, exports, pronoun_packet_1, sustantivo_packet_1, qa_1) {
+    "use strict";
+    pronoun_packet_1 = __importDefault(pronoun_packet_1);
+    sustantivo_packet_1 = __importDefault(sustantivo_packet_1);
     qa_1 = __importDefault(qa_1);
-    var QaBlock = /** @class */ (function (_super) {
-        __extends(QaBlock, _super);
-        function QaBlock(domNode) {
-            var _this = _super.call(this, domNode) || this;
-            _this.load();
-            return _this;
-        }
-        QaBlock.prototype.load = function () {
-            var shadowRoot = this.attachShadow({ mode: "open" });
-            var div = shadowRoot; // could create a div if real shadow
-            var items = qa_1["default"].map(function (item) {
-                var qaItem = document.createElement("qa-input");
-                qaItem.setAttribute("question", item.q);
-                qaItem.setAttribute("answer", item.a);
-                qaItem.setAttribute("score", item.score + "");
-                qaItem.setAttribute("hint", item.hint || "");
-                div.appendChild(qaItem);
-                return qaItem;
-            });
-            system_events_3.SystemEvents.watch("start", function () {
-                var input = webcomponent_4.getComponent(items[0]);
-                input && input.focus();
-            });
-        };
-        return QaBlock;
-    }(webcomponent_4.WebComponent));
-    exports.QaBlock = QaBlock;
+    return pronoun_packet_1["default"].concat(sustantivo_packet_1["default"], qa_1["default"]);
 });
-define("quizlet/player", ["require", "exports"], function (require, exports) {
-    "use strict";
-    exports.__esModule = true;
-    var Player = /** @class */ (function () {
-        function Player() {
-            this.audio = new Audio();
-            this.synth = new SpeechSynthesisUtterance();
-        }
-        Player.prototype.stop = function () {
-            window.speechSynthesis.cancel();
-        };
-        Player.prototype.play = function (text) {
-            this.synth.volume = 1;
-            if (text.en) {
-                this.synth.lang = "en-US";
-                this.synth.text = text.en;
-                window.speechSynthesis.speak(this.synth);
-            }
-            else if (text.es) {
-                this.synth.lang = "es-MX";
-                this.synth.text = text.es;
-                window.speechSynthesis.speak(this.synth);
-            }
-        };
-        return Player;
-    }());
-    exports.player = new Player();
-});
-define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage", "quizlet/player"], function (require, exports, score_board_1, qa_input_1, qa_block_1, webcomponent_5, system_events_4, console_log_2, storage_2, player_1) {
-    "use strict";
-    exports.__esModule = true;
-    function from(nodes) {
-        var result = [];
-        for (var i = 0; i < nodes.length; i++) {
-            result[i] = nodes.item(i);
-        }
-        return result;
-    }
-    function visit(node, cb) {
-        if (!cb(node))
-            return;
-        from(node.children).forEach(function (n) { return visit(n, cb); });
-    }
-    {
-        var mods_1 = {
-            "console-log": console_log_2.ConsoleLog,
-            "qa-input": qa_input_1.QaInput,
-            "qa-block": qa_block_1.QaBlock,
-            "score-board": score_board_1.ScoreBoard
-        };
-        visit(document.body, function (node) {
-            var className = node.tagName.toLowerCase();
-            if (mods_1[className]) {
-                var C = mods_1[className];
-                var c = new C(node);
-                c.connectedCallback();
-            }
-            return true;
-        });
-        // fade the screen before beginning
-        setTimeout(function () { return system_events_4.SystemEvents.trigger("start", {}); }, 200);
-    }
-    var correct = 0;
-    var incorrect = 0;
-    function score(add) {
-        if (0 > add)
-            incorrect -= add;
-        else
-            correct += add;
-        var elements = from(document.getElementsByTagName("score-board"));
-        elements.forEach(function (e) {
-            var score = webcomponent_5.getComponent(e);
-            score && score.setAttribute("score", Math.round(100 * (correct / (correct + incorrect))) + "");
-        });
-    }
-    system_events_4.SystemEvents.watch("correct", function () { return score(1); });
-    system_events_4.SystemEvents.watch("incorrect", function () { return score(-1); });
-    system_events_4.SystemEvents.watch("hint", function (result) {
-        from(document.getElementsByTagName("hint-slider")).forEach(function (n) {
-            n.innerHTML = result.hint;
-            n.classList.add("visible");
-            n.classList.remove("hidden");
-            setTimeout(function () {
-                n.classList.remove("visible");
-                n.classList.add("hidden");
-            }, 2000);
-        });
-    });
-    system_events_4.SystemEvents.watch("no-more-input", function () {
-        document.body.classList.add("hidden");
-        setTimeout(function () { return location.reload(); }, 2000);
-    });
-    system_events_4.SystemEvents.watch("xp", function (result) {
-        storage_2.storage.setScore(result);
-    });
-    system_events_4.SystemEvents.watch("play", function (data) {
-        if (data.action === "stop") {
-            player_1.player.stop();
-            return;
-        }
-        player_1.player.play(data);
-    });
-});
-//SystemEvents.watch("hint", (data: { hint: string }) => player.play({ en: data.hint }));
 //# sourceMappingURL=main.js.map

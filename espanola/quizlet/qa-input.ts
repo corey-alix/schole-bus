@@ -149,7 +149,7 @@ export class QaInput extends WebComponent {
 			input.classList.add("correct");
 			let score = this.score[0];
 			// bonus points if no mistakes
-			if (this.score[1] == 0) score += 5 * Math.min(10, input.value.length / 2);
+			if (this.score[1] == 0) score += 5 * Math.max(10, Math.pow(1.2, input.value.length));
 			else score -= this.score[1];
 			if (score > 0) {
 				this.help.innerHTML = `+${score} ☑`;

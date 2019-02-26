@@ -4,6 +4,7 @@ import { infinitives as quererInfinitive, builder as quererBuilder } from "../ve
 import { infinitives as tenerInfinitive, builder as tenerBuilder } from "../verbos/tener";
 import sentences from "../sentences/index";
 import { storage } from "./storage";
+import { shuffle } from "./fun";
 
 function build(infinitives: Array<{ es: string; en: string }>, builder: Array<{ es: string; en: string }>) {
 	let qa: Array<{ q: string; a: string }> = [];
@@ -179,18 +180,6 @@ function randomColor() {
 
 function randomAdjective() {
 	return randomItem(adjectives);
-}
-
-function shuffle<T>(array: Array<T>) {
-	let currentIndex = array.length;
-	while (0 !== currentIndex) {
-		let randomIndex = Math.floor(Math.random() * currentIndex);
-		currentIndex -= 1;
-		let temporaryValue = array[currentIndex];
-		array[currentIndex] = array[randomIndex];
-		array[randomIndex] = temporaryValue;
-	}
-	return array;
 }
 
 const QA = [
