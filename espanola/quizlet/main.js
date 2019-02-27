@@ -1365,6 +1365,31 @@ define("quizlet/packs/hemos-packet", ["require", "exports", "verbos/index"], fun
     index_4 = __importDefault(index_4);
     return index_4["default"].filter(function (v) { return !!v.hemos; }).map(function (v) { return ({ q: v.hemos.en, a: "hemos " + v.hemos.es }); });
 });
+define("quizlet/packs/n\u00FAmeros-packet", ["require", "exports"], function (require, exports) {
+    "use strict";
+    return [
+        { es: "uno", en: "one" },
+        { es: "dos", en: "two" },
+        { es: "tres", en: "three" },
+        { es: "quatro", en: "four" },
+        { es: "cinco", en: "five" },
+        { es: "seis", en: "six" },
+        { es: "siete", en: "seven" },
+        { es: "ocho", en: "eight" },
+        { es: "nueve", en: "nine" },
+        { es: "diez", en: "ten" },
+        { es: "once", en: "eleven" },
+        { es: "doce", en: "twelve" },
+        { es: "trece", en: "thirteen" },
+        { es: "catorce", en: "fourteen" },
+        { es: "quince", en: "fifteen" },
+        { es: "dieciséis", en: "sixteen" },
+        { es: "de diecisiete", en: "seventeen" },
+        { es: "dieciocho", en: "eighteen" },
+        { es: "diecinueve", en: "nineteen" },
+        { es: "veinte", en: "twenty" }
+    ].map(function (v) { return ({ a: v.es, q: v.en }); });
+});
 define("quizlet/packs/yo-packet", ["require", "exports", "verbos/index"], function (require, exports, index_5) {
     "use strict";
     index_5 = __importDefault(index_5);
@@ -1428,11 +1453,12 @@ define("quizlet/packs/sustantivo-packet", ["require", "exports", "sustantivo/ind
     index_9 = __importDefault(index_9);
     return index_9["default"].map(function (v) { return ({ q: v.en, a: v.es }); });
 });
-define("quizlet/packs/index", ["require", "exports", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/qa"], function (require, exports, pronoun_packet_1, sustantivo_packet_1, qa_1) {
+define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, qa_1) {
     "use strict";
+    n_meros_packet_1 = __importDefault(n_meros_packet_1);
     pronoun_packet_1 = __importDefault(pronoun_packet_1);
     sustantivo_packet_1 = __importDefault(sustantivo_packet_1);
     qa_1 = __importDefault(qa_1);
-    return pronoun_packet_1["default"].concat(sustantivo_packet_1["default"], qa_1["default"]);
+    return pronoun_packet_1["default"].concat(n_meros_packet_1["default"], sustantivo_packet_1["default"], qa_1["default"]);
 });
 //# sourceMappingURL=main.js.map
