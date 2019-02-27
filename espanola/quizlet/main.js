@@ -1353,17 +1353,17 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
 define("quizlet/packs/has-packet", ["require", "exports", "verbos/index"], function (require, exports, index_2) {
     "use strict";
     index_2 = __importDefault(index_2);
-    return index_2["default"].filter(function (v) { return !!v.has; }).map(function (v) { return ({ q: v.has.en, a: v.has.es }); });
+    return index_2["default"].filter(function (v) { return !!v.has; }).map(function (v) { return ({ q: v.has.en, a: "has " + v.has.es }); });
 });
 define("quizlet/packs/he-packet", ["require", "exports", "verbos/index"], function (require, exports, index_3) {
     "use strict";
     index_3 = __importDefault(index_3);
-    return index_3["default"].filter(function (v) { return !!v.he; }).map(function (v) { return ({ q: v.he.en, a: v.he.es }); });
+    return index_3["default"].filter(function (v) { return !!v.he; }).map(function (v) { return ({ q: v.he.en, a: "he " + v.he.es }); });
 });
 define("quizlet/packs/hemos-packet", ["require", "exports", "verbos/index"], function (require, exports, index_4) {
     "use strict";
     index_4 = __importDefault(index_4);
-    return index_4["default"].filter(function (v) { return !!v.hemos; }).map(function (v) { return ({ q: v.hemos.en, a: v.hemos.es }); });
+    return index_4["default"].filter(function (v) { return !!v.hemos; }).map(function (v) { return ({ q: v.hemos.en, a: "hemos " + v.hemos.es }); });
 });
 define("quizlet/packs/yo-packet", ["require", "exports", "verbos/index"], function (require, exports, index_5) {
     "use strict";
