@@ -1,3 +1,5 @@
+import { Dictionary } from "../quizlet/system-events";
+
 const regular_postfix = {
 	ar: {
 		yo: "o",
@@ -43,31 +45,42 @@ function regular(
 
 // there are three types of verbs:
 // those ending in er, ar and ir
-export = [
+type LanguageTuple = { en: string; es: string };
+type Dict = Dictionary<LanguageTuple>;
+export = <Array<Dict>>[
 	{
-		i: { es: "caminar", en: "to walk" },
-		yo: { es: "camino", en: "I walk" },
-		tú: { es: "caminas", en: "you walk" },
-		él: { es: "camina", en: "he walks" },
-		ella: { es: "camina", en: "she walks" },
-		nosotros: { es: "caminamos", en: "we walk" }
+		i: { es: "ser", en: "to be" },
+		yo: { es: "soy", en: "I am" },
+		tú: { es: "eres", en: "you are" },
+		él: { es: "es", en: "he is" },
+		nosotros: { es: "somos", en: "we are" },
+		he: { es: "sido", en: "I have been" },
+		has: { es: "sido", en: "you have been" },
+		hemos: { es: "sido", en: "we have been" }
 	},
 	{
-		i: { es: "correr", en: "to run" },
-		yo: { es: "corro", en: "I run" },
-		tú: { es: "corres", en: "you run" },
-		él: { es: "corre", en: "he runs" },
-		ella: { es: "corre", en: "she runs" },
-		nosotros: { es: "corremos", en: "we run" }
+		i: { es: "tener", en: "to have" },
+		yo: { es: "tengo", en: "I have" },
+		tú: { es: "tienes", en: "you have" },
+		él: { es: "tiene", en: "he has" },
+		nosotros: { es: "tienemos", en: "we have" },
+		he: { es: "tenido", en: "I have had" },
+		has: { es: "tenido", en: "you have had" },
+		hemos: { es: "tenido", en: "we had" }
 	},
 	{
-		i: { es: "dicir", en: "to say" },
+		i: { es: "decir", en: "to say" },
 		yo: { es: "digo", en: "I say" },
 		tú: { es: "dices", en: "you say" },
 		él: { es: "dice", en: "he says" },
 		ella: { es: "dice", en: "she says" },
-		nosotros: { es: "dicimos", en: "we say" }
+		nosotros: { es: "dicimos", en: "we say" },
+		he: { es: "dicho", en: "I have said" },
+		has: { es: "dicho", en: "you have said" },
+		hemos: { es: "dicho", en: "we have said" }
 	},
+	regular("caminar", { infinitive: "walk" }),
+	regular("correr", { infinitive: "run" }),
 	regular("escribir", { infinitive: "write" }),
 	regular("esperar", { infinitive: "expect" }),
 	regular("esparcir", { infinitive: "spread" }),

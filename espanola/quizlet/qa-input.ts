@@ -83,7 +83,7 @@ export class QaInput extends WebComponent {
 	hint() {
 		this.score[1]++;
 		SystemEvents.trigger("hint", { hint: this.getAttribute("answer") });
-		SystemEvents.trigger("play", { es: this.getAttribute("answer") });
+		SystemEvents.trigger("play", { es: this.getAttribute("answer"), avitar: "rita" });
 	}
 
 	play() {
@@ -149,7 +149,7 @@ export class QaInput extends WebComponent {
 			input.classList.add("correct");
 			let score = this.score[0];
 			// bonus points if no mistakes
-			if (this.score[1] == 0) score += 5 * Math.max(10, Math.pow(1.2, input.value.length));
+			if (this.score[1] == 0) score += Math.max(50, Math.pow(1.2, this.score[0]));
 			else score -= this.score[1];
 			if (score > 0) {
 				this.help.innerHTML = `+${score} ☑`;
@@ -157,7 +157,7 @@ export class QaInput extends WebComponent {
 				this.help.innerHTML = `☑`;
 			}
 			SystemEvents.trigger("xp", { score, question: this.getAttribute("question") });
-			SystemEvents.trigger("play", { es: this.getAttribute("answer") });
+			SystemEvents.trigger("play", { es: this.getAttribute("answer"), avitar: "clara" });
 			let priorScore = parseFloat(this.getAttribute("score") || "0");
 			this.label.title = score + priorScore + "";
 			return true;

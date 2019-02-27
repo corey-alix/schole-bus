@@ -78,7 +78,7 @@ SystemEvents.watch("xp", (result: { question: string; score: number }) => {
 	storage.setScore(result);
 });
 
-SystemEvents.watch("play", (data: { action?: string; es?: string; en?: string }) => {
+SystemEvents.watch("play", (data: { action?: string; es?: string; en?: string; avitar: "rita" | "clara" }) => {
 	if (data.action === "stop") {
 		player.stop();
 		return;

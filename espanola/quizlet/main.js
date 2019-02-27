@@ -260,7 +260,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         QaInput.prototype.hint = function () {
             this.score[1]++;
             system_events_2.SystemEvents.trigger("hint", { hint: this.getAttribute("answer") });
-            system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer") });
+            system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer"), avitar: "rita" });
         };
         QaInput.prototype.play = function () {
             document.title = this.getAttribute("question") || "?";
@@ -332,7 +332,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 var score = this.score[0];
                 // bonus points if no mistakes
                 if (this.score[1] == 0)
-                    score += 5 * Math.max(10, Math.pow(1.2, input.value.length));
+                    score += Math.max(50, Math.pow(1.2, this.score[0]));
                 else
                     score -= this.score[1];
                 if (score > 0) {
@@ -342,7 +342,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     this.help.innerHTML = "\u2611";
                 }
                 system_events_2.SystemEvents.trigger("xp", { score: score, question: this.getAttribute("question") });
-                system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer") });
+                system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer"), avitar: "clara" });
                 var priorScore = parseFloat(this.getAttribute("score") || "0");
                 this.label.title = score + priorScore + "";
                 return true;
@@ -527,12 +527,26 @@ define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizl
 define("quizlet/player", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
+    var avitars = {
+        "default": {
+            rate: 1,
+            pitch: 1
+        },
+        rita: {
+            rate: 0.9,
+            pitch: 0.8
+        },
+        clara: {
+            rate: 1.1,
+            pitch: 1.1
+        }
+    };
     var Player = /** @class */ (function () {
         function Player() {
             this.audio = new Audio();
             this.synth = new SpeechSynthesisUtterance();
-            this.synth.rate = 1.1 + Math.random() * 0.1;
-            this.synth.pitch = 0.6 + Math.random() * 0.1;
+            this.rate = 0.9 + Math.random() * 0.4;
+            this.pitch = 0 + Math.random() * 1.5;
             ///log(this.synth.voice.name);
         }
         Player.prototype.stop = function () {
@@ -540,6 +554,15 @@ define("quizlet/player", ["require", "exports"], function (require, exports) {
         };
         Player.prototype.play = function (text) {
             this.synth.volume = 1;
+            if (text.avitar) {
+                var avitar = avitars[text.avitar] || avitars["default"];
+                this.synth.rate = avitar.rate;
+                this.synth.pitch = avitar.pitch;
+            }
+            else {
+                this.synth.rate = this.rate;
+                this.synth.pitch = this.pitch;
+            }
             if (text.en) {
                 this.synth.lang = "en-US";
                 this.synth.text = text.en;
@@ -1287,29 +1310,38 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
     }
     return [
         {
-            i: { es: "caminar", en: "to walk" },
-            yo: { es: "camino", en: "I walk" },
-            tú: { es: "caminas", en: "you walk" },
-            él: { es: "camina", en: "he walks" },
-            ella: { es: "camina", en: "she walks" },
-            nosotros: { es: "caminamos", en: "we walk" }
+            i: { es: "ser", en: "to be" },
+            yo: { es: "soy", en: "I am" },
+            tú: { es: "eres", en: "you are" },
+            él: { es: "es", en: "he is" },
+            nosotros: { es: "somos", en: "we are" },
+            he: { es: "sido", en: "I have been" },
+            has: { es: "sido", en: "you have been" },
+            hemos: { es: "sido", en: "we have been" }
         },
         {
-            i: { es: "correr", en: "to run" },
-            yo: { es: "corro", en: "I run" },
-            tú: { es: "corres", en: "you run" },
-            él: { es: "corre", en: "he runs" },
-            ella: { es: "corre", en: "she runs" },
-            nosotros: { es: "corremos", en: "we run" }
+            i: { es: "tener", en: "to have" },
+            yo: { es: "tengo", en: "I have" },
+            tú: { es: "tienes", en: "you have" },
+            él: { es: "tiene", en: "he has" },
+            nosotros: { es: "tienemos", en: "we have" },
+            he: { es: "tenido", en: "I have had" },
+            has: { es: "tenido", en: "you have had" },
+            hemos: { es: "tenido", en: "we had" }
         },
         {
-            i: { es: "dicir", en: "to say" },
+            i: { es: "decir", en: "to say" },
             yo: { es: "digo", en: "I say" },
             tú: { es: "dices", en: "you say" },
             él: { es: "dice", en: "he says" },
             ella: { es: "dice", en: "she says" },
-            nosotros: { es: "dicimos", en: "we say" }
+            nosotros: { es: "dicimos", en: "we say" },
+            he: { es: "dicho", en: "I have said" },
+            has: { es: "dicho", en: "you have said" },
+            hemos: { es: "dicho", en: "we have said" }
         },
+        regular("caminar", { infinitive: "walk" }),
+        regular("correr", { infinitive: "run" }),
         regular("escribir", { infinitive: "write" }),
         regular("esperar", { infinitive: "expect" }),
         regular("esparcir", { infinitive: "spread" }),
@@ -1318,32 +1350,48 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
         regular("descubrir", { infinitive: "discover" })
     ];
 });
-define("quizlet/packs/yo-packet", ["require", "exports", "verbos/index"], function (require, exports, index_2) {
+define("quizlet/packs/has-packet", ["require", "exports", "verbos/index"], function (require, exports, index_2) {
     "use strict";
     index_2 = __importDefault(index_2);
-    return index_2["default"].map(function (v) { return ({ q: v.yo.en, a: v.yo.es }); });
+    return index_2["default"].filter(function (v) { return !!v.has; }).map(function (v) { return ({ q: v.has.en, a: v.has.es }); });
 });
-define("quizlet/packs/t\u00FA-packet", ["require", "exports", "verbos/index"], function (require, exports, index_3) {
+define("quizlet/packs/he-packet", ["require", "exports", "verbos/index"], function (require, exports, index_3) {
     "use strict";
     index_3 = __importDefault(index_3);
-    return index_3["default"].map(function (v) { return ({ q: v.tú.en, a: v.tú.es }); });
+    return index_3["default"].filter(function (v) { return !!v.he; }).map(function (v) { return ({ q: v.he.en, a: v.he.es }); });
 });
-define("quizlet/packs/\u00E9l-packet", ["require", "exports", "verbos/index"], function (require, exports, index_4) {
+define("quizlet/packs/hemos-packet", ["require", "exports", "verbos/index"], function (require, exports, index_4) {
     "use strict";
     index_4 = __importDefault(index_4);
-    return index_4["default"].map(function (v) { return ({ q: v.él.en, a: v.él.es }); });
+    return index_4["default"].filter(function (v) { return !!v.hemos; }).map(function (v) { return ({ q: v.hemos.en, a: v.hemos.es }); });
 });
-define("quizlet/packs/nosotros-packet", ["require", "exports", "verbos/index"], function (require, exports, index_5) {
+define("quizlet/packs/yo-packet", ["require", "exports", "verbos/index"], function (require, exports, index_5) {
     "use strict";
     index_5 = __importDefault(index_5);
-    return index_5["default"].map(function (v) { return ({ q: v.nosotros.en, a: v.nosotros.es }); });
+    return index_5["default"].map(function (v) { return ({ q: v.yo.en, a: v.yo.es }); });
 });
-define("quizlet/packs/pronoun-packet", ["require", "exports", "quizlet/packs/yo-packet", "quizlet/packs/t\u00FA-packet", "quizlet/packs/\u00E9l-packet", "quizlet/packs/nosotros-packet"], function (require, exports, yo_packet_1, t__packet_1, _l_packet_1, nosotros_packet_1) {
+define("quizlet/packs/t\u00FA-packet", ["require", "exports", "verbos/index"], function (require, exports, index_6) {
+    "use strict";
+    index_6 = __importDefault(index_6);
+    return index_6["default"].map(function (v) { return ({ q: v.tú.en, a: v.tú.es }); });
+});
+define("quizlet/packs/\u00E9l-packet", ["require", "exports", "verbos/index"], function (require, exports, index_7) {
+    "use strict";
+    index_7 = __importDefault(index_7);
+    return index_7["default"].map(function (v) { return ({ q: v.él.en, a: v.él.es }); });
+});
+define("quizlet/packs/nosotros-packet", ["require", "exports", "verbos/index"], function (require, exports, index_8) {
+    "use strict";
+    index_8 = __importDefault(index_8);
+    return index_8["default"].map(function (v) { return ({ q: v.nosotros.en, a: v.nosotros.es }); });
+});
+define("quizlet/packs/pronoun-packet", ["require", "exports", "quizlet/packs/yo-packet", "quizlet/packs/t\u00FA-packet", "quizlet/packs/\u00E9l-packet", "quizlet/packs/nosotros-packet", "quizlet/packs/he-packet"], function (require, exports, yo_packet_1, t__packet_1, _l_packet_1, nosotros_packet_1, he_packet_1) {
     "use strict";
     yo_packet_1 = __importDefault(yo_packet_1);
     t__packet_1 = __importDefault(t__packet_1);
     _l_packet_1 = __importDefault(_l_packet_1);
     nosotros_packet_1 = __importDefault(nosotros_packet_1);
+    he_packet_1 = __importDefault(he_packet_1);
     var pronouns = [
         { en: "I", es: "yo" },
         { en: "you", es: "tú" },
@@ -1354,7 +1402,7 @@ define("quizlet/packs/pronoun-packet", ["require", "exports", "quizlet/packs/yo-
         { en: "they are", es: "ellos" },
         { en: "they are (f)", es: "ellas" }
     ];
-    var qa = pronouns.map(function (v) { return ({ a: v.es, q: v.en }); }).concat(yo_packet_1["default"], t__packet_1["default"], _l_packet_1["default"], nosotros_packet_1["default"]);
+    var qa = pronouns.map(function (v) { return ({ a: v.es, q: v.en }); }).concat(yo_packet_1["default"], t__packet_1["default"], _l_packet_1["default"], nosotros_packet_1["default"], he_packet_1["default"]);
     return qa;
 });
 define("sustantivo/index", ["require", "exports", "quizlet/fun"], function (require, exports, fun_3) {
@@ -1375,10 +1423,10 @@ define("sustantivo/index", ["require", "exports", "quizlet/fun"], function (requ
         { es: "muerte", en: "death" }
     ].map(function (v) { return ({ es: fun_3.forceGender(v.es), en: "the " + v.en }); });
 });
-define("quizlet/packs/sustantivo-packet", ["require", "exports", "sustantivo/index"], function (require, exports, index_6) {
+define("quizlet/packs/sustantivo-packet", ["require", "exports", "sustantivo/index"], function (require, exports, index_9) {
     "use strict";
-    index_6 = __importDefault(index_6);
-    return index_6["default"].map(function (v) { return ({ q: v.en, a: v.es }); });
+    index_9 = __importDefault(index_9);
+    return index_9["default"].map(function (v) { return ({ q: v.en, a: v.es }); });
 });
 define("quizlet/packs/index", ["require", "exports", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/qa"], function (require, exports, pronoun_packet_1, sustantivo_packet_1, qa_1) {
     "use strict";
