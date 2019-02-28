@@ -1,53 +1,173 @@
 import { Dictionary } from "../quizlet/system-events";
 
-const regular_postfix = {
-	ar: {
-		yo: "o",
-		tú: "as",
-		él: "a",
-		nosotros: "amos"
+const tenses = [
+	{
+		ar: {
+			yo: "o",
+			tú: "as",
+			él: "a",
+			nosotros: "amos"
+		},
+		er: {
+			yo: "o",
+			tú: "es",
+			él: "e",
+			nosotros: "imos"
+		},
+		ir: {
+			yo: "o",
+			tú: "es",
+			él: "e",
+			nosotros: "imos"
+		}
 	},
-	er: {
-		yo: "o",
-		tú: "es",
-		él: "e",
-		nosotros: "imos"
+	{
+		ar: {
+			yo: "aba",
+			tú: "abas",
+			él: "aba",
+			nosotros: "ábamos"
+		},
+		er: {
+			yo: "ía",
+			tú: "ías",
+			él: "ía",
+			nosotros: "íamos"
+		},
+		ir: {
+			yo: "ía",
+			tú: "ías",
+			él: "ía",
+			nosotros: "íamos"
+		}
 	},
-	ir: {
-		yo: "o",
-		tú: "es",
-		él: "e",
-		nosotros: "imos"
+	{
+		ar: {
+			yo: "é",
+			tú: "aste",
+			él: "ó",
+			nosotros: "amos"
+		},
+		er: {
+			yo: "í",
+			tú: "iste",
+			él: "ió",
+			nosotros: "imos"
+		},
+		ir: {
+			yo: "í",
+			tú: "iste",
+			él: "ió",
+			nosotros: "ímos"
+		}
+	},
+	{
+		ar: {
+			yo: "aré",
+			tú: "arás",
+			él: "ara",
+			nosotros: "aremos"
+		},
+		er: {
+			yo: "eré",
+			tú: "erás",
+			él: "era",
+			nosotros: "eremos"
+		},
+		ir: {
+			yo: "iré",
+			tú: "irás",
+			él: "ira",
+			nosotros: "iremos"
+		}
 	}
-};
+];
+
+const tenses_en = [
+	{
+		yo: "I",
+		tú: "you",
+		él: "he",
+		nosotros: "we"
+	},
+	{
+		yo: "I was",
+		tú: "you were",
+		él: "he was",
+		nosotros: "we were"
+	},
+	{
+		yo: "I did",
+		tú: "you did",
+		él: "he did",
+		nosotros: "we did"
+	},
+	{
+		yo: "I will",
+		tú: "you will",
+		él: "he will",
+		nosotros: "we will"
+	}
+];
 
 function regular(
 	infinitive: string,
-	en_base: { infinitive: string; i?: string; you?: string; he?: string; we?: string }
-) {
+	en_base: { infinitive?: string; i?: string; you?: string; he?: string; we?: string; ing?: string }
+): Array<Dict> {
+	if (!infinitive) throw "must provide a spanish infinitive";
+	if (!en_base.infinitive) throw "must provide an english infinitive";
 	let ch2 = <"ar" | "er" | "ir">infinitive.substring(infinitive.length - 2).toLowerCase();
 	let base = infinitive.substring(0, infinitive.length - 2);
-	let postfix = regular_postfix[ch2];
 
 	en_base.i = en_base.i || en_base.infinitive;
 	en_base.you = en_base.you || en_base.i;
 	en_base.he = en_base.he || en_base.you + "s";
 	en_base.we = en_base.we || en_base.you;
+	en_base.ing = en_base.ing || en_base.infinitive + "ing";
 
-	return {
-		i: { es: infinitive, en: "to " + en_base.infinitive },
-		yo: { es: base + postfix.yo, en: "I " + en_base.i },
-		tú: { es: base + postfix.tú, en: "you " + en_base.you },
-		él: { es: base + postfix.él, en: "he " + en_base.he },
-		nosotros: { es: base + postfix.nosotros, en: "we " + en_base.we }
-	};
+	let postfix = tenses[0][ch2];
+	let en = tenses_en[0];
+	let result = [
+		{
+			i: { es: infinitive, en: `to ${en_base.infinitive}` },
+			yo: { es: base + postfix.yo, en: `${en.yo} ${en_base.i}` },
+			tú: { es: base + postfix.tú, en: `${en.tú} ${en_base.you}` },
+			él: { es: base + postfix.él, en: `${en.él} ${en_base.he}` },
+			nosotros: { es: base + postfix.nosotros, en: `${en.nosotros} ${en_base.we}` }
+		}
+	];
+
+	if (en_base.ing) {
+		let postfix = tenses[1][ch2];
+		let en = tenses_en[1];
+		result.push({
+			i: { es: infinitive, en: `to ${en_base.infinitive}` },
+			yo: { es: base + postfix.yo, en: `${en.yo} ${en_base.ing}` },
+			tú: { es: base + postfix.tú, en: `${en.tú} ${en_base.ing}` },
+			él: { es: base + postfix.él, en: `${en.él} ${en_base.ing}` },
+			nosotros: { es: base + postfix.nosotros, en: `${en.nosotros} ${en_base.we}` }
+		});
+	}
+
+	for (let tense = 2; tense < tenses.length; tense++) {
+		let postfix = tenses[tense][ch2];
+		let en = tenses_en[tense];
+		result.push({
+			i: { es: infinitive, en: `to ${en_base.infinitive}` },
+			yo: { es: base + postfix.yo, en: `${en.yo} ${en_base.i}` },
+			tú: { es: base + postfix.tú, en: `${en.tú} ${en_base.you}` },
+			él: { es: base + postfix.él, en: `${en.él} ${en_base.he}` },
+			nosotros: { es: base + postfix.nosotros, en: `${en.nosotros} ${en_base.we}` }
+		});
+	}
+	return result;
 }
 
 // there are three types of verbs:
 // those ending in er, ar and ir
 type LanguageTuple = { en: string; es: string };
 type Dict = Dictionary<LanguageTuple>;
-export = <Array<Dict>>[
+let verbos = <Array<Dict>>[
 	{
 		i: { es: "ser", en: "to be" },
 		yo: { es: "soy", en: "I am" },
@@ -78,13 +198,17 @@ export = <Array<Dict>>[
 		he: { es: "dicho", en: "I have said" },
 		has: { es: "dicho", en: "you have said" },
 		hemos: { es: "dicho", en: "we have said" }
-	},
+	}
+];
+
+export = verbos.concat(
 	regular("caminar", { infinitive: "walk" }),
-	regular("correr", { infinitive: "run" }),
-	regular("escribir", { infinitive: "write" }),
+	regular("correr", { infinitive: "run", ing: "running" }),
+	regular("escribir", { infinitive: "write", ing: "writing" }),
 	regular("esperar", { infinitive: "expect" }),
 	regular("esparcir", { infinitive: "spread" }),
 	regular("escuchar", { infinitive: "listen" }),
 	regular("entregar", { infinitive: "deliver" }),
-	regular("descubrir", { infinitive: "discover" })
-];
+	regular("descubrir", { infinitive: "discover" }),
+	regular("comer", { infinitive: "eat" })
+);

@@ -1272,43 +1272,162 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
 });
 define("verbos/index", ["require", "exports"], function (require, exports) {
     "use strict";
-    var regular_postfix = {
-        ar: {
-            yo: "o",
-            tú: "as",
-            él: "a",
-            nosotros: "amos"
+    var tenses = [
+        {
+            ar: {
+                yo: "o",
+                tú: "as",
+                él: "a",
+                nosotros: "amos"
+            },
+            er: {
+                yo: "o",
+                tú: "es",
+                él: "e",
+                nosotros: "imos"
+            },
+            ir: {
+                yo: "o",
+                tú: "es",
+                él: "e",
+                nosotros: "imos"
+            }
         },
-        er: {
-            yo: "o",
-            tú: "es",
-            él: "e",
-            nosotros: "imos"
+        {
+            ar: {
+                yo: "aba",
+                tú: "abas",
+                él: "aba",
+                nosotros: "ábamos"
+            },
+            er: {
+                yo: "ía",
+                tú: "ías",
+                él: "ía",
+                nosotros: "íamos"
+            },
+            ir: {
+                yo: "ía",
+                tú: "ías",
+                él: "ía",
+                nosotros: "íamos"
+            }
         },
-        ir: {
-            yo: "o",
-            tú: "es",
-            él: "e",
-            nosotros: "imos"
+        {
+            ar: {
+                yo: "é",
+                tú: "aste",
+                él: "ó",
+                nosotros: "amos"
+            },
+            er: {
+                yo: "í",
+                tú: "iste",
+                él: "ió",
+                nosotros: "imos"
+            },
+            ir: {
+                yo: "í",
+                tú: "iste",
+                él: "ió",
+                nosotros: "ímos"
+            }
+        },
+        {
+            ar: {
+                yo: "aré",
+                tú: "arás",
+                él: "ara",
+                nosotros: "aremos"
+            },
+            er: {
+                yo: "eré",
+                tú: "erás",
+                él: "era",
+                nosotros: "eremos"
+            },
+            ir: {
+                yo: "iré",
+                tú: "irás",
+                él: "ira",
+                nosotros: "iremos"
+            }
         }
-    };
+    ];
+    var tenses_en = [
+        {
+            yo: "I",
+            tú: "you",
+            él: "he",
+            nosotros: "we"
+        },
+        {
+            yo: "I was",
+            tú: "you were",
+            él: "he was",
+            nosotros: "we were"
+        },
+        {
+            yo: "I did",
+            tú: "you did",
+            él: "he did",
+            nosotros: "we did"
+        },
+        {
+            yo: "I will",
+            tú: "you will",
+            él: "he will",
+            nosotros: "we will"
+        }
+    ];
     function regular(infinitive, en_base) {
+        if (!infinitive)
+            throw "must provide a spanish infinitive";
+        if (!en_base.infinitive)
+            throw "must provide an english infinitive";
         var ch2 = infinitive.substring(infinitive.length - 2).toLowerCase();
         var base = infinitive.substring(0, infinitive.length - 2);
-        var postfix = regular_postfix[ch2];
         en_base.i = en_base.i || en_base.infinitive;
         en_base.you = en_base.you || en_base.i;
         en_base.he = en_base.he || en_base.you + "s";
         en_base.we = en_base.we || en_base.you;
-        return {
-            i: { es: infinitive, en: "to " + en_base.infinitive },
-            yo: { es: base + postfix.yo, en: "I " + en_base.i },
-            tú: { es: base + postfix.tú, en: "you " + en_base.you },
-            él: { es: base + postfix.él, en: "he " + en_base.he },
-            nosotros: { es: base + postfix.nosotros, en: "we " + en_base.we }
-        };
+        en_base.ing = en_base.ing || en_base.infinitive + "ing";
+        var postfix = tenses[0][ch2];
+        var en = tenses_en[0];
+        var result = [
+            {
+                i: { es: infinitive, en: "to " + en_base.infinitive },
+                yo: { es: base + postfix.yo, en: en.yo + " " + en_base.i },
+                tú: { es: base + postfix.tú, en: en.tú + " " + en_base.you },
+                él: { es: base + postfix.él, en: en.él + " " + en_base.he },
+                nosotros: { es: base + postfix.nosotros, en: en.nosotros + " " + en_base.we }
+            }
+        ];
+        if (en_base.ing) {
+            var postfix_1 = tenses[1][ch2];
+            var en_1 = tenses_en[1];
+            result.push({
+                i: { es: infinitive, en: "to " + en_base.infinitive },
+                yo: { es: base + postfix_1.yo, en: en_1.yo + " " + en_base.ing },
+                tú: { es: base + postfix_1.tú, en: en_1.tú + " " + en_base.ing },
+                él: { es: base + postfix_1.él, en: en_1.él + " " + en_base.ing },
+                nosotros: { es: base + postfix_1.nosotros, en: en_1.nosotros + " " + en_base.we }
+            });
+        }
+        for (var tense = 2; tense < tenses.length; tense++) {
+            var postfix_2 = tenses[tense][ch2];
+            var en_2 = tenses_en[tense];
+            result.push({
+                i: { es: infinitive, en: "to " + en_base.infinitive },
+                yo: { es: base + postfix_2.yo, en: en_2.yo + " " + en_base.i },
+                tú: { es: base + postfix_2.tú, en: en_2.tú + " " + en_base.you },
+                él: { es: base + postfix_2.él, en: en_2.él + " " + en_base.he },
+                nosotros: { es: base + postfix_2.nosotros, en: en_2.nosotros + " " + en_base.we }
+            });
+        }
+        return result;
     }
-    return [
+    var verbos = [
         {
             i: { es: "ser", en: "to be" },
             yo: { es: "soy", en: "I am" },
@@ -1339,16 +1458,9 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
             he: { es: "dicho", en: "I have said" },
             has: { es: "dicho", en: "you have said" },
             hemos: { es: "dicho", en: "we have said" }
-        },
-        regular("caminar", { infinitive: "walk" }),
-        regular("correr", { infinitive: "run" }),
-        regular("escribir", { infinitive: "write" }),
-        regular("esperar", { infinitive: "expect" }),
-        regular("esparcir", { infinitive: "spread" }),
-        regular("escuchar", { infinitive: "listen" }),
-        regular("entregar", { infinitive: "deliver" }),
-        regular("descubrir", { infinitive: "discover" })
+        }
     ];
+    return verbos.concat(regular("caminar", { infinitive: "walk" }), regular("correr", { infinitive: "run", ing: "running" }), regular("escribir", { infinitive: "write", ing: "writing" }), regular("esperar", { infinitive: "expect" }), regular("esparcir", { infinitive: "spread" }), regular("escuchar", { infinitive: "listen" }), regular("entregar", { infinitive: "deliver" }), regular("descubrir", { infinitive: "discover" }), regular("comer", { infinitive: "eat" }));
 });
 define("quizlet/packs/has-packet", ["require", "exports", "verbos/index"], function (require, exports, index_2) {
     "use strict";
@@ -1367,7 +1479,8 @@ define("quizlet/packs/hemos-packet", ["require", "exports", "verbos/index"], fun
 });
 define("quizlet/packs/n\u00FAmeros-packet", ["require", "exports"], function (require, exports) {
     "use strict";
-    return [
+    var nums = [
+        { es: "cero", en: "zero" },
         { es: "uno", en: "one" },
         { es: "dos", en: "two" },
         { es: "tres", en: "three" },
@@ -1388,7 +1501,17 @@ define("quizlet/packs/n\u00FAmeros-packet", ["require", "exports"], function (re
         { es: "dieciocho", en: "eighteen" },
         { es: "diecinueve", en: "nineteen" },
         { es: "veinte", en: "twenty" }
-    ].map(function (v) { return ({ a: v.es, q: v.en }); });
+    ];
+    var qa = nums.map(function (v) { return ({ a: v.es, q: v.en }); });
+    [1, 2, 5].forEach(function (a) {
+        return [1, 10].forEach(function (b) {
+            return qa.push({
+                a: nums[a].es + " m\u00E1s " + nums[b].es + " igual " + nums[a + b].es,
+                q: nums[a].en + " plus " + nums[b].en + " equal " + nums[a + b].en
+            });
+        });
+    });
+    return qa;
 });
 define("quizlet/packs/yo-packet", ["require", "exports", "verbos/index"], function (require, exports, index_5) {
     "use strict";
@@ -1410,13 +1533,14 @@ define("quizlet/packs/nosotros-packet", ["require", "exports", "verbos/index"], 
     index_8 = __importDefault(index_8);
     return index_8["default"].map(function (v) { return ({ q: v.nosotros.en, a: v.nosotros.es }); });
 });
-define("quizlet/packs/pronoun-packet", ["require", "exports", "quizlet/packs/yo-packet", "quizlet/packs/t\u00FA-packet", "quizlet/packs/\u00E9l-packet", "quizlet/packs/nosotros-packet", "quizlet/packs/he-packet"], function (require, exports, yo_packet_1, t__packet_1, _l_packet_1, nosotros_packet_1, he_packet_1) {
+define("quizlet/packs/pronoun-packet", ["require", "exports", "quizlet/packs/yo-packet", "quizlet/packs/t\u00FA-packet", "quizlet/packs/\u00E9l-packet", "quizlet/packs/nosotros-packet", "quizlet/packs/he-packet", "quizlet/packs/hemos-packet"], function (require, exports, yo_packet_1, t__packet_1, _l_packet_1, nosotros_packet_1, he_packet_1, hemos_packet_1) {
     "use strict";
     yo_packet_1 = __importDefault(yo_packet_1);
     t__packet_1 = __importDefault(t__packet_1);
     _l_packet_1 = __importDefault(_l_packet_1);
     nosotros_packet_1 = __importDefault(nosotros_packet_1);
     he_packet_1 = __importDefault(he_packet_1);
+    hemos_packet_1 = __importDefault(hemos_packet_1);
     var pronouns = [
         { en: "I", es: "yo" },
         { en: "you", es: "tú" },
@@ -1427,7 +1551,7 @@ define("quizlet/packs/pronoun-packet", ["require", "exports", "quizlet/packs/yo-
         { en: "they are", es: "ellos" },
         { en: "they are (f)", es: "ellas" }
     ];
-    var qa = pronouns.map(function (v) { return ({ a: v.es, q: v.en }); }).concat(yo_packet_1["default"], t__packet_1["default"], _l_packet_1["default"], nosotros_packet_1["default"], he_packet_1["default"]);
+    var qa = pronouns.map(function (v) { return ({ a: v.es, q: v.en }); }).concat(yo_packet_1["default"], t__packet_1["default"], _l_packet_1["default"], nosotros_packet_1["default"], he_packet_1["default"], hemos_packet_1["default"]);
     return qa;
 });
 define("sustantivo/index", ["require", "exports", "quizlet/fun"], function (require, exports, fun_3) {
@@ -1453,12 +1577,23 @@ define("quizlet/packs/sustantivo-packet", ["require", "exports", "sustantivo/ind
     index_9 = __importDefault(index_9);
     return index_9["default"].map(function (v) { return ({ q: v.en, a: v.es }); });
 });
-define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, qa_1) {
+define("quizlet/packs/question-packet", ["require", "exports"], function (require, exports) {
+    "use strict";
+    return [
+        { a: "¿Quién eres tú?", q: "who are you?" },
+        { a: "¿Que eres?", q: "what are you?" },
+        { a: "¿Dónde estás?", q: "Where are you?" },
+        { a: "¿Cuándo corres?", q: "When will you run?" },
+        { a: "¿Por qué caminas?", q: "Why do you walk?" }
+    ];
+});
+define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, question_packet_1, qa_1) {
     "use strict";
     n_meros_packet_1 = __importDefault(n_meros_packet_1);
     pronoun_packet_1 = __importDefault(pronoun_packet_1);
     sustantivo_packet_1 = __importDefault(sustantivo_packet_1);
+    question_packet_1 = __importDefault(question_packet_1);
     qa_1 = __importDefault(qa_1);
-    return pronoun_packet_1["default"].concat(n_meros_packet_1["default"], sustantivo_packet_1["default"], qa_1["default"]);
+    return pronoun_packet_1["default"].concat(n_meros_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"], qa_1["default"]);
 });
 //# sourceMappingURL=main.js.map
