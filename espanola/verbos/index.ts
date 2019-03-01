@@ -91,10 +91,10 @@ const tenses_en = [
 		nosotros: "we"
 	},
 	{
-		yo: "I was",
-		tú: "you were",
-		él: "he was",
-		nosotros: "we were"
+		yo: "I used to",
+		tú: "you used to",
+		él: "he used to",
+		nosotros: "we used to"
 	},
 	{
 		yo: "I did",
@@ -137,19 +137,7 @@ function regular(
 		}
 	];
 
-	if (en_base.ing) {
-		let postfix = tenses[1][ch2];
-		let en = tenses_en[1];
-		result.push({
-			i: { es: infinitive, en: `to ${en_base.infinitive}` },
-			yo: { es: base + postfix.yo, en: `${en.yo} ${en_base.ing}` },
-			tú: { es: base + postfix.tú, en: `${en.tú} ${en_base.ing}` },
-			él: { es: base + postfix.él, en: `${en.él} ${en_base.ing}` },
-			nosotros: { es: base + postfix.nosotros, en: `${en.nosotros} ${en_base.we}` }
-		});
-	}
-
-	for (let tense = 2; tense < tenses.length; tense++) {
+	for (let tense = 1; tense < tenses.length; tense++) {
 		let postfix = tenses[tense][ch2];
 		let en = tenses_en[tense];
 		result.push({
@@ -157,9 +145,28 @@ function regular(
 			yo: { es: base + postfix.yo, en: `${en.yo} ${en_base.infinitive}` },
 			tú: { es: base + postfix.tú, en: `${en.tú} ${en_base.infinitive}` },
 			él: { es: base + postfix.él, en: `${en.él} ${en_base.infinitive}` },
-			nosotros: { es: base + postfix.nosotros, en: `${en.nosotros} ${en_base.we}` }
+			nosotros: { es: base + postfix.nosotros, en: `${en.nosotros} ${en_base.infinitive}` }
 		});
 	}
+
+	if (en_base.ing) {
+		let ndo = base;
+		switch (ch2) {
+			case "ar":
+				ndo += "ando";
+				break;
+			default:
+				ndo += "iendo";
+		}
+		result.push({
+			i: { es: infinitive, en: `to ${en_base.infinitive}` },
+			yo: { es: `estoy ${ndo}`, en: `I am ${en_base.ing}` },
+			tú: { es: `estas ${ndo}`, en: `You are ${en_base.ing}` },
+			él: { es: `él está ${ndo}`, en: `He is ${en_base.ing}` },
+			nosotros: { es: `estamos ${ndo}`, en: `We are ${en_base.we}` }
+		});
+	}
+
 	return result;
 }
 

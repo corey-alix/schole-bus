@@ -13,9 +13,10 @@ function isMale(noun: string) {
 }
 
 let builder = (data: { es: string[]; en: string[] }) => {
-	let es1 = data.es[0];
-	es1 = isMale(es1) ? "al " : "a " + es1;
-	return { es: `lo opuesto a ${es1} es ${data.es[1]}`, en: `the opposite of ${data.en[0]} is ${data.en[1]}` };
+	let es = data.es.map(v => (isMale(v) ? "al " : "a ") + v);
+	// lo contrario de correr es caminar
+	// lo contrario de correr es caminar
+	return { es: `lo contrario ${es[0]} es ${es[1]}`, en: `the opposite of ${data.en[0]} is ${data.en[1]}` };
 };
 
 let opuestos = [

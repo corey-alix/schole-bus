@@ -784,9 +784,10 @@ define("sentences/opuesto", ["require", "exports"], function (require, exports) 
         return true;
     }
     var builder = function (data) {
-        var es1 = data.es[0];
-        es1 = isMale(es1) ? "al " : "a " + es1;
-        return { es: "lo opuesto a " + es1 + " es " + data.es[1], en: "the opposite of " + data.en[0] + " is " + data.en[1] };
+        var es = data.es.map(function (v) { return (isMale(v) ? "al " : "a ") + v; });
+        // lo contrario de correr es caminar
+        // lo contrario de correr es caminar
+        return { es: "lo contrario " + es[0] + " es " + es[1], en: "the opposite of " + data.en[0] + " is " + data.en[1] };
     };
     var opuestos = [
         {
@@ -1377,10 +1378,10 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
             nosotros: "we"
         },
         {
-            yo: "I was",
-            tú: "you were",
-            él: "he was",
-            nosotros: "we were"
+            yo: "I used to",
+            tú: "you used to",
+            él: "he used to",
+            nosotros: "we used to"
         },
         {
             yo: "I did",
@@ -1418,26 +1419,32 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
                 nosotros: { es: base + postfix.nosotros, en: en.nosotros + " " + en_base.we }
             }
         ];
-        if (en_base.ing) {
-            var postfix_1 = tenses[1][ch2];
-            var en_1 = tenses_en[1];
+        for (var tense = 1; tense < tenses.length; tense++) {
+            var postfix_1 = tenses[tense][ch2];
+            var en_1 = tenses_en[tense];
             result.push({
                 i: { es: infinitive, en: "to " + en_base.infinitive },
-                yo: { es: base + postfix_1.yo, en: en_1.yo + " " + en_base.ing },
-                tú: { es: base + postfix_1.tú, en: en_1.tú + " " + en_base.ing },
-                él: { es: base + postfix_1.él, en: en_1.él + " " + en_base.ing },
-                nosotros: { es: base + postfix_1.nosotros, en: en_1.nosotros + " " + en_base.we }
+                yo: { es: base + postfix_1.yo, en: en_1.yo + " " + en_base.infinitive },
+                tú: { es: base + postfix_1.tú, en: en_1.tú + " " + en_base.infinitive },
+                él: { es: base + postfix_1.él, en: en_1.él + " " + en_base.infinitive },
+                nosotros: { es: base + postfix_1.nosotros, en: en_1.nosotros + " " + en_base.infinitive }
             });
         }
-        for (var tense = 2; tense < tenses.length; tense++) {
-            var postfix_2 = tenses[tense][ch2];
-            var en_2 = tenses_en[tense];
+        if (en_base.ing) {
+            var ndo = base;
+            switch (ch2) {
+                case "ar":
+                    ndo += "ando";
+                    break;
+                default:
+                    ndo += "iendo";
+            }
             result.push({
                 i: { es: infinitive, en: "to " + en_base.infinitive },
-                yo: { es: base + postfix_2.yo, en: en_2.yo + " " + en_base.infinitive },
-                tú: { es: base + postfix_2.tú, en: en_2.tú + " " + en_base.infinitive },
-                él: { es: base + postfix_2.él, en: en_2.él + " " + en_base.infinitive },
-                nosotros: { es: base + postfix_2.nosotros, en: en_2.nosotros + " " + en_base.we }
+                yo: { es: "estoy " + ndo, en: "I am " + en_base.ing },
+                tú: { es: "estas " + ndo, en: "You are " + en_base.ing },
+                él: { es: "\u00E9l est\u00E1 " + ndo, en: "He is " + en_base.ing },
+                nosotros: { es: "estamos " + ndo, en: "We are " + en_base.we }
             });
         }
         return result;
@@ -1539,10 +1546,12 @@ define("quizlet/packs/n\u00FAmeros-packet", ["require", "exports"], function (re
     ];
     var qa = nums.map(function (v) { return ({ a: v.es, q: v.en }); });
     [1, 2, 5].forEach(function (a) {
-        return [1, 10].forEach(function (b) {
+        return [0, 0, 0]
+            .map(function (v) { return Math.floor((nums.length - a) * Math.random()); })
+            .forEach(function (b) {
             return qa.push({
-                a: nums[a].es + " m\u00E1s " + nums[b].es + " igual " + nums[a + b].es,
-                q: nums[a].en + " plus " + nums[b].en + " equal " + nums[a + b].en
+                a: nums[a].es + " m\u00E1s " + nums[b].es + " son " + nums[a + b].es,
+                q: nums[a].en + " plus " + nums[b].en + " are " + nums[a + b].en
             });
         });
     });
@@ -1697,6 +1706,11 @@ define("quizlet/packs/oraci\u00F3n-packet", ["require", "exports", "sagrada_escr
     "use strict";
     oracion_1 = __importDefault(oracion_1);
     return oracion_1["default"].map(function (v) { return ({ a: v.es, q: v.en }); });
+});
+define("quizlet/packs/opuesto-packet", ["require", "exports", "sentences/opuesto"], function (require, exports, opuesto_2) {
+    "use strict";
+    opuesto_2 = __importDefault(opuesto_2);
+    return opuesto_2["default"].map(function (v) { return ({ a: v.es, q: v.en }); });
 });
 define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/packs/oraci\u00F3n-packet", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, question_packet_1, oraci_n_packet_1, qa_1) {
     "use strict";
