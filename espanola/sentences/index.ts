@@ -186,7 +186,11 @@ const baseline = [
 	{ es: "Sí, tienes que ir conmigo.", en: "Yes, you need to go with me." },
 	{ es: "Lo hiciste muy bien.", en: "You did very well." },
 	{ es: "Tu madre canta bien.", en: "Your mom sings well." },
-	{ es: "te gusta tu comida?", en: "do you like your food?" }
+	{ es: "te gusta tu comida?", en: "do you like your food?" },
+	{
+		es: "Dime con quién andas y te diré quién eres.",
+		en: "Tell me who your friends are and I will tell you who you are."
+	}
 ];
 
 let sentences = baseline.concat(opuesto);

@@ -16,7 +16,7 @@ const nums = [
 	{ es: "catorce", en: "fourteen" },
 	{ es: "quince", en: "fifteen" },
 	{ es: "dieciséis", en: "sixteen" },
-	{ es: "de diecisiete", en: "seventeen" },
+	{ es: "diecisiete", en: "seventeen" },
 	{ es: "dieciocho", en: "eighteen" },
 	{ es: "diecinueve", en: "nineteen" },
 	{ es: "veinte", en: "twenty" }

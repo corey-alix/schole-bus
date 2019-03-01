@@ -1,3 +1,13 @@
+export function combine(a: Array<Array<{ en: string; es: string }>>): Array<{ en: string; es: string }> {
+	if (1 === a.length) return a[0];
+	let head = a[0];
+	let tail = a[1];
+	let result = [] as typeof tail;
+	head.forEach(h => tail.forEach(t => result.push({ es: `${h.es} ${t.es}`, en: `${h.en} ${t.en}` })));
+	a.splice(0, 2, result);
+	return combine(a);
+}
+
 export function isMale(noun: string) {
 	if (0 === noun.indexOf("el ")) return true;
 	if (0 === noun.indexOf("la ")) return false;

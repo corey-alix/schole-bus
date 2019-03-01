@@ -143,6 +143,17 @@ define("quizlet/console-log", ["require", "exports", "quizlet/webcomponent", "qu
 define("quizlet/fun", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
+    function combine(a) {
+        if (1 === a.length)
+            return a[0];
+        var head = a[0];
+        var tail = a[1];
+        var result = [];
+        head.forEach(function (h) { return tail.forEach(function (t) { return result.push({ es: h.es + " " + t.es, en: h.en + " " + t.en }); }); });
+        a.splice(0, 2, result);
+        return combine(a);
+    }
+    exports.combine = combine;
     function isMale(noun) {
         if (0 === noun.indexOf("el "))
             return true;
@@ -276,28 +287,28 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             this.play();
         };
         QaInput.prototype.isMatch = function (a, b) {
-            var A = a.toUpperCase();
-            var B = b.toUpperCase();
+            var A = a.toLocaleLowerCase();
+            var B = b.toLocaleLowerCase();
             if (A === B)
                 return true;
-            switch (b.toLocaleLowerCase()) {
+            switch (B) {
                 case "á":
-                    if (A == "A")
+                    if (A == "a")
                         return true;
                 case "é":
-                    if (A == "E")
+                    if (A == "e")
                         return true;
                 case "í":
-                    if (A == "I")
+                    if (A == "i")
                         return true;
                 case "ñ":
-                    if (A == "N")
+                    if (A == "n")
                         return true;
                 case "ó":
-                    if (A == "O")
+                    if (A == "o")
                         return true;
                 case "ú":
-                    if (A == "U")
+                    if (A == "u")
                         return true;
                 case "¡":
                     if (A == "!")
@@ -990,7 +1001,11 @@ define("sentences/index", ["require", "exports", "sentences/opuesto"], function 
         { es: "Sí, tienes que ir conmigo.", en: "Yes, you need to go with me." },
         { es: "Lo hiciste muy bien.", en: "You did very well." },
         { es: "Tu madre canta bien.", en: "Your mom sings well." },
-        { es: "te gusta tu comida?", en: "do you like your food?" }
+        { es: "te gusta tu comida?", en: "do you like your food?" },
+        {
+            es: "Dime con quién andas y te diré quién eres.",
+            en: "Tell me who your friends are and I will tell you who you are."
+        }
     ];
     var sentences = baseline.concat(opuesto_1["default"]);
     return sentences;
@@ -1429,6 +1444,16 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
     }
     var verbos = [
         {
+            i: { es: "ir", en: "to go" },
+            yo: { es: "voy", en: "I go" },
+            tú: { es: "vas", en: "you go" },
+            él: { es: "va", en: "he goes" },
+            nosotros: { es: "vemos", en: "we go" },
+            he: { es: "ido", en: "I have gone" },
+            has: { es: "ido", en: "you have gone" },
+            hemos: { es: "ido", en: "we have gone" }
+        },
+        {
             i: { es: "ser", en: "to be" },
             yo: { es: "soy", en: "I am" },
             tú: { es: "eres", en: "you are" },
@@ -1437,6 +1462,16 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
             he: { es: "sido", en: "I have been" },
             has: { es: "sido", en: "you have been" },
             hemos: { es: "sido", en: "we have been" }
+        },
+        {
+            i: { es: "estar", en: "to be" },
+            yo: { es: "estoy", en: "I am" },
+            tú: { es: "estás", en: "you are" },
+            él: { es: "está", en: "he is" },
+            nosotros: { es: "estamos", en: "we are" },
+            he: { es: "estado", en: "I have been" },
+            has: { es: "estado", en: "you have been" },
+            hemos: { es: "estado", en: "we have been" }
         },
         {
             i: { es: "tener", en: "to have" },
@@ -1497,7 +1532,7 @@ define("quizlet/packs/n\u00FAmeros-packet", ["require", "exports"], function (re
         { es: "catorce", en: "fourteen" },
         { es: "quince", en: "fifteen" },
         { es: "dieciséis", en: "sixteen" },
-        { es: "de diecisiete", en: "seventeen" },
+        { es: "diecisiete", en: "seventeen" },
         { es: "dieciocho", en: "eighteen" },
         { es: "diecinueve", en: "nineteen" },
         { es: "veinte", en: "twenty" }
@@ -1587,13 +1622,90 @@ define("quizlet/packs/question-packet", ["require", "exports"], function (requir
         { a: "¿Por qué caminas?", q: "Why do you walk?" }
     ];
 });
-define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, question_packet_1, qa_1) {
+define("sagrada_escritura/oracion", ["require", "exports", "quizlet/fun"], function (require, exports, fun_4) {
+    "use strict";
+    var nuestro = [
+        {
+            es: "Nuestro Señor",
+            en: "Our Lord"
+        },
+        {
+            es: "Nuestro Padre",
+            en: "Our Father"
+        },
+        {
+            es: "Padre Santo",
+            en: "Holy Father"
+        },
+        {
+            es: "Señor Dios",
+            en: "Lord God"
+        }
+    ];
+    var adoración = [
+        { es: "Tú eres fiel.", en: "You are faithful." },
+        { es: "Siempre eres fiel.", en: "You are always faithful." },
+        { es: "Tú eres digno.", en: "You are worthy." },
+        { es: "Tú nombre es Santo.", en: "You name is Holy." },
+        { es: "Eres poderoso.", en: "You are powerful." },
+        { es: "Tú eres mi roca.", en: "You are my rock." },
+        { es: "Tú eres nuestro Salvador.", en: "You are our Savior." },
+        { es: "No hay otra nombre.", en: "There is no other name." },
+        { es: "Adoramos tu nombre.", en: "We adore your name." },
+        { es: "Grande es tu fidelidad.", en: "Great is your faithfulness." },
+        { es: "Te Alabamos.", en: "We praise you." },
+        { es: "Te anhelo, Señor.", en: "I long for you, Lord." },
+        { es: "Tu reino es eterno.", en: "Your kindom is eternal." },
+        { es: "No hay nadie como Tú.", en: "There is no one like you." },
+        { es: "Queremos levantar tu nombre.", en: "We lift your name." }
+    ];
+    var confesión = [
+        { es: "Mi esperanza está en Jesús.", en: "My hope is in Jesus." },
+        { es: "Solo Jesús mi roca es.", en: "Only Jesus is my rock." },
+        { es: "Estamos justificados por la fe en Cristo.", en: "We are justified by our faith in Christ." },
+        { es: "Por favor, Perdoname los pecados.", en: "Please, forgive my sins." },
+        { es: "Yo sé que soy pecador.", en: "I know that I am a sinner." },
+        { es: "Yo sé que Jesús es Rey.", en: "I know Jusus is King." },
+        { es: "Te necesito.", en: "I need you." },
+        { es: "Ayudame.", en: "Help me." },
+        { es: "Perdoname.", en: "Forgive me." }
+    ];
+    var gracias = [
+        { es: "Gracias por salvarme.", en: "Thank you for saving me." },
+        { es: "Gracias por mis bendiciones.", en: "Thank you for blessing me." },
+        {
+            es: "Gracias por mi familia, mis amigos, y tu iglesia.",
+            en: "Thank you my family, my friends, and your church."
+        },
+        { es: "Gracias por por amarme.", en: "Thank you for loving me." },
+        { es: "Gracias por tu amor para mi.", en: "Thank you for your love of me." }
+    ];
+    var suplication = [
+        { es: "Bendiga nuestros amigos cubanos.", en: "Bless our Cuban friends." },
+        { es: "Da protección a mis amigos en Cuba.", en: "Give protection to my friends in Cuba." },
+        { es: "Guíanos cada día.", en: "Guide us every day." },
+        { es: "Danos tu sabiduría.", en: "Give us your wisdom." }
+    ];
+    return nuestro
+        .concat(adoración)
+        .concat(confesión)
+        .concat(gracias)
+        .concat(suplication)
+        .concat(fun_4.combine([nuestro, adoración, confesión, gracias, suplication]));
+});
+define("quizlet/packs/oraci\u00F3n-packet", ["require", "exports", "sagrada_escritura/oracion"], function (require, exports, oracion_1) {
+    "use strict";
+    oracion_1 = __importDefault(oracion_1);
+    return oracion_1["default"].map(function (v) { return ({ a: v.es, q: v.en }); });
+});
+define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/packs/oraci\u00F3n-packet", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, question_packet_1, oraci_n_packet_1, qa_1) {
     "use strict";
     n_meros_packet_1 = __importDefault(n_meros_packet_1);
     pronoun_packet_1 = __importDefault(pronoun_packet_1);
     sustantivo_packet_1 = __importDefault(sustantivo_packet_1);
     question_packet_1 = __importDefault(question_packet_1);
+    oraci_n_packet_1 = __importDefault(oraci_n_packet_1);
     qa_1 = __importDefault(qa_1);
-    return pronoun_packet_1["default"].concat(n_meros_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"], qa_1["default"]);
+    return pronoun_packet_1["default"].concat(oraci_n_packet_1["default"], n_meros_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"], qa_1["default"]);
 });
 //# sourceMappingURL=main.js.map

@@ -103,22 +103,22 @@ export class QaInput extends WebComponent {
 	}
 
 	isMatch(a: string, b: string) {
-		let A = a.toUpperCase();
-		let B = b.toUpperCase();
+		let A = a.toLocaleLowerCase();
+		let B = b.toLocaleLowerCase();
 		if (A === B) return true;
-		switch (b.toLocaleLowerCase()) {
+		switch (B) {
 			case "á":
-				if (A == "A") return true;
+				if (A == "a") return true;
 			case "é":
-				if (A == "E") return true;
+				if (A == "e") return true;
 			case "í":
-				if (A == "I") return true;
+				if (A == "i") return true;
 			case "ñ":
-				if (A == "N") return true;
+				if (A == "n") return true;
 			case "ó":
-				if (A == "O") return true;
+				if (A == "o") return true;
 			case "ú":
-				if (A == "U") return true;
+				if (A == "u") return true;
 			case "¡":
 				if (A == "!") return true;
 			case "¿":
