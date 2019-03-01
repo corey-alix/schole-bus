@@ -85,7 +85,7 @@
 | ------------------ | ----------------------- |
 | Dijo también Dios  | said also God           |
 | Júntense las aguas | Gather the waters       |
-| que estàn debajo   | that are below          |
+| que están debajo   | that are below          |
 | de los cielos      | of the heavens          |
 | en un lugar,       | in one place,           |
 | y descubrase       | and discovered          |
@@ -113,7 +113,7 @@
 | Produzca la tierra     | You+produce \[from\] the earth |
 | hierba verde,          | grass/herb green,              |
 | hierba que dé semilla; | grass that they+give seed;     |
-| àrbol de fruto         | tree of fruit                  |
+| árbol de fruto         | tree of fruit                  |
 | que dé fruto           | that they+give fruit           |
 | según su género,       | according its genus/type       |
 | que su semilla         | that its seed                  |

@@ -36,6 +36,6 @@
 | Preguntas personales  |                                |
 | --------------------- | ------------------------------ |
 | hijos tienes?         | Do you have children?          |
-| Cuàntos hijos tienes? | How many children do you have? |
+| Cuántos hijos tienes? | How many children do you have? |
 | Qué es tu trabajo?    | What is your job?              |
 | De dónde eres?        | From where are-you?            |

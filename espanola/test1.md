@@ -7,7 +7,7 @@
 | Buen día                            |                                            |
 | Buenas tardes                       |                                            |
 | Buenas noches                       |                                            |
-| ¿Cómo estàs?                        |                                            |
+| ¿Cómo estás?                        |                                            |
 | ¿Qué tal?                           |                                            |
 | ¿Cómo te llamas?                    |                                            |
 | Me llamo Ernesto                    |                                            |
@@ -18,14 +18,14 @@
 | Vivo en Cuba                        |                                            |
 | No estoy jubilado, soy un ...       |                                            |
 | Mi trabajo es feliz pero defícil    |                                            |
-| ¿Cuàntos hijos tienes?              |                                            |
+| ¿Cuántos hijos tienes?              |                                            |
 | ¿Qué es tu trabajo?                 |                                            |
 | ¿De dónde eres?                     |                                            |
 | ¿Cómo se dice ...?                  |                                            |
 | ¿Qué significa ...?                 |                                            |
-| ¿Dónde està ...?                    |                                            |
+| ¿Dónde está ...?                    |                                            |
 | Lo siento, no entiendo.             |                                            |
-| Màs despacio, por favor.            |                                            |
+| Más despacio, por favor.            |                                            |
 | Cómo se escribe?                    |                                            |
 | ¿Cómo?                              |                                            |
 | ¿Lo puedes repetir?                 |                                            |

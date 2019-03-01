@@ -60,7 +60,7 @@
 | estar (be at) | estoy     | estás      | está      |
 | ◄ pretérito   | estado    | estado     | estado    |
 | ◄ imperfecto  | estaba    | estabas    | estaban   |
-| ► futuro      | estaré    | estarés    | estarà    |
+| ► futuro      | estaré    | estarés    | estará    |
 | Condicional   | estaria   | estarías   | estaría   |
 | ◄ Imperativo  | estuve    | estuviste  | estuvo    |
 | Imperativo    | -         | está       | esté      |
@@ -90,20 +90,20 @@ A few adjectives have different meanings depending upon which form of "to Be" yo
 | tener(have)             | tengo  | tienes  | tiene  |
 | ◄ pretérito             | tuve   | tienias | tuvo   |
 | ◄ imperfecto (once had) | tenía  | tenías  | tenía  |
-| ► futuro                | tendré | tendràs | tendrà |
+| ► futuro                | tendré | tendrás | tendrá |
 
 | es(en)                  | yo     | tú     | él     |
 | ----------------------- | ------ | ------ | ------ |
 | haber (always have)     | he     | has    | ha/hay |
 | ◄ pretérito             | habido | habido | habido |
 | ◄ imperfecto (once had) | había  | habías | había  |
-| ► futuro                | habré  | habràs | habrà  |
+| ► futuro                | habré  | habrás | habrá  |
 
 | es(en)       | yo    | tú     | él    |
 | ------------ | ----- | ------ | ----- |
 | haber (know) | sé    | sabes  | sabe  |
 | ◄ pretérito  | sabía | sabías | sabía |
-| ► futuro     | sabré | sabràs | sabrà |
+| ► futuro     | sabré | sabrás | sabrá |
 
 ## Ejemplos
 

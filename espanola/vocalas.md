@@ -9,7 +9,7 @@
 | ama  | madame | ama de la casa                |
 | anda | walk   | (?) caminar a casa            |
 | alba | dawn   | (?) caminar hasta el amanecer |
-| mamá | mom    | mamàs casa                    |
+| mamá | mom    | mamás casa                    |
 
 ## eh
 
@@ -21,8 +21,8 @@
 | el    | the     | el chico/niño           |
 | es    | is      | la casa es amarilla     |
 | de    | of      | la casa de los bebés    |
-| este  | this    | este carro es para mamà |
-| eres  | you are | eres una mamà           |
+| este  | this    | este carro es para mamá |
+| eres  | you are | eres una mamá           |
 | mente | mind    | mente de una niña       |
 | gente | people  | gente amarilla          |
 
@@ -35,7 +35,7 @@
 | imperio     | empire      | imperio eterno                       |
 | impulso     | impulse     | impulso pecaminoso                   |
 | innumerable | innumerable | innumerables niños                   |
-| incluir     | include     | ¿Tu paseo me incluirà?               |
+| incluir     | include     | ¿Tu paseo me incluirá?               |
 
 ## oh
 
@@ -69,7 +69,7 @@
 | la silla    | chair      | ...en esa silla                                   |
 | llamó       | name       | Yo lo llamo persistencia                          |
 | quesadilla  | quesadilla | Cómo se hace una quesadilla?                      |
-| castillo    | castle     | Dónde està el castillo?                           |
+| castillo    | castle     | Dónde está el castillo?                           |
 | amarillo    | yellow     | Quión pintó el castillo de amarillo?!             |
 | llenar      | fill in    | ¿No vas a llenar la tina antes de lavar el perro? |
 

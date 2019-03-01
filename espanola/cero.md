@@ -60,5 +60,5 @@
 | es                                        | en                                |
 | ----------------------------------------- | --------------------------------- |
 | mi mesa es cuarenta pulgadas por doce pie | my table is 40" by 12'            |
-| està hacho de madera dimensional          | it's made from dimensional lumber |
+| está hacho de madera dimensional          | it's made from dimensional lumber |
 | Debo desarmarlo                           | i must take it apart              |

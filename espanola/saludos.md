@@ -4,7 +4,7 @@
 | -------------------- | -------------------- |
 | Hola                 | Hello                |
 | ¿Cómo va?            | How's it going?      |
-| ¿Cómo estàs?         | How are you?         |
+| ¿Cómo estás?         | How are you?         |
 | ¿Qué tal?            | How are you?         |
 | Buen día             | Good morning         |
 | Buenos días          | Good morning         |

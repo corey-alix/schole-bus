@@ -48,7 +48,7 @@ Foundational verb estar is used in Continuous, Perfect and Perfect Subjunctive c
 
 | es(en)                      | yo      | tú        | él      | nosotros   | ellos      |
 | --------------------------- | ------- | --------- | ------- | ---------- | ---------- |
-| **estar** present           | estoy   | estàs     | està    | estamos    | están      |
+| **estar** present           | estoy   | estás     | está    | estamos    | están      |
 | preterite                   | estuve  | estuviste | estuvo  | estuvimos  | estuvieron |
 | imperfect                   | estaba  | estabas   | estaba  | estábomos  | estaban    |
 | conditional                 | estaría | estarías  | estaría | estaríamos | estarían   |

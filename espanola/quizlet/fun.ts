@@ -1,3 +1,13 @@
+console.assert(!isMale("carnitas"));
+
+export function startsWith(str: string, val: string) {
+	return str.indexOf(val) === 0;
+}
+
+export function endsWith(str: string, val: string) {
+	return str.lastIndexOf(val) === str.length - val.length;
+}
+
 export function combine(a: Array<Array<{ en: string; es: string }>>): Array<{ en: string; es: string }> {
 	if (1 === a.length) return a[0];
 	let head = a[0];
@@ -8,11 +18,18 @@ export function combine(a: Array<Array<{ en: string; es: string }>>): Array<{ en
 	return combine(a);
 }
 
-export function isMale(noun: string) {
+export function isPlural(noun: string) {
+	return noun.charAt(noun.length - 1) === "s";
+}
+
+export function isMale(noun: string): boolean {
 	if (0 === noun.indexOf("el ")) return true;
 	if (0 === noun.indexOf("la ")) return false;
-	let last = noun.charAt(noun.length - 1);
+	let head = noun.split(" ")[0];
+	let last = head.charAt(noun.length - 1);
 	switch (last) {
+		case "a":
+			return head.charAt(head.length - 2) === "m";
 		case "á":
 		case "é":
 		case "í":
@@ -20,8 +37,8 @@ export function isMale(noun: string) {
 		case "ú":
 		case "o":
 			return true;
-		case "a":
-			return noun.charAt(noun.length - 2) === "m";
+		case "s":
+			return isMale(head.substring(0, head.length - 1));
 		case "d":
 		case "z":
 			return false;
@@ -32,7 +49,23 @@ export function isMale(noun: string) {
 export function forceGender(noun: string) {
 	if (0 === noun.indexOf("el ")) return noun;
 	if (0 === noun.indexOf("la ")) return noun;
-	return (isMale(noun) ? "el " : "la ") + noun;
+	if (0 === noun.indexOf("las ")) return noun;
+	if (0 === noun.indexOf("los ")) return noun;
+	let head = noun.split(" ")[0];
+	if (isMale(head)) {
+		if (isPlural(head)) {
+			noun = "los " + noun;
+		} else {
+			noun = "el " + noun;
+		}
+	} else {
+		if (isPlural(head)) {
+			noun = "las " + noun;
+		} else {
+			noun = "la " + noun;
+		}
+	}
+	return noun;
 }
 
 export function shuffle<T>(array: Array<T>) {

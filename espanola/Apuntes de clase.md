@@ -14,7 +14,7 @@ Homework...
 | el baño, servicios, la duce, el inodoro | the bathroom, services, the duce, the toilet |
 | refrigerador, nevera                    | refrigerator, fridge                         |
 | nevera, cuarto, habitacion, recamara,   | room, room, bedroom, level                   |
-| la pluma, la pàpiz                      | pen, paper                                   |
+| la pluma, la pápiz                      | pen, paper                                   |
 
 More homework...
 

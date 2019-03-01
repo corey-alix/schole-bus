@@ -3,16 +3,16 @@
 | pronombres adjetivos | traducción        |
 | -------------------- | ----------------- |
 | estoy vivo           | I'm alive         |
-| ella està vivo       | she is alive      |
+| ella está vivo       | she is alive      |
 | estamos vivos        | we're alive       |
 | ellos están vivos    | they're alive     |
 | él está vivo         | he is alive       |
 | los vivos            | the living        |
 | esté vivo            | be alive          |
 | yo vivo              | I live            |
-| estàs vivo           | you are alive     |
+| estás vivo           | you are alive     |
 | estaré vivo          | I will be alive   |
-| estaràs vivo         | you will be alive |
+| estarás vivo         | you will be alive |
 | estaremos vivos      | we will be alive  |
 | estarbas feliz       | you were happy    |
 | yo estaba feliz      | I was happy       |

@@ -143,6 +143,15 @@ define("quizlet/console-log", ["require", "exports", "quizlet/webcomponent", "qu
 define("quizlet/fun", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
+    console.assert(!isMale("carnitas"));
+    function startsWith(str, val) {
+        return str.indexOf(val) === 0;
+    }
+    exports.startsWith = startsWith;
+    function endsWith(str, val) {
+        return str.lastIndexOf(val) === str.length - val.length;
+    }
+    exports.endsWith = endsWith;
     function combine(a) {
         if (1 === a.length)
             return a[0];
@@ -154,13 +163,20 @@ define("quizlet/fun", ["require", "exports"], function (require, exports) {
         return combine(a);
     }
     exports.combine = combine;
+    function isPlural(noun) {
+        return noun.charAt(noun.length - 1) === "s";
+    }
+    exports.isPlural = isPlural;
     function isMale(noun) {
         if (0 === noun.indexOf("el "))
             return true;
         if (0 === noun.indexOf("la "))
             return false;
-        var last = noun.charAt(noun.length - 1);
+        var head = noun.split(" ")[0];
+        var last = head.charAt(noun.length - 1);
         switch (last) {
+            case "a":
+                return head.charAt(head.length - 2) === "m";
             case "á":
             case "é":
             case "í":
@@ -168,8 +184,8 @@ define("quizlet/fun", ["require", "exports"], function (require, exports) {
             case "ú":
             case "o":
                 return true;
-            case "a":
-                return noun.charAt(noun.length - 2) === "m";
+            case "s":
+                return isMale(head.substring(0, head.length - 1));
             case "d":
             case "z":
                 return false;
@@ -182,7 +198,28 @@ define("quizlet/fun", ["require", "exports"], function (require, exports) {
             return noun;
         if (0 === noun.indexOf("la "))
             return noun;
-        return (isMale(noun) ? "el " : "la ") + noun;
+        if (0 === noun.indexOf("las "))
+            return noun;
+        if (0 === noun.indexOf("los "))
+            return noun;
+        var head = noun.split(" ")[0];
+        if (isMale(head)) {
+            if (isPlural(head)) {
+                noun = "los " + noun;
+            }
+            else {
+                noun = "el " + noun;
+            }
+        }
+        else {
+            if (isPlural(head)) {
+                noun = "las " + noun;
+            }
+            else {
+                noun = "la " + noun;
+            }
+        }
+        return noun;
     }
     exports.forceGender = forceGender;
     function shuffle(array) {
@@ -768,26 +805,16 @@ define("verbos/tener", ["require", "exports"], function (require, exports) {
 });
 define("sentences/opuesto", ["require", "exports"], function (require, exports) {
     "use strict";
-    function isMale(noun) {
-        if (0 === noun.indexOf("el "))
-            return true;
-        if (0 === noun.indexOf("la "))
-            return false;
-        var last = noun.charAt(noun.length - 1);
-        switch (last) {
-            case "a":
-            case "e":
-                return false;
-            case "o":
-                return true;
-        }
-        return true;
-    }
     var builder = function (data) {
-        var es = data.es.map(function (v) { return (isMale(v) ? "al " : "a ") + v; });
+        var es = data.es;
         // lo contrario de correr es caminar
         // lo contrario de correr es caminar
-        return { es: "lo contrario " + es[0] + " es " + es[1], en: "the opposite of " + data.en[0] + " is " + data.en[1] };
+        var de = "de";
+        var estar = "es";
+        return {
+            es: "lo contrario " + de + " " + es[0] + " " + estar + " " + es[1],
+            en: "the opposite of " + data.en[0] + " is " + data.en[1]
+        };
     };
     var opuestos = [
         {
@@ -795,7 +822,7 @@ define("sentences/opuesto", ["require", "exports"], function (require, exports) 
             en: ["up", "down"]
         },
         {
-            es: ["atràs", "adelante"],
+            es: ["atrás", "adelante"],
             en: ["behind", "ahead"]
         },
         {
@@ -1006,7 +1033,8 @@ define("sentences/index", ["require", "exports", "sentences/opuesto"], function 
         {
             es: "Dime con quién andas y te diré quién eres.",
             en: "Tell me who your friends are and I will tell you who you are."
-        }
+        },
+        { es: "¿cuál es la diferencia?", en: "what is the difference?" }
     ];
     var sentences = baseline.concat(opuesto_1["default"]);
     return sentences;
@@ -1088,12 +1116,6 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
         once: "eleven",
         doce: "twelve"
     };
-    function startsWith(str, val) {
-        return str.indexOf(val) === 0;
-    }
-    function endsWith(str, val) {
-        return str.lastIndexOf(val) === str.length - val.length;
-    }
     /*
     If the singular definite article is "el" the plural is "los."
     The plural of either "tú" or "usted" in Latin America is "ustedes"
@@ -1110,41 +1132,41 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
         var num = randomNumber();
         var es = noun.es;
         var en = noun.en;
-        if (endsWith(es, "a"))
+        if (fun_2.endsWith(es, "a"))
             es += "s";
-        else if (endsWith(es, "e"))
+        else if (fun_2.endsWith(es, "e"))
             es += "s";
-        else if (endsWith(es, "i"))
+        else if (fun_2.endsWith(es, "i"))
             es += "s";
-        else if (endsWith(es, "o"))
+        else if (fun_2.endsWith(es, "o"))
             es += "s";
-        else if (endsWith(es, "u"))
+        else if (fun_2.endsWith(es, "u"))
             es += "s";
-        else if (endsWith(es, "z"))
+        else if (fun_2.endsWith(es, "z"))
             es = es.substring(0, es.length - 1) + "ces";
         else
             es += "es";
-        if (startsWith(es, "el ")) {
+        if (fun_2.startsWith(es, "el ")) {
             es = "los" + es.substring(2);
             en += " (plural)";
         }
-        else if (startsWith(es, "tú ")) {
+        else if (fun_2.startsWith(es, "tú ")) {
             es = "ustedes" + es.substring(2);
             en += " (plural)";
         }
-        else if (startsWith(es, "esa ")) {
+        else if (fun_2.startsWith(es, "esa ")) {
             es = "esas" + es.substring(3);
             en += " (plural)";
         }
-        else if (startsWith(es, "usted ")) {
+        else if (fun_2.startsWith(es, "usted ")) {
             es = "ustedes" + es.substring(5);
             en += " (plural)";
         }
-        else if (startsWith(es, "un ")) {
+        else if (fun_2.startsWith(es, "un ")) {
             es = num.es + es.substring(2);
             en = noun.en + " (" + num.en + " of them)";
         }
-        else if (startsWith(es, "una ")) {
+        else if (fun_2.startsWith(es, "una ")) {
             es = num.es + es.substring(3);
             en = noun.en + " (" + num.en + " of them)";
         }
@@ -1613,7 +1635,43 @@ define("sustantivo/index", ["require", "exports", "quizlet/fun"], function (requ
         { es: "rostro", en: "face" },
         { es: "Dios", en: "God" },
         { es: "amanecer", en: "dawn" },
-        { es: "muerte", en: "death" }
+        { es: "muerte", en: "death" },
+        { es: "asada", en: "grilled" },
+        { es: "carnitas", en: "little meats" },
+        { es: "cúerito", en: "pig skin" },
+        { es: "lengua de vaca", en: "cow tongue" },
+        { es: "queso", en: "cheese" },
+        { es: "frijoles", en: "red beans" },
+        { es: "chicharrón", en: "pork rind" },
+        { es: "revueltas", en: "mixture" },
+        { es: "pollo", en: "chicken" },
+        { es: "res", en: "beef" },
+        { es: "tejana", en: "texas style" },
+        { es: "camarón", en: "shrimp" },
+        { es: "piña", en: "pineapple" },
+        { es: "horchata", en: "almond juice" },
+        { es: "bebidas", en: "drinks" },
+        { es: "tepache", en: "pinapple mixed" },
+        { es: "caldo de pollo", en: "chicken soup" },
+        { es: "fajita de res texana", en: "beef fajita" },
+        { es: "caldo siete mares", en: "seven seas soup" },
+        { es: "fajita de pollo", en: "chicken fajita" },
+        { es: "enchiladas verdes", en: "enchilada" },
+        { es: "enchiladas rojas y verdes", en: "enchilada" },
+        { es: "caldo de cangrejo", en: "" },
+        { es: "costilla asada de res", en: "" },
+        { es: "guacho mango", en: "" },
+        { es: "suadero", en: "brisket" },
+        { es: "cabeza", en: "cow head" },
+        { es: "camarones", en: "" },
+        { es: "flor de calabaza", en: "squash blossom" },
+        { es: "huitlacoche", en: "corn smut" },
+        { es: "pollo asado", en: "grilled chicken" },
+        { es: "milanesas", en: "breaded cutlet" },
+        { es: "carne asada", en: "beef steak" },
+        { es: "caldo de res", en: "beef soup" },
+        { es: "caldo de camerón", en: "shrimp soup" },
+        { es: "caldo de munudo", en: "tripe soup" }
     ].map(function (v) { return ({ es: fun_3.forceGender(v.es), en: "the " + v.en }); });
 });
 define("quizlet/packs/sustantivo-packet", ["require", "exports", "sustantivo/index"], function (require, exports, index_9) {
@@ -1712,14 +1770,15 @@ define("quizlet/packs/opuesto-packet", ["require", "exports", "sentences/opuesto
     opuesto_2 = __importDefault(opuesto_2);
     return opuesto_2["default"].map(function (v) { return ({ a: v.es, q: v.en }); });
 });
-define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/packs/oraci\u00F3n-packet", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, question_packet_1, oraci_n_packet_1, qa_1) {
+define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/packs/oraci\u00F3n-packet", "quizlet/packs/opuesto-packet", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, question_packet_1, oraci_n_packet_1, opuesto_packet_1, qa_1) {
     "use strict";
     n_meros_packet_1 = __importDefault(n_meros_packet_1);
     pronoun_packet_1 = __importDefault(pronoun_packet_1);
     sustantivo_packet_1 = __importDefault(sustantivo_packet_1);
     question_packet_1 = __importDefault(question_packet_1);
     oraci_n_packet_1 = __importDefault(oraci_n_packet_1);
+    opuesto_packet_1 = __importDefault(opuesto_packet_1);
     qa_1 = __importDefault(qa_1);
-    return pronoun_packet_1["default"].concat(oraci_n_packet_1["default"], n_meros_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"], qa_1["default"]);
+    return opuesto_packet_1["default"].concat(pronoun_packet_1["default"].concat(oraci_n_packet_1["default"], n_meros_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"], qa_1["default"]));
 });
 //# sourceMappingURL=main.js.map

@@ -190,7 +190,8 @@ const baseline = [
 	{
 		es: "Dime con quién andas y te diré quién eres.",
 		en: "Tell me who your friends are and I will tell you who you are."
-	}
+	},
+	{ es: "¿cuál es la diferencia?", en: "what is the difference?" }
 ];
 
 let sentences = baseline.concat(opuesto);

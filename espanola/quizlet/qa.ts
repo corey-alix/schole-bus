@@ -4,7 +4,7 @@ import { infinitives as quererInfinitive, builder as quererBuilder } from "../ve
 import { infinitives as tenerInfinitive, builder as tenerBuilder } from "../verbos/tener";
 import sentences from "../sentences/index";
 import { storage } from "./storage";
-import { shuffle } from "./fun";
+import { shuffle, endsWith, startsWith } from "./fun";
 
 function build(infinitives: Array<{ es: string; en: string }>, builder: Array<{ es: string; en: string }>) {
 	let qa: Array<{ q: string; a: string }> = [];
@@ -90,14 +90,6 @@ const numbers = {
 	once: "eleven",
 	doce: "twelve"
 };
-
-function startsWith(str: string, val: string) {
-	return str.indexOf(val) === 0;
-}
-
-function endsWith(str: string, val: string) {
-	return str.lastIndexOf(val) === str.length - val.length;
-}
 
 /*
 If the singular definite article is "el" the plural is "los."

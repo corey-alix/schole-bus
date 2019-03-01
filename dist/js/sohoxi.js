@@ -2918,7 +2918,7 @@ var Soho = (function (exports) {
 
       // Special
       pattern = pattern.replace('de', 'nnnnn');
-      pattern = pattern.replace('ngày', 'nnnn');
+      pattern = pattern.replace('ngáy', 'nnnn');
       pattern = pattern.replace('tháng', 't1áng');
       pattern = pattern.replace('den', 'nnn');
 
@@ -2966,7 +2966,7 @@ var Soho = (function (exports) {
         ret = ret.replace('EEEE', cal.days.wide[dayOfWeek]); // Day of Week
       }
       ret = ret.replace('nnnnn', 'de');
-      ret = ret.replace('nnnn', 'ngày');
+      ret = ret.replace('nnnn', 'ngáy');
       ret = ret.replace('t1áng', 'tháng');
       ret = ret.replace('nnn', 'den');
 
