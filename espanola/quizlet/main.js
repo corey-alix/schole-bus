@@ -1434,9 +1434,9 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
             var en_2 = tenses_en[tense];
             result.push({
                 i: { es: infinitive, en: "to " + en_base.infinitive },
-                yo: { es: base + postfix_2.yo, en: en_2.yo + " " + en_base.i },
-                tú: { es: base + postfix_2.tú, en: en_2.tú + " " + en_base.you },
-                él: { es: base + postfix_2.él, en: en_2.él + " " + en_base.he },
+                yo: { es: base + postfix_2.yo, en: en_2.yo + " " + en_base.infinitive },
+                tú: { es: base + postfix_2.tú, en: en_2.tú + " " + en_base.infinitive },
+                él: { es: base + postfix_2.él, en: en_2.él + " " + en_base.infinitive },
                 nosotros: { es: base + postfix_2.nosotros, en: en_2.nosotros + " " + en_base.we }
             });
         }

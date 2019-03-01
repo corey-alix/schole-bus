@@ -154,9 +154,9 @@ function regular(
 		let en = tenses_en[tense];
 		result.push({
 			i: { es: infinitive, en: `to ${en_base.infinitive}` },
-			yo: { es: base + postfix.yo, en: `${en.yo} ${en_base.i}` },
-			tú: { es: base + postfix.tú, en: `${en.tú} ${en_base.you}` },
-			él: { es: base + postfix.él, en: `${en.él} ${en_base.he}` },
+			yo: { es: base + postfix.yo, en: `${en.yo} ${en_base.infinitive}` },
+			tú: { es: base + postfix.tú, en: `${en.tú} ${en_base.infinitive}` },
+			él: { es: base + postfix.él, en: `${en.él} ${en_base.infinitive}` },
 			nosotros: { es: base + postfix.nosotros, en: `${en.nosotros} ${en_base.we}` }
 		});
 	}
