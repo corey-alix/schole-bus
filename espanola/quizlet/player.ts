@@ -53,7 +53,7 @@ class Player {
 			this.synth.rate = this.rate;
 			this.synth.pitch = this.pitch;
 		}
-		log(`pitch: ${this.synth.pitch}, rate: ${this.synth.rate}`);
+		//log(`pitch: ${this.synth.pitch}, rate: ${this.synth.rate}`);
 		if (text.en) {
 			this.synth.lang = "en-US";
 			this.synth.text = text.en;

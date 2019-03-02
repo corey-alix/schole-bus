@@ -565,7 +565,7 @@ define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizl
     }(webcomponent_4.WebComponent));
     exports.QaBlock = QaBlock;
 });
-define("quizlet/player", ["require", "exports", "quizlet/console-log"], function (require, exports, console_log_2) {
+define("quizlet/player", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
     var avitars = {
@@ -617,7 +617,7 @@ define("quizlet/player", ["require", "exports", "quizlet/console-log"], function
                 this.synth.rate = this.rate;
                 this.synth.pitch = this.pitch;
             }
-            console_log_2.log("pitch: " + this.synth.pitch + ", rate: " + this.synth.rate);
+            //log(`pitch: ${this.synth.pitch}, rate: ${this.synth.rate}`);
             if (text.en) {
                 this.synth.lang = "en-US";
                 this.synth.text = text.en;
@@ -633,7 +633,7 @@ define("quizlet/player", ["require", "exports", "quizlet/console-log"], function
     }());
     exports.player = new Player();
 });
-define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage", "quizlet/player"], function (require, exports, score_board_1, qa_input_2, qa_block_1, webcomponent_5, system_events_4, console_log_3, storage_2, player_1) {
+define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage", "quizlet/player"], function (require, exports, score_board_1, qa_input_2, qa_block_1, webcomponent_5, system_events_4, console_log_2, storage_2, player_1) {
     "use strict";
     exports.__esModule = true;
     function from(nodes) {
@@ -650,7 +650,7 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
     }
     {
         var mods_1 = {
-            "console-log": console_log_3.ConsoleLog,
+            "console-log": console_log_2.ConsoleLog,
             "qa-input": qa_input_2.QaInput,
             "qa-block": qa_block_1.QaBlock,
             "score-board": score_board_1.ScoreBoard
@@ -1781,6 +1781,6 @@ define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros
     oraci_n_packet_1 = __importDefault(oraci_n_packet_1);
     opuesto_packet_1 = __importDefault(opuesto_packet_1);
     qa_1 = __importDefault(qa_1);
-    return opuesto_packet_1["default"].concat(pronoun_packet_1["default"].concat(oraci_n_packet_1["default"], n_meros_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"], qa_1["default"]));
+    return n_meros_packet_1["default"].concat(pronoun_packet_1["default"], opuesto_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"], qa_1["default"], oraci_n_packet_1["default"]);
 });
 //# sourceMappingURL=main.js.map

@@ -3,6 +3,6 @@ import pronombres from "./pronoun-packet";
 import nouns from "./sustantivo-packet";
 import questions from "./question-packet";
 import oracións from "./oración-packet";
-import opuesto from "./opuesto-packet"; //broken
+import opuesto from "./opuesto-packet";
 import qa from "../qa";
-export = opuesto.concat(pronombres.concat(oracións, numeros, nouns, questions, qa));
+export = numeros.concat(pronombres, opuesto, nouns, questions, qa, oracións);
