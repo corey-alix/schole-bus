@@ -18,6 +18,6 @@ const pronouns: Array<WordPack> = [
 	{ en: "they are (f)", es: "ellas" }
 ];
 
-const qa = pronouns.map(v => ({ a: v.es, q: v.en })).concat(yo, tú, él, nosotros, he, hemos);
+const qa = pronouns.map(v => ({ a: v.es, q: v.en })).concat(yo, tú, él); //, nosotros, he, hemos);
 
 export = qa;

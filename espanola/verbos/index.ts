@@ -137,6 +137,8 @@ function regular(
 		}
 	];
 
+	return result;
+
 	for (let tense = 1; tense < tenses.length; tense++) {
 		let postfix = tenses[tense][ch2];
 		let en = tenses_en[tense];

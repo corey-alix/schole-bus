@@ -806,14 +806,10 @@ define("verbos/tener", ["require", "exports"], function (require, exports) {
 define("sentences/opuesto", ["require", "exports"], function (require, exports) {
     "use strict";
     var builder = function (data) {
-        var es = data.es;
-        // lo contrario de correr es caminar
-        // lo contrario de correr es caminar
-        var de = "de";
-        var estar = "es";
+        var en = data.en, es = data.es;
         return {
-            es: "lo contrario " + de + " " + es[0] + " " + estar + " " + es[1],
-            en: "the opposite of " + data.en[0] + " is " + data.en[1]
+            es: es[0] + " y " + es[1],
+            en: en[0] + " and " + en[1]
         };
     };
     var opuestos = [
@@ -836,7 +832,8 @@ define("sentences/opuesto", ["require", "exports"], function (require, exports) 
         {
             es: ["en", "fuera"],
             en: ["in", "out"]
-        }
+        },
+        { es: ["dentro", "fuera"], en: ["inside", "outside"] }
     ];
     return opuestos.map(builder);
 });
@@ -1441,6 +1438,7 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
                 nosotros: { es: base + postfix.nosotros, en: en.nosotros + " " + en_base.we }
             }
         ];
+        return result;
         for (var tense = 1; tense < tenses.length; tense++) {
             var postfix_1 = tenses[tense][ch2];
             var en_1 = tenses_en[tense];
@@ -1599,14 +1597,11 @@ define("quizlet/packs/nosotros-packet", ["require", "exports", "verbos/index"], 
     index_8 = __importDefault(index_8);
     return index_8["default"].map(function (v) { return ({ q: v.nosotros.en, a: v.nosotros.es }); });
 });
-define("quizlet/packs/pronoun-packet", ["require", "exports", "quizlet/packs/yo-packet", "quizlet/packs/t\u00FA-packet", "quizlet/packs/\u00E9l-packet", "quizlet/packs/nosotros-packet", "quizlet/packs/he-packet", "quizlet/packs/hemos-packet"], function (require, exports, yo_packet_1, t__packet_1, _l_packet_1, nosotros_packet_1, he_packet_1, hemos_packet_1) {
+define("quizlet/packs/pronoun-packet", ["require", "exports", "quizlet/packs/yo-packet", "quizlet/packs/t\u00FA-packet", "quizlet/packs/\u00E9l-packet"], function (require, exports, yo_packet_1, t__packet_1, _l_packet_1) {
     "use strict";
     yo_packet_1 = __importDefault(yo_packet_1);
     t__packet_1 = __importDefault(t__packet_1);
     _l_packet_1 = __importDefault(_l_packet_1);
-    nosotros_packet_1 = __importDefault(nosotros_packet_1);
-    he_packet_1 = __importDefault(he_packet_1);
-    hemos_packet_1 = __importDefault(hemos_packet_1);
     var pronouns = [
         { en: "I", es: "yo" },
         { en: "you", es: "tú" },
@@ -1617,7 +1612,7 @@ define("quizlet/packs/pronoun-packet", ["require", "exports", "quizlet/packs/yo-
         { en: "they are", es: "ellos" },
         { en: "they are (f)", es: "ellas" }
     ];
-    var qa = pronouns.map(function (v) { return ({ a: v.es, q: v.en }); }).concat(yo_packet_1["default"], t__packet_1["default"], _l_packet_1["default"], nosotros_packet_1["default"], he_packet_1["default"], hemos_packet_1["default"]);
+    var qa = pronouns.map(function (v) { return ({ a: v.es, q: v.en }); }).concat(yo_packet_1["default"], t__packet_1["default"], _l_packet_1["default"]); //, nosotros, he, hemos);
     return qa;
 });
 define("sustantivo/index", ["require", "exports", "quizlet/fun"], function (require, exports, fun_3) {

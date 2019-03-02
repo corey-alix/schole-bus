@@ -1,14 +1,10 @@
 import { isMale } from "../quizlet/fun";
 
 let builder = (data: { es: string[]; en: string[] }) => {
-	let es = data.es;
-	// lo contrario de correr es caminar
-	// lo contrario de correr es caminar
-	let de = "de";
-	let estar = "es";
+	let { en, es } = data;
 	return {
-		es: `lo contrario ${de} ${es[0]} ${estar} ${es[1]}`,
-		en: `the opposite of ${data.en[0]} is ${data.en[1]}`
+		es: `${es[0]} y ${es[1]}`,
+		en: `${en[0]} and ${en[1]}`
 	};
 };
 
@@ -32,7 +28,8 @@ let opuestos = [
 	{
 		es: ["en", "fuera"],
 		en: ["in", "out"]
-	}
+	},
+	{ es: ["dentro", "fuera"], en: ["inside", "outside"] }
 ];
 
 export = opuestos.map(builder);
