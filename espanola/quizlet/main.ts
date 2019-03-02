@@ -6,6 +6,7 @@ import { SystemEvents } from "./system-events";
 import { ConsoleLog } from "./console-log";
 import { storage } from "./storage";
 import { player } from "./player";
+import { listener } from "./listener";
 
 function from(nodes: HTMLCollection) {
 	let result: Array<HTMLElement> = [];
@@ -18,6 +19,18 @@ function from(nodes: HTMLCollection) {
 function visit(node: HTMLElement, cb: (node: HTMLElement) => boolean) {
 	if (!cb(node)) return;
 	from(node.children).forEach(n => visit(n, cb));
+}
+
+function showHint(hint: string) {
+	from(document.getElementsByTagName("hint-slider")).forEach(n => {
+		n.innerHTML = hint;
+		n.classList.add("visible");
+		n.classList.remove("hidden");
+		setTimeout(() => {
+			n.classList.remove("visible");
+			n.classList.add("hidden");
+		}, 2000);
+	});
 }
 
 {
@@ -58,15 +71,7 @@ function score(add: number) {
 SystemEvents.watch("correct", () => score(1));
 SystemEvents.watch("incorrect", () => score(-1));
 SystemEvents.watch("hint", (result: { hint: string }) => {
-	from(document.getElementsByTagName("hint-slider")).forEach(n => {
-		n.innerHTML = result.hint;
-		n.classList.add("visible");
-		n.classList.remove("hidden");
-		setTimeout(() => {
-			n.classList.remove("visible");
-			n.classList.add("hidden");
-		}, 2000);
-	});
+	showHint(result.hint);
 });
 
 SystemEvents.watch("no-more-input", () => {
@@ -85,4 +90,13 @@ SystemEvents.watch("play", (data: { action?: string; es?: string; en?: string; a
 	}
 	player.play(data);
 });
+
+SystemEvents.watch("listen", () => {
+	listener.listen();
+});
+
+SystemEvents.watch("speech-detected", (result: { result: string }) => {
+	showHint(result.result);
+});
+
 //SystemEvents.watch("hint", (data: { hint: string }) => player.play({ en: data.hint }));

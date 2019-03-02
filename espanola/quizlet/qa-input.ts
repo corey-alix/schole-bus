@@ -2,6 +2,29 @@ import { WebComponent, getComponent, cssin } from "./webcomponent";
 import { SystemEvents } from "./system-events";
 import { log } from "./console-log";
 import { mapping } from "./keydown-as-keypress";
+import { nums } from "./packs/nums";
+
+function soundex(a: string) {
+	//a = a.replace(/\d+( + )\d+/g, " mas ");
+	a = a
+		.split(" ")
+		.map(v => (parseInt(v).toString() === v ? nums[parseInt(v)].es : v))
+		.join(" ");
+	a = a.toLowerCase();
+	a = a.replace(/[\.\?¿¡ ]/g, "");
+	a = a.replace(/á/g, "a");
+	a = a.replace(/é/g, "e");
+	a = a.replace(/í/g, "i");
+	a = a.replace(/ó/g, "o");
+	a = a.replace(/ú/g, "u");
+	return a;
+}
+function areEqual(a: string, b: string) {
+	// use a soundex algorithm
+	a = soundex(a);
+	b = soundex(b);
+	return a === b;
+}
 
 cssin(
 	"qa-input",
@@ -63,11 +86,16 @@ function dump(o: KeyboardEvent) {
 	log(JSON.stringify(result));
 }
 
+function hasFocus(element: HTMLElement) {
+	return document.activeElement === element;
+}
+
 export class QaInput extends WebComponent {
 	input: HTMLInputElement;
 	label: HTMLLabelElement;
 	help: HTMLButtonElement;
 	score = [0, 0];
+	public handlers: Array<() => void> = [];
 
 	constructor(domNode: HTMLElement) {
 		super(domNode);
@@ -79,17 +107,46 @@ export class QaInput extends WebComponent {
 		this.help.tabIndex = -1; // no tab
 		this.help.type = "button";
 		this.help.innerHTML = "�";
+
+		this.handlers.push(
+			SystemEvents.watch("speech-detected", (value: { result: string }) => {
+				if (!this.hasFocus()) return;
+				let answer = this.getAttribute("answer") || "";
+				if (areEqual(value.result, answer)) {
+					this.input.value = answer;
+					if (this.validate()) {
+						this.complete();
+					}
+				} else {
+					if (value.result === "ayúdame") {
+						this.hint();
+					}
+				}
+			})
+		);
+	}
+
+	private hasFocus() {
+		return hasFocus(this.input);
+	}
+
+	private complete() {
+		this.handlers.forEach(v => v());
+		this.domNode.classList.add("complete");
+		this.tab();
 	}
 
 	focus() {
 		this.input.focus();
 		this.play();
+		SystemEvents.trigger("listen", { hint: this.getAttribute("answer") });
 	}
 
 	hint() {
 		this.score[1]++;
 		SystemEvents.trigger("hint", { hint: this.getAttribute("answer") });
 		SystemEvents.trigger("play", { es: this.getAttribute("answer"), avitar: "rita" });
+		SystemEvents.trigger("listen", { hint: this.getAttribute("answer") });
 	}
 
 	play() {
@@ -203,7 +260,7 @@ export class QaInput extends WebComponent {
 						return false;
 					case 113: // F2
 						this.provideHelp();
-						if (this.validate()) this.tab();
+						if (this.validate()) this.complete();
 						return false;
 				}
 
@@ -227,8 +284,7 @@ export class QaInput extends WebComponent {
 					SystemEvents.trigger("play", { action: "stop" });
 					this.rightAnswer();
 					if (this.validate()) {
-						this.domNode.classList.add("complete");
-						this.tab();
+						this.complete();
 					}
 					return false;
 				} else {

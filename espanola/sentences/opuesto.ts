@@ -25,10 +25,6 @@ let opuestos = [
 		es: ["corre", "camina"],
 		en: ["run", "walk"]
 	},
-	{
-		es: ["en", "fuera"],
-		en: ["in", "out"]
-	},
 	{ es: ["dentro", "fuera"], en: ["inside", "outside"] }
 ];
 

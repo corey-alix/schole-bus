@@ -48,6 +48,6 @@ export = [
 	{ es: "milanesas", en: "breaded cutlet" },
 	{ es: "carne asada", en: "beef steak" },
 	{ es: "caldo de res", en: "beef soup" },
-	{ es: "caldo de camerón", en: "shrimp soup" },
-	{ es: "caldo de munudo", en: "tripe soup" }
+	{ es: "caldo de camarón", en: "shrimp soup" },
+	{ es: "el caldo de menudo", en: "soup of the day" }
 ].map(v => ({ es: forceGender(v.es), en: "the " + v.en }));

@@ -250,6 +250,56 @@ define("quizlet/keydown-as-keypress", ["require", "exports"], function (require,
     }());
     exports.mapping = new Mapping();
 });
+define("quizlet/listener", ["require", "exports", "quizlet/console-log", "quizlet/system-events"], function (require, exports, console_log_1, system_events_2) {
+    "use strict";
+    exports.__esModule = true;
+    var Listener = /** @class */ (function () {
+        function Listener() {
+            var _this = this;
+            this.stopped = true;
+            this.autostart = true;
+            this.recognition = new window["webkitSpeechRecognition"]();
+            var recognition = this.recognition;
+            recognition.interimResults = false;
+            recognition.continuous = false;
+            recognition.lang = "es";
+            recognition.maxAlternatives = 5;
+            recognition.addEventListener("start", function (e) {
+                _this.stopped = false;
+            });
+            recognition.addEventListener("end", function (e) {
+                _this.stopped = false;
+                if (_this.autostart)
+                    recognition.start();
+            });
+            recognition.addEventListener("result", function (e) {
+                for (var i = 0; i < e.results.length; i++) {
+                    var result = e.results[i];
+                    if (result.isFinal) {
+                        for (var j = 0; j < result.length; j++) {
+                            var transcript = result[j].transcript;
+                            console.log(transcript, result[j]);
+                            var confidence = result[j].confidence;
+                            if (0.5 < confidence) {
+                                console_log_1.log(transcript + " (" + confidence + ")");
+                            }
+                            if (0.8 < confidence) {
+                                system_events_2.SystemEvents.trigger("speech-detected", { result: transcript });
+                                return;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        Listener.prototype.listen = function () {
+            if (this.stopped)
+                this.recognition.start();
+        };
+        return Listener;
+    }());
+    exports.listener = new Listener();
+});
 define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], function (require, exports, webcomponent_2) {
     "use strict";
     exports.__esModule = true;
@@ -271,9 +321,57 @@ define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], fu
     }(webcomponent_2.WebComponent));
     exports.ScoreBoard = ScoreBoard;
 });
-define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/keydown-as-keypress"], function (require, exports, webcomponent_3, system_events_2, console_log_1, keydown_as_keypress_1) {
+define("quizlet/packs/nums", ["require", "exports"], function (require, exports) {
     "use strict";
     exports.__esModule = true;
+    exports.nums = [
+        { es: "cero", en: "zero" },
+        { es: "uno", en: "one" },
+        { es: "dos", en: "two" },
+        { es: "tres", en: "three" },
+        { es: "quatro", en: "four" },
+        { es: "cinco", en: "five" },
+        { es: "seis", en: "six" },
+        { es: "siete", en: "seven" },
+        { es: "ocho", en: "eight" },
+        { es: "nueve", en: "nine" },
+        { es: "diez", en: "ten" },
+        { es: "once", en: "eleven" },
+        { es: "doce", en: "twelve" },
+        { es: "trece", en: "thirteen" },
+        { es: "catorce", en: "fourteen" },
+        { es: "quince", en: "fifteen" },
+        { es: "dieciséis", en: "sixteen" },
+        { es: "diecisiete", en: "seventeen" },
+        { es: "dieciocho", en: "eighteen" },
+        { es: "diecinueve", en: "nineteen" },
+        { es: "veinte", en: "twenty" }
+    ];
+});
+define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/keydown-as-keypress", "quizlet/packs/nums"], function (require, exports, webcomponent_3, system_events_3, console_log_2, keydown_as_keypress_1, nums_1) {
+    "use strict";
+    exports.__esModule = true;
+    function soundex(a) {
+        //a = a.replace(/\d+( + )\d+/g, " mas ");
+        a = a
+            .split(" ")
+            .map(function (v) { return (parseInt(v).toString() === v ? nums_1.nums[parseInt(v)].es : v); })
+            .join(" ");
+        a = a.toLowerCase();
+        a = a.replace(/[\.\?¿¡ ]/g, "");
+        a = a.replace(/á/g, "a");
+        a = a.replace(/é/g, "e");
+        a = a.replace(/í/g, "i");
+        a = a.replace(/ó/g, "o");
+        a = a.replace(/ú/g, "u");
+        return a;
+    }
+    function areEqual(a, b) {
+        // use a soundex algorithm
+        a = soundex(a);
+        b = soundex(b);
+        return a === b;
+    }
     webcomponent_3.cssin("qa-input", "qa-input {\n\tpadding-top: 20px;\n}\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tdisplay: none;\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tpadding-top: 20px;\n}\nqa-input.complete label {\n\tdisplay: block;\n}\nqa-input.complete input {\n\tdisplay: none;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: gray;\n\tposition: relative;\n    bottom: 3px;\n\tleft: 10px;\n}\nqa-input button[disabled] {\n\tcolor: green;\n}");
     function dump(o) {
         var result = {};
@@ -284,13 +382,17 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             if (typeof v === "string" || typeof v === "number")
                 result[p] = v + "";
         }
-        console_log_1.log(JSON.stringify(result));
+        console_log_2.log(JSON.stringify(result));
+    }
+    function hasFocus(element) {
+        return document.activeElement === element;
     }
     var QaInput = /** @class */ (function (_super) {
         __extends(QaInput, _super);
         function QaInput(domNode) {
             var _this = _super.call(this, domNode) || this;
             _this.score = [0, 0];
+            _this.handlers = [];
             _this.label = document.createElement("label");
             _this.input = document.createElement("input");
             _this.input.type = "text";
@@ -299,28 +401,54 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             _this.help.tabIndex = -1; // no tab
             _this.help.type = "button";
             _this.help.innerHTML = "�";
+            _this.handlers.push(system_events_3.SystemEvents.watch("speech-detected", function (value) {
+                if (!_this.hasFocus())
+                    return;
+                var answer = _this.getAttribute("answer") || "";
+                if (areEqual(value.result, answer)) {
+                    _this.input.value = answer;
+                    if (_this.validate()) {
+                        _this.complete();
+                    }
+                }
+                else {
+                    if (value.result === "ayúdame") {
+                        _this.hint();
+                    }
+                }
+            }));
             return _this;
         }
+        QaInput.prototype.hasFocus = function () {
+            return hasFocus(this.input);
+        };
+        QaInput.prototype.complete = function () {
+            this.handlers.forEach(function (v) { return v(); });
+            this.domNode.classList.add("complete");
+            this.tab();
+        };
         QaInput.prototype.focus = function () {
             this.input.focus();
             this.play();
+            system_events_3.SystemEvents.trigger("listen", { hint: this.getAttribute("answer") });
         };
         QaInput.prototype.hint = function () {
             this.score[1]++;
-            system_events_2.SystemEvents.trigger("hint", { hint: this.getAttribute("answer") });
-            system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer"), avitar: "rita" });
+            system_events_3.SystemEvents.trigger("hint", { hint: this.getAttribute("answer") });
+            system_events_3.SystemEvents.trigger("play", { es: this.getAttribute("answer"), avitar: "rita" });
+            system_events_3.SystemEvents.trigger("listen", { hint: this.getAttribute("answer") });
         };
         QaInput.prototype.play = function () {
             document.title = this.getAttribute("question") || "?";
-            system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer") });
+            system_events_3.SystemEvents.trigger("play", { es: this.getAttribute("answer") });
         };
         QaInput.prototype.rightAnswer = function () {
             this.score[0]++;
-            system_events_2.SystemEvents.trigger("correct", { value: 1 });
+            system_events_3.SystemEvents.trigger("correct", { value: 1 });
         };
         QaInput.prototype.wrongAnswer = function () {
             this.score[1]++;
-            system_events_2.SystemEvents.trigger("incorrect", { value: -1 });
+            system_events_3.SystemEvents.trigger("incorrect", { value: -1 });
             this.play();
         };
         QaInput.isMatch = function (a, b) {
@@ -380,8 +508,8 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 else {
                     this.help.innerHTML = "\u2611";
                 }
-                system_events_2.SystemEvents.trigger("xp", { score: score, question: this.getAttribute("question") });
-                system_events_2.SystemEvents.trigger("play", { es: this.getAttribute("answer"), avitar: "clara" });
+                system_events_3.SystemEvents.trigger("xp", { score: score, question: this.getAttribute("question") });
+                system_events_3.SystemEvents.trigger("play", { es: this.getAttribute("answer"), avitar: "clara" });
                 var priorScore = parseFloat(this.getAttribute("score") || "0");
                 this.label.title = score + priorScore + "";
                 return true;
@@ -419,7 +547,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                         case 113: // F2
                             _this.provideHelp();
                             if (_this.validate())
-                                _this.tab();
+                                _this.complete();
                             return false;
                     }
                     var currentValue = input.value;
@@ -436,11 +564,10 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     // maybe auto-advance after "si" to "si " and eat the users " " if pressed.
                     if (QaInput.isMatch(currentKey, expectedKey)) {
                         input.value = answer.substring(0, currentValue.length + 1);
-                        system_events_2.SystemEvents.trigger("play", { action: "stop" });
+                        system_events_3.SystemEvents.trigger("play", { action: "stop" });
                         _this.rightAnswer();
                         if (_this.validate()) {
-                            _this.domNode.classList.add("complete");
-                            _this.tab();
+                            _this.complete();
                         }
                         return false;
                     }
@@ -451,7 +578,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     return false;
                 }
                 catch (ex) {
-                    console_log_1.log(ex);
+                    console_log_2.log(ex);
                 }
             };
             var shadowRoot = this.attachShadow({ mode: "open" });
@@ -460,7 +587,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             shadowRoot.appendChild(input);
             this.help.onclick = function () {
                 _this.input.focus();
-                system_events_2.SystemEvents.trigger("hint", { hint: answer });
+                system_events_3.SystemEvents.trigger("hint", { hint: answer });
             };
         };
         QaInput.prototype.tab = function () {
@@ -479,7 +606,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 }
             }
             if (!s) {
-                system_events_2.SystemEvents.trigger("no-more-input", {});
+                system_events_3.SystemEvents.trigger("no-more-input", {});
                 return;
             }
             setTimeout(function () { return s && s.focus(); }, 200);
@@ -518,7 +645,7 @@ define("quizlet/storage", ["require", "exports"], function (require, exports) {
     }());
     exports.storage = new LocalStorage();
 });
-define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/qa-input", "quizlet/fun", "quizlet/storage"], function (require, exports, webcomponent_4, system_events_3, qa_input_1, fun_1, storage_1) {
+define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/qa-input", "quizlet/fun", "quizlet/storage"], function (require, exports, webcomponent_4, system_events_4, qa_input_1, fun_1, storage_1) {
     "use strict";
     exports.__esModule = true;
     function score(question) {
@@ -534,7 +661,7 @@ define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizl
         QaBlock.prototype.load = function () {
             var _this = this;
             var packet = this.getAttribute("packet");
-            system_events_3.SystemEvents.watch("start", function () {
+            system_events_4.SystemEvents.watch("start", function () {
                 require(["quizlet/packs/" + packet], function (data) {
                     var shadowRoot = _this.attachShadow({ mode: "open" });
                     var div = shadowRoot; // could create a div if real shadow
@@ -633,7 +760,7 @@ define("quizlet/player", ["require", "exports"], function (require, exports) {
     }());
     exports.player = new Player();
 });
-define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage", "quizlet/player"], function (require, exports, score_board_1, qa_input_2, qa_block_1, webcomponent_5, system_events_4, console_log_2, storage_2, player_1) {
+define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage", "quizlet/player", "quizlet/listener"], function (require, exports, score_board_1, qa_input_2, qa_block_1, webcomponent_5, system_events_5, console_log_3, storage_2, player_1, listener_1) {
     "use strict";
     exports.__esModule = true;
     function from(nodes) {
@@ -648,9 +775,20 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
             return;
         from(node.children).forEach(function (n) { return visit(n, cb); });
     }
+    function showHint(hint) {
+        from(document.getElementsByTagName("hint-slider")).forEach(function (n) {
+            n.innerHTML = hint;
+            n.classList.add("visible");
+            n.classList.remove("hidden");
+            setTimeout(function () {
+                n.classList.remove("visible");
+                n.classList.add("hidden");
+            }, 2000);
+        });
+    }
     {
         var mods_1 = {
-            "console-log": console_log_2.ConsoleLog,
+            "console-log": console_log_3.ConsoleLog,
             "qa-input": qa_input_2.QaInput,
             "qa-block": qa_block_1.QaBlock,
             "score-board": score_board_1.ScoreBoard
@@ -665,7 +803,7 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
             return true;
         });
         // fade the screen before beginning
-        setTimeout(function () { return system_events_4.SystemEvents.trigger("start", {}); }, 200);
+        setTimeout(function () { return system_events_5.SystemEvents.trigger("start", {}); }, 200);
     }
     var correct = 0;
     var incorrect = 0;
@@ -680,32 +818,30 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
             score && score.setAttribute("score", Math.round(100 * (correct / (correct + incorrect))) + "");
         });
     }
-    system_events_4.SystemEvents.watch("correct", function () { return score(1); });
-    system_events_4.SystemEvents.watch("incorrect", function () { return score(-1); });
-    system_events_4.SystemEvents.watch("hint", function (result) {
-        from(document.getElementsByTagName("hint-slider")).forEach(function (n) {
-            n.innerHTML = result.hint;
-            n.classList.add("visible");
-            n.classList.remove("hidden");
-            setTimeout(function () {
-                n.classList.remove("visible");
-                n.classList.add("hidden");
-            }, 2000);
-        });
+    system_events_5.SystemEvents.watch("correct", function () { return score(1); });
+    system_events_5.SystemEvents.watch("incorrect", function () { return score(-1); });
+    system_events_5.SystemEvents.watch("hint", function (result) {
+        showHint(result.hint);
     });
-    system_events_4.SystemEvents.watch("no-more-input", function () {
+    system_events_5.SystemEvents.watch("no-more-input", function () {
         document.body.classList.add("hidden");
         setTimeout(function () { return location.reload(); }, 2000);
     });
-    system_events_4.SystemEvents.watch("xp", function (result) {
+    system_events_5.SystemEvents.watch("xp", function (result) {
         storage_2.storage.setScore(result);
     });
-    system_events_4.SystemEvents.watch("play", function (data) {
+    system_events_5.SystemEvents.watch("play", function (data) {
         if (data.action === "stop") {
             player_1.player.stop();
             return;
         }
         player_1.player.play(data);
+    });
+    system_events_5.SystemEvents.watch("listen", function () {
+        listener_1.listener.listen();
+    });
+    system_events_5.SystemEvents.watch("speech-detected", function (result) {
+        showHint(result.result);
     });
 });
 //SystemEvents.watch("hint", (data: { hint: string }) => player.play({ en: data.hint }));
@@ -835,10 +971,6 @@ define("sentences/opuesto", ["require", "exports"], function (require, exports) 
         {
             es: ["corre", "camina"],
             en: ["run", "walk"]
-        },
-        {
-            es: ["en", "fuera"],
-            en: ["in", "out"]
         },
         { es: ["dentro", "fuera"], en: ["inside", "outside"] }
     ];
@@ -1546,39 +1678,16 @@ define("quizlet/packs/hemos-packet", ["require", "exports", "verbos/index"], fun
     index_4 = __importDefault(index_4);
     return index_4["default"].filter(function (v) { return !!v.hemos; }).map(function (v) { return ({ q: v.hemos.en, a: "hemos " + v.hemos.es }); });
 });
-define("quizlet/packs/n\u00FAmeros-packet", ["require", "exports"], function (require, exports) {
+define("quizlet/packs/n\u00FAmeros-packet", ["require", "exports", "quizlet/packs/nums"], function (require, exports, nums_2) {
     "use strict";
-    var nums = [
-        { es: "cero", en: "zero" },
-        { es: "uno", en: "one" },
-        { es: "dos", en: "two" },
-        { es: "tres", en: "three" },
-        { es: "quatro", en: "four" },
-        { es: "cinco", en: "five" },
-        { es: "seis", en: "six" },
-        { es: "siete", en: "seven" },
-        { es: "ocho", en: "eight" },
-        { es: "nueve", en: "nine" },
-        { es: "diez", en: "ten" },
-        { es: "once", en: "eleven" },
-        { es: "doce", en: "twelve" },
-        { es: "trece", en: "thirteen" },
-        { es: "catorce", en: "fourteen" },
-        { es: "quince", en: "fifteen" },
-        { es: "dieciséis", en: "sixteen" },
-        { es: "diecisiete", en: "seventeen" },
-        { es: "dieciocho", en: "eighteen" },
-        { es: "diecinueve", en: "nineteen" },
-        { es: "veinte", en: "twenty" }
-    ];
-    var qa = nums.map(function (v) { return ({ a: v.es, q: v.en }); });
+    var qa = nums_2.nums.map(function (v) { return ({ a: v.es, q: v.en }); });
     [1, 2, 5].forEach(function (a) {
         return [0, 0, 0]
-            .map(function (v) { return Math.floor((nums.length - a) * Math.random()); })
+            .map(function (v) { return Math.floor((nums_2.nums.length - a) * Math.random()); })
             .forEach(function (b) {
             return qa.push({
-                a: nums[a].es + " m\u00E1s " + nums[b].es + " son " + nums[a + b].es,
-                q: nums[a].en + " plus " + nums[b].en + " are " + nums[a + b].en
+                a: nums_2.nums[a].es + " m\u00E1s " + nums_2.nums[b].es + " son " + nums_2.nums[a + b].es,
+                q: nums_2.nums[a].en + " plus " + nums_2.nums[b].en + " are " + nums_2.nums[a + b].en
             });
         });
     });
@@ -1672,8 +1781,8 @@ define("sustantivo/index", ["require", "exports", "quizlet/fun"], function (requ
         { es: "milanesas", en: "breaded cutlet" },
         { es: "carne asada", en: "beef steak" },
         { es: "caldo de res", en: "beef soup" },
-        { es: "caldo de camerón", en: "shrimp soup" },
-        { es: "caldo de munudo", en: "tripe soup" }
+        { es: "caldo de camarón", en: "shrimp soup" },
+        { es: "el caldo de menudo", en: "soup of the day" }
     ].map(function (v) { return ({ es: fun_3.forceGender(v.es), en: "the " + v.en }); });
 });
 define("quizlet/packs/sustantivo-packet", ["require", "exports", "sustantivo/index"], function (require, exports, index_9) {
@@ -1781,6 +1890,6 @@ define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros
     oraci_n_packet_1 = __importDefault(oraci_n_packet_1);
     opuesto_packet_1 = __importDefault(opuesto_packet_1);
     qa_1 = __importDefault(qa_1);
-    return n_meros_packet_1["default"].concat(pronoun_packet_1["default"], opuesto_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"], qa_1["default"], oraci_n_packet_1["default"]);
+    return sustantivo_packet_1["default"].concat(pronoun_packet_1["default"], question_packet_1["default"], opuesto_packet_1["default"], n_meros_packet_1["default"], qa_1["default"], oraci_n_packet_1["default"]);
 });
 //# sourceMappingURL=main.js.map

@@ -5,4 +5,4 @@ import questions from "./question-packet";
 import oracións from "./oración-packet";
 import opuesto from "./opuesto-packet";
 import qa from "../qa";
-export = numeros.concat(pronombres, opuesto, nouns, questions, qa, oracións);
+export = nouns.concat(pronombres, questions, opuesto, numeros, qa, oracións);
