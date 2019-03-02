@@ -274,7 +274,7 @@ define("quizlet/score-board", ["require", "exports", "quizlet/webcomponent"], fu
 define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/keydown-as-keypress"], function (require, exports, webcomponent_3, system_events_2, console_log_1, keydown_as_keypress_1) {
     "use strict";
     exports.__esModule = true;
-    webcomponent_3.cssin("qa-input", "qa-input {\n\tpadding: 20px;\n}\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tmargin-top: 20px;\n\tpadding: 20px;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: gray;\n\tposition: relative;\n    bottom: 3px;\n\tleft: 10px;\n}\nqa-input button[disabled] {\n\tcolor: green;\n}");
+    webcomponent_3.cssin("qa-input", "qa-input {\n\tpadding-top: 20px;\n}\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tdisplay: none;\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tpadding-top: 20px;\n}\nqa-input.complete label {\n\tdisplay: block;\n}\nqa-input.complete input {\n\tdisplay: none;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: gray;\n\tposition: relative;\n    bottom: 3px;\n\tleft: 10px;\n}\nqa-input button[disabled] {\n\tcolor: green;\n}");
     function dump(o) {
         var result = {};
         for (var p in o) {
@@ -323,44 +323,35 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             system_events_2.SystemEvents.trigger("incorrect", { value: -1 });
             this.play();
         };
-        QaInput.prototype.isMatch = function (a, b) {
-            var A = a.toLocaleLowerCase();
-            var B = b.toLocaleLowerCase();
+        QaInput.isMatch = function (a, b) {
+            var A = a.toLowerCase();
+            var B = b.toLowerCase();
             if (A === B)
                 return true;
             switch (B) {
                 case "á":
-                    if (A == "a")
-                        return true;
+                    return A == "a";
                 case "é":
-                    if (A == "e")
-                        return true;
+                    return A == "e";
                 case "í":
-                    if (A == "i")
-                        return true;
+                    return A == "i";
                 case "ñ":
-                    if (A == "n")
-                        return true;
+                    return A == "n";
                 case "ó":
-                    if (A == "o")
-                        return true;
+                    return A == "o";
                 case "ú":
-                    if (A == "u")
-                        return true;
+                    return A == "u";
                 case "¡":
-                    if (A == "!")
-                        return true;
+                    return A == "!";
                 case "¿":
-                    if (A == "?")
-                        return true;
+                    return A == "?";
                 case "’":
-                    if (A == "'")
-                        return true;
+                    return A == "'";
                 case ",":
-                    if (A == " ")
-                        return true;
+                    return A == " ";
+                default:
+                    return false;
             }
-            return false;
         };
         QaInput.prototype.provideHelp = function () {
             var answer = this.getAttribute("answer") || "";
@@ -443,11 +434,12 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     // also "?si" == "si", "!si" == "si"
                     // also "si, senor." == "sisenor"<enter>
                     // maybe auto-advance after "si" to "si " and eat the users " " if pressed.
-                    if (_this.isMatch(currentKey, expectedKey)) {
+                    if (QaInput.isMatch(currentKey, expectedKey)) {
                         input.value = answer.substring(0, currentValue.length + 1);
                         system_events_2.SystemEvents.trigger("play", { action: "stop" });
                         _this.rightAnswer();
                         if (_this.validate()) {
+                            _this.domNode.classList.add("complete");
                             _this.tab();
                         }
                         return false;
@@ -495,6 +487,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         return QaInput;
     }(webcomponent_3.WebComponent));
     exports.QaInput = QaInput;
+    console.assert(!QaInput.isMatch("o", "á"));
 });
 define("quizlet/storage", ["require", "exports"], function (require, exports) {
     "use strict";
@@ -572,7 +565,7 @@ define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizl
     }(webcomponent_4.WebComponent));
     exports.QaBlock = QaBlock;
 });
-define("quizlet/player", ["require", "exports"], function (require, exports) {
+define("quizlet/player", ["require", "exports", "quizlet/console-log"], function (require, exports, console_log_2) {
     "use strict";
     exports.__esModule = true;
     var avitars = {
@@ -580,7 +573,19 @@ define("quizlet/player", ["require", "exports"], function (require, exports) {
             rate: 1,
             pitch: 1
         },
+        sara: {
+            rate: 1.14,
+            pitch: 0.81
+        },
+        pati: {
+            rate: 0.9,
+            pitch: 0.4
+        },
         rita: {
+            rate: 1.1,
+            pitch: 0.45
+        },
+        cielo: {
             rate: 0.9,
             pitch: 0.8
         },
@@ -593,9 +598,8 @@ define("quizlet/player", ["require", "exports"], function (require, exports) {
         function Player() {
             this.audio = new Audio();
             this.synth = new SpeechSynthesisUtterance();
-            this.rate = 0.9 + Math.random() * 0.4;
-            this.pitch = 0 + Math.random() * 1.5;
-            ///log(this.synth.voice.name);
+            this.rate = 1;
+            this.pitch = 1;
         }
         Player.prototype.stop = function () {
             window.speechSynthesis.cancel();
@@ -608,9 +612,12 @@ define("quizlet/player", ["require", "exports"], function (require, exports) {
                 this.synth.pitch = avitar.pitch;
             }
             else {
+                this.rate = 1.5 - 0.5 * Math.random();
+                this.pitch = 1.2 - 1.0 * Math.random();
                 this.synth.rate = this.rate;
                 this.synth.pitch = this.pitch;
             }
+            console_log_2.log("pitch: " + this.synth.pitch + ", rate: " + this.synth.rate);
             if (text.en) {
                 this.synth.lang = "en-US";
                 this.synth.text = text.en;
@@ -626,7 +633,7 @@ define("quizlet/player", ["require", "exports"], function (require, exports) {
     }());
     exports.player = new Player();
 });
-define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage", "quizlet/player"], function (require, exports, score_board_1, qa_input_2, qa_block_1, webcomponent_5, system_events_4, console_log_2, storage_2, player_1) {
+define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa-input", "quizlet/qa-block", "quizlet/webcomponent", "quizlet/system-events", "quizlet/console-log", "quizlet/storage", "quizlet/player"], function (require, exports, score_board_1, qa_input_2, qa_block_1, webcomponent_5, system_events_4, console_log_3, storage_2, player_1) {
     "use strict";
     exports.__esModule = true;
     function from(nodes) {
@@ -643,7 +650,7 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
     }
     {
         var mods_1 = {
-            "console-log": console_log_2.ConsoleLog,
+            "console-log": console_log_3.ConsoleLog,
             "qa-input": qa_input_2.QaInput,
             "qa-block": qa_block_1.QaBlock,
             "score-board": score_board_1.ScoreBoard
@@ -1726,8 +1733,8 @@ define("sagrada_escritura/oracion", ["require", "exports", "quizlet/fun"], funct
         { es: "Solo Jesús mi roca es.", en: "Only Jesus is my rock." },
         { es: "Estamos justificados por la fe en Cristo.", en: "We are justified by our faith in Christ." },
         { es: "Por favor, Perdoname los pecados.", en: "Please, forgive my sins." },
-        { es: "Yo sé que soy pecador.", en: "I know that I am a sinner." },
-        { es: "Yo sé que Jesús es Rey.", en: "I know Jusus is King." },
+        { es: "Yo sé que soy un pecador.", en: "I know that I am a sinner." },
+        { es: "Yo sé que Jesús es Rey.", en: "I know Jesus is King." },
         { es: "Te necesito.", en: "I need you." },
         { es: "Ayudame.", en: "Help me." },
         { es: "Perdoname.", en: "Forgive me." }
@@ -1739,13 +1746,13 @@ define("sagrada_escritura/oracion", ["require", "exports", "quizlet/fun"], funct
             es: "Gracias por mi familia, mis amigos, y tu iglesia.",
             en: "Thank you my family, my friends, and your church."
         },
-        { es: "Gracias por por amarme.", en: "Thank you for loving me." },
+        { es: "Gracias por amarme.", en: "Thank you for loving me." },
         { es: "Gracias por tu amor para mi.", en: "Thank you for your love of me." }
     ];
     var suplication = [
         { es: "Bendiga nuestros amigos cubanos.", en: "Bless our Cuban friends." },
         { es: "Da protección a mis amigos en Cuba.", en: "Give protection to my friends in Cuba." },
-        { es: "Guíanos cada día.", en: "Guide us every day." },
+        { es: "Guíanos cada día.", en: "Guide us each day." },
         { es: "Danos tu sabiduría.", en: "Give us your wisdom." }
     ];
     return nuestro

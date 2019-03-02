@@ -1,9 +1,23 @@
+import { log } from "./console-log";
+
 const avitars = {
 	default: {
 		rate: 1,
 		pitch: 1
 	},
+	sara: {
+		rate: 1.14,
+		pitch: 0.81
+	},
+	pati: {
+		rate: 0.9,
+		pitch: 0.4
+	},
 	rita: {
+		rate: 1.1,
+		pitch: 0.45
+	},
+	cielo: {
 		rate: 0.9,
 		pitch: 0.8
 	},
@@ -20,9 +34,8 @@ class Player {
 	private pitch: number;
 
 	constructor() {
-		this.rate = 0.9 + Math.random() * 0.4;
-		this.pitch = 0 + Math.random() * 1.5;
-		///log(this.synth.voice.name);
+		this.rate = 1;
+		this.pitch = 1;
 	}
 	stop(): any {
 		window.speechSynthesis.cancel();
@@ -35,9 +48,12 @@ class Player {
 			this.synth.rate = avitar.rate;
 			this.synth.pitch = avitar.pitch;
 		} else {
+			this.rate = 1.5 - 0.5 * Math.random();
+			this.pitch = 1.2 - 1.0 * Math.random();
 			this.synth.rate = this.rate;
 			this.synth.pitch = this.pitch;
 		}
+		log(`pitch: ${this.synth.pitch}, rate: ${this.synth.rate}`);
 		if (text.en) {
 			this.synth.lang = "en-US";
 			this.synth.text = text.en;

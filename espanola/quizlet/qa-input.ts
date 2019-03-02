@@ -6,7 +6,7 @@ import { mapping } from "./keydown-as-keypress";
 cssin(
 	"qa-input",
 	`qa-input {
-	padding: 20px;
+	padding-top: 20px;
 }
 qa-input .correct {
 	color: green;
@@ -16,10 +16,16 @@ qa-input .wrong {
 	border: 1px solid red;
 }
 qa-input label {
+	display: none;
 	font-size: xx-large;
 	whitespace:wrap;
-	margin-top: 20px;
-	padding: 20px;
+	padding-top: 20px;
+}
+qa-input.complete label {
+	display: block;
+}
+qa-input.complete input {
+	display: none;
 }
 qa-input input {
 	font-size: x-large;
@@ -102,33 +108,34 @@ export class QaInput extends WebComponent {
 		this.play();
 	}
 
-	isMatch(a: string, b: string) {
-		let A = a.toLocaleLowerCase();
-		let B = b.toLocaleLowerCase();
+	static isMatch(a: string, b: string) {
+		let A = a.toLowerCase();
+		let B = b.toLowerCase();
 		if (A === B) return true;
 		switch (B) {
 			case "á":
-				if (A == "a") return true;
+				return A == "a";
 			case "é":
-				if (A == "e") return true;
+				return A == "e";
 			case "í":
-				if (A == "i") return true;
+				return A == "i";
 			case "ñ":
-				if (A == "n") return true;
+				return A == "n";
 			case "ó":
-				if (A == "o") return true;
+				return A == "o";
 			case "ú":
-				if (A == "u") return true;
+				return A == "u";
 			case "¡":
-				if (A == "!") return true;
+				return A == "!";
 			case "¿":
-				if (A == "?") return true;
+				return A == "?";
 			case "’":
-				if (A == "'") return true;
+				return A == "'";
 			case ",":
-				if (A == " ") return true;
+				return A == " ";
+			default:
+				return false;
 		}
-		return false;
 	}
 
 	provideHelp() {
@@ -215,11 +222,12 @@ export class QaInput extends WebComponent {
 				// also "si, senor." == "sisenor"<enter>
 				// maybe auto-advance after "si" to "si " and eat the users " " if pressed.
 
-				if (this.isMatch(currentKey, expectedKey)) {
+				if (QaInput.isMatch(currentKey, expectedKey)) {
 					input.value = answer.substring(0, currentValue.length + 1);
 					SystemEvents.trigger("play", { action: "stop" });
 					this.rightAnswer();
 					if (this.validate()) {
+						this.domNode.classList.add("complete");
 						this.tab();
 					}
 					return false;
@@ -267,3 +275,5 @@ export class QaInput extends WebComponent {
 		setTimeout(() => s && s.focus(), 200);
 	}
 }
+
+console.assert(!QaInput.isMatch("o", "á"));

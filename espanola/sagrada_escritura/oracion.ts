@@ -42,8 +42,8 @@ const confesión = [
 	{ es: "Solo Jesús mi roca es.", en: "Only Jesus is my rock." },
 	{ es: "Estamos justificados por la fe en Cristo.", en: "We are justified by our faith in Christ." },
 	{ es: "Por favor, Perdoname los pecados.", en: "Please, forgive my sins." },
-	{ es: "Yo sé que soy pecador.", en: "I know that I am a sinner." },
-	{ es: "Yo sé que Jesús es Rey.", en: "I know Jusus is King." },
+	{ es: "Yo sé que soy un pecador.", en: "I know that I am a sinner." },
+	{ es: "Yo sé que Jesús es Rey.", en: "I know Jesus is King." },
 	{ es: "Te necesito.", en: "I need you." },
 	{ es: "Ayudame.", en: "Help me." },
 	{ es: "Perdoname.", en: "Forgive me." }
@@ -56,14 +56,14 @@ const gracias = [
 		es: "Gracias por mi familia, mis amigos, y tu iglesia.",
 		en: "Thank you my family, my friends, and your church."
 	},
-	{ es: "Gracias por por amarme.", en: "Thank you for loving me." },
+	{ es: "Gracias por amarme.", en: "Thank you for loving me." },
 	{ es: "Gracias por tu amor para mi.", en: "Thank you for your love of me." }
 ];
 
 const suplication = [
 	{ es: "Bendiga nuestros amigos cubanos.", en: "Bless our Cuban friends." },
 	{ es: "Da protección a mis amigos en Cuba.", en: "Give protection to my friends in Cuba." },
-	{ es: "Guíanos cada día.", en: "Guide us every day." },
+	{ es: "Guíanos cada día.", en: "Guide us each day." },
 	{ es: "Danos tu sabiduría.", en: "Give us your wisdom." }
 ];
 
