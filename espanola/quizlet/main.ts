@@ -22,14 +22,16 @@ function visit(node: HTMLElement, cb: (node: HTMLElement) => boolean) {
 }
 
 function showHint(hint: string) {
+	let h: number;
 	from(document.getElementsByTagName("hint-slider")).forEach(n => {
+		h && clearTimeout(h);
 		n.innerHTML = hint;
 		n.classList.add("visible");
 		n.classList.remove("hidden");
-		setTimeout(() => {
+		h = setTimeout(() => {
 			n.classList.remove("visible");
 			n.classList.add("hidden");
-		}, 2000);
+		}, Math.max(2000, hint.length * 500));
 	});
 }
 

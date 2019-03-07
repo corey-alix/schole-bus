@@ -358,7 +358,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             .map(function (v) { return (parseInt(v).toString() === v ? nums_1.nums[parseInt(v)].es : v); })
             .join(" ");
         a = a.toLowerCase();
-        a = a.replace(/[\.\?¿¡ ]/g, "");
+        a = a.replace(/[.,?¿¡ ]/g, "");
         a = a.replace(/á/g, "a");
         a = a.replace(/é/g, "e");
         a = a.replace(/í/g, "i");
@@ -776,14 +776,16 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
         from(node.children).forEach(function (n) { return visit(n, cb); });
     }
     function showHint(hint) {
+        var h;
         from(document.getElementsByTagName("hint-slider")).forEach(function (n) {
+            h && clearTimeout(h);
             n.innerHTML = hint;
             n.classList.add("visible");
             n.classList.remove("hidden");
-            setTimeout(function () {
+            h = setTimeout(function () {
                 n.classList.remove("visible");
                 n.classList.add("hidden");
-            }, 2000);
+            }, Math.max(2000, hint.length * 500));
         });
     }
     {
@@ -972,6 +974,26 @@ define("sentences/opuesto", ["require", "exports"], function (require, exports) 
             es: ["corre", "camina"],
             en: ["run", "walk"]
         },
+        {
+            es: ["Mi padre", "Mi madre."],
+            en: ["My father", "My mother"]
+        },
+        {
+            es: ["Mi hermana", "Mi Hermano"],
+            en: ["My sister", "My brother"]
+        },
+        {
+            es: ["Mi abuelo", "Mi abuela"],
+            en: ["My grandfather", "My grandmother"]
+        },
+        {
+            es: ["Mi esposo", "Mi esposa"],
+            en: ["My husband", "My wife"]
+        },
+        {
+            es: ["Mi hija", "Mi hijo"],
+            en: ["My daughter", "My son"]
+        },
         { es: ["dentro", "fuera"], en: ["inside", "outside"] }
     ];
     return opuestos.map(builder);
@@ -1034,10 +1056,10 @@ define("sentences/index", ["require", "exports", "sentences/opuesto"], function 
         { es: "Voy a vivir con Jesús por siempre.", en: "I am going to live with Jesus forever." },
         { es: "Voy a practicar Español", en: "I am going to practice Spanish." },
         { es: "Voy a leer ahora.", en: "I am going to read now." },
-        { es: "Voy a hablar con Todd.", en: "I am going to talk to Todd." },
+        { es: "Voy a hablar con el dueño.", en: "I am going to talk to the owner." },
         { es: "No voy al café", en: "I am not going to the café." },
         { es: "No voy.", en: "I am not going." },
-        { es: "No voy a cantar sin Todd.", en: "I will not sing without Todd." },
+        { es: "No cantaré sin él.", en: "I will not sing without him." },
         { es: "Estoy cantando hoy.", en: "I am singing today." },
         { es: "soy tu amigo.", en: "I am your friend." },
         { es: "Yo hablo inglés.", en: "I speak English." },
@@ -1444,6 +1466,90 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
     scores = fun_2.shuffle(scores);
     return scores.slice(0, 5);
 });
+define("quizlet/packs/dialog", ["require", "exports"], function (require, exports) {
+    "use strict";
+    var dialog = [
+        { es: "Hola, como está usted?", en: "Hello, how are you?" },
+        { es: "Hola, cómo estás?", en: "Hello, how are you?" },
+        { es: "Como está ella?", en: "How is she?" },
+        { es: "Hola, buenos días.", en: "Hello, good morning." },
+        { es: "Buenas tardes.", en: "Good afternoon." },
+        { es: "Buenas noches", en: "Good night." },
+        { es: "Estoy bien. Gracias.", en: "I'm fine. Thank you." },
+        { es: "Y usted?", en: "And you?" },
+        { es: "Estoy bien también.", en: "I am fine too." },
+        { es: "De nada.", en: "You're welcome." },
+        { es: "Ella está bien.", en: "She is fine." },
+        { es: "él está bien.", en: "He is fine." },
+        { es: "Estoy cansado.", en: "I am tired." },
+        { es: "Ella está cansada.", en: "She is tired." },
+        { es: "El está cansado", en: "He is tired." },
+        { es: "Usted está cansado.", en: "You are tired." },
+        { es: "Tú hablas español?", en: "Do you speak spanish?" },
+        { es: "Si, yo hablo español.", en: "Yes, I speak english." },
+        { es: "Por favor, no.", en: "Please, no." },
+        { es: "Si, Gracias.", en: "Yes, please." },
+        { es: "Disculpe", en: "Excuse me." },
+        { es: "Mucho gusto.", en: "Nice to meet you." },
+        { es: "El baño está aqui.", en: "The bathroom is here." },
+        { es: "Una calle.", en: "A street." },
+        { es: "Una mesa para dos, por favor.", en: "A table for two, please." },
+        { es: "Yo tengo un hermono.", en: "I have a brother" },
+        { es: "Mi familia es interestante", en: "My family is interesting." },
+        { es: "Yo vivo aqui", en: "I live here" },
+        { es: "Me esposa es inteligente", en: "My wife is intelligent." },
+        { es: "Tú tienes un gato?", en: "Do you have a cat?" },
+        { es: "Es esta tu casa y tu perro?", en: "Is that your house and your dog?" },
+        { es: "Mi perro es grande y muy bonito", en: "By dog is big and very pretty" },
+        { es: "Mi hermano y mi hermana son interesante.", en: "My brother and my sister are interesting." },
+        { es: "Ella tiene un gato", en: "She has  cat" },
+        { es: "Un esposo y una esposa", en: "" },
+        { es: "Yo tengo un hermano y una hermana.", en: "I have a brother and a sister." },
+        { es: "Yo necesito la cuenta.", en: "I need the check." },
+        { es: "el sándwich", en: "the sandwich" },
+        { es: "la carne", en: "the meat" },
+        { es: "un café sin azúcar", en: "a coffee without sugar" },
+        { es: "un jugo de naranja, por favor", en: "one orange juice please" },
+        { es: "yo quiero pagar la cuenta.", en: "I want to pay the check." },
+        { es: "sin azucar, por favor", en: "without sugar, please" },
+        { es: "un vaso de agua, por favor.", en: "a glass of water, please" },
+        { es: "una hamburguesa de pescado.", en: "A fish burger." },
+        { es: "sin sal, por favor", en: "without salt, please" },
+        { es: "una ensalada, por favor", en: "a salad, please" },
+        { es: "un sándwich de pescado", en: "a fish sandwich" },
+        { es: "una taza y un vaso", en: "a cup and a glass" },
+        { es: "con o sin azúcar", en: "with or without sugar?" },
+        { es: "yo quiero comprar una camisa", en: "I want to buy a shirt" },
+        { es: "una camiseta es una camisa", en: "A t-shirt is a shirt" },
+        { es: "Si, este sombrero", en: "Yes, this hat" },
+        { es: "No, ese sombrero.", en: "No, that hat." },
+        { es: "Un sombrero barato", en: "A cheap hat" },
+        { es: "el cinturon", en: "the belt" },
+        { es: "un regalo para mi esposa.", en: "A gift for my wife." },
+        { es: "el reloj", en: "the watch" },
+        { es: "Demasiado gris.", en: "Too gray" },
+        { es: "Mi tienda favorita.", en: "My favorite store." },
+        { es: "Una pregunta interesante", en: "An interesting question." },
+        { es: "Yo leo con mi maestro", en: "I read with my teacher" },
+        { es: "Yo no soy estudiante", en: "I am not a student" },
+        { es: "Yo soy de España", en: "I am from Spain" },
+        { es: "Lo siento, estoy mal", en: "I am sorry, I'm not well" },
+        { es: "Tú usas el carro?", en: "Do you use the car?" },
+        { es: "Señor, usted usa el teléfone?", en: "Sir, are you using the telephone?" },
+        { es: "Yo necesito mi boleto.", en: "I need my ticket." },
+        { es: "Ella tiene una maleta.", en: "She has a suitcase." },
+        { es: "Usted tiene una carera?", en: "Do you have a purse?" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" }
+    ];
+    return dialog.map(function (q) { return ({ a: q.es, q: q.en }); });
+});
 define("verbos/index", ["require", "exports"], function (require, exports) {
     "use strict";
     var tenses = [
@@ -1571,10 +1677,10 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
         var result = [
             {
                 i: { es: infinitive, en: "to " + en_base.infinitive },
-                yo: { es: base + postfix.yo, en: en.yo + " " + en_base.i },
-                tú: { es: base + postfix.tú, en: en.tú + " " + en_base.you },
-                él: { es: base + postfix.él, en: en.él + " " + en_base.he },
-                nosotros: { es: base + postfix.nosotros, en: en.nosotros + " " + en_base.we }
+                yo: { es: "yo " + (base + postfix.yo), en: en.yo + " " + en_base.i },
+                tú: { es: "tu " + (base + postfix.tú), en: en.tú + " " + en_base.you },
+                él: { es: "\u00E9l " + (base + postfix.él), en: en.él + " " + en_base.he },
+                nosotros: { es: "nosotros " + (base + postfix.nosotros), en: en.nosotros + " " + en_base.we }
             }
         ];
         return result;
@@ -1651,17 +1757,17 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
         },
         {
             i: { es: "decir", en: "to say" },
-            yo: { es: "digo", en: "I say" },
-            tú: { es: "dices", en: "you say" },
-            él: { es: "dice", en: "he says" },
-            ella: { es: "dice", en: "she says" },
-            nosotros: { es: "dicimos", en: "we say" },
-            he: { es: "dicho", en: "I have said" },
-            has: { es: "dicho", en: "you have said" },
-            hemos: { es: "dicho", en: "we have said" }
+            yo: { es: "yo digo", en: "I say" },
+            tú: { es: "tú dices", en: "you say" },
+            él: { es: "él dice", en: "he says" },
+            ella: { es: "ella dice", en: "she says" },
+            nosotros: { es: "nosotros dicimos", en: "we say" },
+            he: { es: "he dicho", en: "I have said" },
+            has: { es: "has dicho", en: "you have said" },
+            hemos: { es: "hemos dicho", en: "we have said" }
         }
     ];
-    return verbos.concat(regular("caminar", { infinitive: "walk" }), regular("correr", { infinitive: "run", ing: "running" }), regular("escribir", { infinitive: "write", ing: "writing" }), regular("esperar", { infinitive: "expect" }), regular("esparcir", { infinitive: "spread" }), regular("escuchar", { infinitive: "listen" }), regular("entregar", { infinitive: "deliver" }), regular("descubrir", { infinitive: "discover" }), regular("comer", { infinitive: "eat" }));
+    return verbos.concat(regular("caminar", { infinitive: "walk" }), regular("correr", { infinitive: "run", ing: "running" }), regular("escribir", { infinitive: "write", ing: "writing" }), regular("escuchar", { infinitive: "listen" }), regular("descubrir", { infinitive: "discover" }), regular("dormir", { infinitive: "sleep" }), regular("comer", { infinitive: "eat" }));
 });
 define("quizlet/packs/has-packet", ["require", "exports", "verbos/index"], function (require, exports, index_2) {
     "use strict";
@@ -1681,16 +1787,19 @@ define("quizlet/packs/hemos-packet", ["require", "exports", "verbos/index"], fun
 define("quizlet/packs/n\u00FAmeros-packet", ["require", "exports", "quizlet/packs/nums"], function (require, exports, nums_2) {
     "use strict";
     var qa = nums_2.nums.map(function (v) { return ({ a: v.es, q: v.en }); });
-    [1, 2, 5].forEach(function (a) {
-        return [0, 0, 0]
-            .map(function (v) { return Math.floor((nums_2.nums.length - a) * Math.random()); })
-            .forEach(function (b) {
-            return qa.push({
-                a: nums_2.nums[a].es + " m\u00E1s " + nums_2.nums[b].es + " son " + nums_2.nums[a + b].es,
-                q: nums_2.nums[a].en + " plus " + nums_2.nums[b].en + " are " + nums_2.nums[a + b].en
+    // move to "math" pack
+    if (false) {
+        [1, 2, 5].forEach(function (a) {
+            return [0, 0, 0]
+                .map(function (v) { return Math.floor((nums_2.nums.length - a) * Math.random()); })
+                .forEach(function (b) {
+                return qa.push({
+                    a: nums_2.nums[a].es + " m\u00E1s " + nums_2.nums[b].es + " son " + nums_2.nums[a + b].es,
+                    q: nums_2.nums[a].en + " plus " + nums_2.nums[b].en + " are " + nums_2.nums[a + b].en
+                });
             });
         });
-    });
+    }
     return qa;
 });
 define("quizlet/packs/yo-packet", ["require", "exports", "verbos/index"], function (require, exports, index_5) {
@@ -1746,43 +1855,7 @@ define("sustantivo/index", ["require", "exports", "quizlet/fun"], function (requ
         { es: "rostro", en: "face" },
         { es: "Dios", en: "God" },
         { es: "amanecer", en: "dawn" },
-        { es: "muerte", en: "death" },
-        { es: "asada", en: "grilled" },
-        { es: "carnitas", en: "little meats" },
-        { es: "cúerito", en: "pig skin" },
-        { es: "lengua de vaca", en: "cow tongue" },
-        { es: "queso", en: "cheese" },
-        { es: "frijoles", en: "red beans" },
-        { es: "chicharrón", en: "pork rind" },
-        { es: "revueltas", en: "mixture" },
-        { es: "pollo", en: "chicken" },
-        { es: "res", en: "beef" },
-        { es: "tejana", en: "texas style" },
-        { es: "camarón", en: "shrimp" },
-        { es: "piña", en: "pineapple" },
-        { es: "horchata", en: "almond juice" },
-        { es: "bebidas", en: "drinks" },
-        { es: "tepache", en: "pinapple mixed" },
-        { es: "caldo de pollo", en: "chicken soup" },
-        { es: "fajita de res texana", en: "beef fajita" },
-        { es: "caldo siete mares", en: "seven seas soup" },
-        { es: "fajita de pollo", en: "chicken fajita" },
-        { es: "enchiladas verdes", en: "enchilada" },
-        { es: "enchiladas rojas y verdes", en: "enchilada" },
-        { es: "caldo de cangrejo", en: "" },
-        { es: "costilla asada de res", en: "" },
-        { es: "guacho mango", en: "" },
-        { es: "suadero", en: "brisket" },
-        { es: "cabeza", en: "cow head" },
-        { es: "camarones", en: "" },
-        { es: "flor de calabaza", en: "squash blossom" },
-        { es: "huitlacoche", en: "corn smut" },
-        { es: "pollo asado", en: "grilled chicken" },
-        { es: "milanesas", en: "breaded cutlet" },
-        { es: "carne asada", en: "beef steak" },
-        { es: "caldo de res", en: "beef soup" },
-        { es: "caldo de camarón", en: "shrimp soup" },
-        { es: "el caldo de menudo", en: "soup of the day" }
+        { es: "muerte", en: "death" }
     ].map(function (v) { return ({ es: fun_3.forceGender(v.es), en: "the " + v.en }); });
 });
 define("quizlet/packs/sustantivo-packet", ["require", "exports", "sustantivo/index"], function (require, exports, index_9) {
@@ -1797,7 +1870,22 @@ define("quizlet/packs/question-packet", ["require", "exports"], function (requir
         { a: "¿Que eres?", q: "what are you?" },
         { a: "¿Dónde estás?", q: "Where are you?" },
         { a: "¿Cuándo corres?", q: "When will you run?" },
-        { a: "¿Por qué caminas?", q: "Why do you walk?" }
+        { a: "¿Por qué caminas?", q: "Why do you walk?" },
+        { a: "¿Con o sin?", q: "With or without?" },
+        { a: "Quándo?", q: "When?" },
+        { a: "Lunes o Martes?", q: "Monday or Tuesday?" },
+        { a: "Miercoles o Jueves?", q: "Wednesday or Thursday?" },
+        { a: "Viernes y Sábado o Domingo", q: "Friday and Saturday or Sunday" },
+        { a: "El partido es mañana", q: "The game is tomorrow" },
+        { a: "El español es divertido.", q: "Spanish is fun." },
+        { a: "Feliz fin de semana!", q: "Happy weekend!" },
+        { a: "Disfruta el viernes!", q: "Enjoy your Friday!" },
+        { a: "", q: "" },
+        { a: "", q: "" },
+        { a: "", q: "" },
+        { a: "", q: "" },
+        { a: "", q: "" },
+        { a: "", q: "" }
     ];
 });
 define("sagrada_escritura/oracion", ["require", "exports", "quizlet/fun"], function (require, exports, fun_4) {
@@ -1881,15 +1969,143 @@ define("quizlet/packs/opuesto-packet", ["require", "exports", "sentences/opuesto
     opuesto_2 = __importDefault(opuesto_2);
     return opuesto_2["default"].map(function (v) { return ({ a: v.es, q: v.en }); });
 });
-define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/packs/oraci\u00F3n-packet", "quizlet/packs/opuesto-packet", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, question_packet_1, oraci_n_packet_1, opuesto_packet_1, qa_1) {
+define("quizlet/stories/el rescatado", ["require", "exports"], function (require, exports) {
     "use strict";
-    n_meros_packet_1 = __importDefault(n_meros_packet_1);
+    return [
+        {
+            es: "Caí sin saber cómo o cuándo iba a parar.",
+            en: "I fell without knowing how or when I was going to stop."
+        },
+        {
+            es: "Hasta que toqué el suelo.",
+            en: "Until I touched the ground."
+        },
+        {
+            es: "La competencia tiene un rol muy importante en mi vida.",
+            en: "The competition has an very important rol in my life."
+        },
+        {
+            es: "Siempre trato de ser el mejor en el trabajo y también en el deporte.",
+            en: "I always try to be the best at work and also in sports."
+        },
+        {
+            es: "Y para poder serlo, trabajo muy duro.",
+            en: "And to be able to be, I work very hard."
+        },
+        {
+            es: "Corro carreras de aventuras durante noches enteras.",
+            en: "I run adventure races for entire nights."
+        },
+        {
+            es: "Vi muchos documentales para preparame.",
+            en: "I saw many documentaries to prepare me."
+        },
+        {
+            es: "En 2010, yo tenía 49 años y quería participar en una carrera de 80 kilómetros en un cerro.",
+            en: "In 2010, I was 49 years old and wanted to participate in a race of 80 km on a hill."
+        },
+        {
+            es: "Pensaba que estaba listo para ese tipo de aventura.",
+            en: "I thought I was ready for that kind of adventure."
+        },
+        {
+            es: "Yo ya tenía experiencia en otro tipo de carreras, pero nunca corrí una distancia tan larga.",
+            en: "I already had experience in other types of races, but I never ran such a long distance."
+        },
+        {
+            es: "Yo quería llegar entre los primeros 30.",
+            en: "I wanted to get between the first 30."
+        },
+        {
+            es: "La carrera era en un cerro que se llama Champaquí.",
+            en: "The race was on a hill called Champaquí."
+        },
+        {
+            es: "Tiene una elevación de casi 3 mil metros y está lleno de bosques.",
+            en: "It has a height of almost 3 thousand meters and is full of forests."
+        },
+        {
+            es: "El día antes de la carrera yo viajé a Córdoba con un amigo.",
+            en: "The day before the race I traveled to Córdoba with a friend."
+        },
+        {
+            es: "Nos quedamos en un hostal en San Javier, la ciudad más cercana al cerro.",
+            en: "We stayed in a hostel in San Javier, the city closest to the hill"
+        },
+        {
+            es: "Esa noche hablé con mi esposa y con mis hijos.",
+            en: "That night I spoke with my wife and my children."
+        },
+        {
+            es: "Nosotros estábamos todos emocionados por la carrera.",
+            en: "We were all excited for the race."
+        },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" },
+        { es: "", en: "" }
+    ];
+});
+define("quizlet/packs/stories-packet", ["require", "exports", "quizlet/stories/el rescatado"], function (require, exports, el_rescatado_1) {
+    "use strict";
+    el_rescatado_1 = __importDefault(el_rescatado_1);
+    return el_rescatado_1["default"].map(function (v) { return ({ a: v.es, q: v.en }); });
+});
+define("quizlet/packs/index", ["require", "exports", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/packs/dialog", "quizlet/packs/stories-packet"], function (require, exports, pronoun_packet_1, sustantivo_packet_1, question_packet_1, dialog_1, stories_packet_1) {
+    "use strict";
     pronoun_packet_1 = __importDefault(pronoun_packet_1);
     sustantivo_packet_1 = __importDefault(sustantivo_packet_1);
     question_packet_1 = __importDefault(question_packet_1);
-    oraci_n_packet_1 = __importDefault(oraci_n_packet_1);
-    opuesto_packet_1 = __importDefault(opuesto_packet_1);
-    qa_1 = __importDefault(qa_1);
-    return sustantivo_packet_1["default"].concat(pronoun_packet_1["default"], question_packet_1["default"], opuesto_packet_1["default"], n_meros_packet_1["default"], qa_1["default"], oraci_n_packet_1["default"]);
+    dialog_1 = __importDefault(dialog_1);
+    stories_packet_1 = __importDefault(stories_packet_1);
+    return stories_packet_1["default"].concat(dialog_1["default"], pronoun_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"]);
+});
+define("quizlet/topical/food", ["require", "exports"], function (require, exports) {
+    "use strict";
+    return [
+        { es: "carnitas", en: "little meats" },
+        { es: "cúerito", en: "pig skin" },
+        { es: "lengua de vaca", en: "cow tongue" },
+        { es: "queso", en: "cheese" },
+        { es: "frijoles", en: "red beans" },
+        { es: "chicharrón", en: "pork rind" },
+        { es: "revueltas", en: "mixture" },
+        { es: "pollo", en: "chicken" },
+        { es: "res", en: "beef" },
+        { es: "texana", en: "texas style" },
+        { es: "camarón", en: "shrimp" },
+        { es: "piña", en: "pineapple" },
+        { es: "horchata", en: "almond juice" },
+        { es: "bebidas", en: "drinks" },
+        { es: "tepache", en: "pinapple mixed" },
+        { es: "caldo de pollo", en: "chicken soup" },
+        { es: "fajita de res texana", en: "beef fajita" },
+        { es: "caldo de siete mares", en: "seven seas soup" },
+        { es: "fajita de pollo", en: "chicken fajita" },
+        { es: "enchiladas verdes", en: "enchilada" },
+        { es: "enchiladas rojas y verdes", en: "enchilada" },
+        { es: "caldo de cangrejo", en: "" },
+        { es: "costilla asada de res", en: "grilled beef ribs" },
+        { es: "suadero", en: "brisket" },
+        { es: "cabeza", en: "cow head" },
+        { es: "flor de calabaza", en: "squash blossom" },
+        { es: "huitlacoche", en: "corn smut" },
+        { es: "pollo asado", en: "grilled chicken" },
+        { es: "milanesas", en: "breaded cutlet" },
+        { es: "carne asada", en: "beef steak" },
+        { es: "caldo de res", en: "beef soup" },
+        { es: "caldo de camarón", en: "shrimp soup" },
+        { es: "el caldo de menudo", en: "soup of the day" }
+    ].map(function (v) { return ({ es: v.es, en: v.en }); });
 });
 //# sourceMappingURL=main.js.map

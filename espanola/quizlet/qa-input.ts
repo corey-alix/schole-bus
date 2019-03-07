@@ -11,7 +11,7 @@ function soundex(a: string) {
 		.map(v => (parseInt(v).toString() === v ? nums[parseInt(v)].es : v))
 		.join(" ");
 	a = a.toLowerCase();
-	a = a.replace(/[\.\?¿¡ ]/g, "");
+	a = a.replace(/[.,?¿¡ ]/g, "");
 	a = a.replace(/á/g, "a");
 	a = a.replace(/é/g, "e");
 	a = a.replace(/í/g, "i");

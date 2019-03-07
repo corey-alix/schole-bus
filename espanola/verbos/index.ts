@@ -130,10 +130,10 @@ function regular(
 	let result = [
 		{
 			i: { es: infinitive, en: `to ${en_base.infinitive}` },
-			yo: { es: base + postfix.yo, en: `${en.yo} ${en_base.i}` },
-			tú: { es: base + postfix.tú, en: `${en.tú} ${en_base.you}` },
-			él: { es: base + postfix.él, en: `${en.él} ${en_base.he}` },
-			nosotros: { es: base + postfix.nosotros, en: `${en.nosotros} ${en_base.we}` }
+			yo: { es: `yo ${base + postfix.yo}`, en: `${en.yo} ${en_base.i}` },
+			tú: { es: `tu ${base + postfix.tú}`, en: `${en.tú} ${en_base.you}` },
+			él: { es: `él ${base + postfix.él}`, en: `${en.él} ${en_base.he}` },
+			nosotros: { es: `nosotros ${base + postfix.nosotros}`, en: `${en.nosotros} ${en_base.we}` }
 		}
 	];
 
@@ -219,14 +219,14 @@ let verbos = <Array<Dict>>[
 	},
 	{
 		i: { es: "decir", en: "to say" },
-		yo: { es: "digo", en: "I say" },
-		tú: { es: "dices", en: "you say" },
-		él: { es: "dice", en: "he says" },
-		ella: { es: "dice", en: "she says" },
-		nosotros: { es: "dicimos", en: "we say" },
-		he: { es: "dicho", en: "I have said" },
-		has: { es: "dicho", en: "you have said" },
-		hemos: { es: "dicho", en: "we have said" }
+		yo: { es: "yo digo", en: "I say" },
+		tú: { es: "tú dices", en: "you say" },
+		él: { es: "él dice", en: "he says" },
+		ella: { es: "ella dice", en: "she says" },
+		nosotros: { es: "nosotros dicimos", en: "we say" },
+		he: { es: "he dicho", en: "I have said" },
+		has: { es: "has dicho", en: "you have said" },
+		hemos: { es: "hemos dicho", en: "we have said" }
 	}
 ];
 
@@ -234,10 +234,8 @@ export = verbos.concat(
 	regular("caminar", { infinitive: "walk" }),
 	regular("correr", { infinitive: "run", ing: "running" }),
 	regular("escribir", { infinitive: "write", ing: "writing" }),
-	regular("esperar", { infinitive: "expect" }),
-	regular("esparcir", { infinitive: "spread" }),
 	regular("escuchar", { infinitive: "listen" }),
-	regular("entregar", { infinitive: "deliver" }),
 	regular("descubrir", { infinitive: "discover" }),
+	regular("dormir", { infinitive: "sleep" }),
 	regular("comer", { infinitive: "eat" })
 );
