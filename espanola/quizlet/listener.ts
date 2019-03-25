@@ -1,6 +1,9 @@
 import { log } from "./console-log";
 import { SystemEvents } from "./system-events";
 
+function asPercent(value: number) {
+	return `${Math.round(value * 100)}%`;
+}
 class Listener {
 	recognition: SpeechRecognition;
 	stopped: boolean = true;
@@ -32,7 +35,7 @@ class Listener {
 						console.log(transcript, result[j]);
 						let confidence = result[j].confidence;
 						if (0.5 < confidence) {
-							log(`${transcript} (${confidence})`);
+							log(`${transcript} (${asPercent(confidence)})`);
 						}
 						if (0.8 < confidence) {
 							SystemEvents.trigger("speech-detected", { result: transcript });

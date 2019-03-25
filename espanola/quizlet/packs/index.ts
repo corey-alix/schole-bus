@@ -16,5 +16,5 @@ export = ([] as Array<{ a: string; q: string }>).concat(
 	opuesto,
 	numeros,
 	oracións,
-	stories
+	//stories
 );

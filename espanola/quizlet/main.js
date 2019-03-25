@@ -253,6 +253,9 @@ define("quizlet/keydown-as-keypress", ["require", "exports"], function (require,
 define("quizlet/listener", ["require", "exports", "quizlet/console-log", "quizlet/system-events"], function (require, exports, console_log_1, system_events_2) {
     "use strict";
     exports.__esModule = true;
+    function asPercent(value) {
+        return Math.round(value * 100) + "%";
+    }
     var Listener = /** @class */ (function () {
         function Listener() {
             var _this = this;
@@ -281,7 +284,7 @@ define("quizlet/listener", ["require", "exports", "quizlet/console-log", "quizle
                             console.log(transcript, result[j]);
                             var confidence = result[j].confidence;
                             if (0.5 < confidence) {
-                                console_log_1.log(transcript + " (" + confidence + ")");
+                                console_log_1.log(transcript + " (" + asPercent(confidence) + ")");
                             }
                             if (0.8 < confidence) {
                                 system_events_2.SystemEvents.trigger("speech-detected", { result: transcript });
@@ -1494,16 +1497,16 @@ define("quizlet/packs/dialog", ["require", "exports"], function (require, export
         { es: "El baño está aqui.", en: "The bathroom is here." },
         { es: "Una calle.", en: "A street." },
         { es: "Una mesa para dos, por favor.", en: "A table for two, please." },
-        { es: "Yo tengo un hermono.", en: "I have a brother" },
-        { es: "Mi familia es interestante", en: "My family is interesting." },
+        { es: "Yo tengo un hermano.", en: "I have a brother" },
+        { es: "Mi familia es interesante", en: "My family is interesting." },
         { es: "Yo vivo aqui", en: "I live here" },
-        { es: "Me esposa es inteligente", en: "My wife is intelligent." },
+        { es: "Mi esposa es inteligente", en: "My wife is intelligent." },
         { es: "Tú tienes un gato?", en: "Do you have a cat?" },
         { es: "Es esta tu casa y tu perro?", en: "Is that your house and your dog?" },
         { es: "Mi perro es grande y muy bonito", en: "By dog is big and very pretty" },
         { es: "Mi hermano y mi hermana son interesante.", en: "My brother and my sister are interesting." },
-        { es: "Ella tiene un gato", en: "She has  cat" },
-        { es: "Un esposo y una esposa", en: "" },
+        { es: "Ella tiene un gato", en: "She has a cat" },
+        { es: "Un esposo y una esposa", en: "a husband and a wife" },
         { es: "Yo tengo un hermano y una hermana.", en: "I have a brother and a sister." },
         { es: "Yo necesito la cuenta.", en: "I need the check." },
         { es: "el sándwich", en: "the sandwich" },
@@ -1539,14 +1542,14 @@ define("quizlet/packs/dialog", ["require", "exports"], function (require, export
         { es: "Yo necesito mi boleto.", en: "I need my ticket." },
         { es: "Ella tiene una maleta.", en: "She has a suitcase." },
         { es: "Usted tiene una carera?", en: "Do you have a purse?" },
-        { es: "", en: "" },
-        { es: "", en: "" },
-        { es: "", en: "" },
-        { es: "", en: "" },
-        { es: "", en: "" },
-        { es: "", en: "" },
-        { es: "", en: "" },
-        { es: "", en: "" }
+        { es: "Quién habla español?", en: "Who speaks spanish?" },
+        { es: "Quién come una ensalada?", en: "Who is eating a salad?" },
+        { es: "La mujer vive en Inglaterra.", en: "The woman lives in England." },
+        { es: "Ella es una mujer joven.", en: "She is a young woman." },
+        { es: "Tú tienes mi dirección?", en: "Do you have my address?" },
+        { es: "Señor, yo tengo una pregunta.", en: "Sir, I have a question." },
+        { es: "La mujer italiana es mi madre.", en: "The italian woman is my mother." },
+        { es: "Vives en una ciudad pequeña?", en: "Do you live in a small city?" }
     ];
     return dialog.map(function (q) { return ({ a: q.es, q: q.en }); });
 });
@@ -1982,7 +1985,7 @@ define("quizlet/stories/el rescatado", ["require", "exports"], function (require
         },
         {
             es: "La competencia tiene un rol muy importante en mi vida.",
-            en: "The competition has an very important rol in my life."
+            en: "The competition has a very important role in my life."
         },
         {
             es: "Siempre trato de ser el mejor en el trabajo y también en el deporte.",
@@ -2002,7 +2005,7 @@ define("quizlet/stories/el rescatado", ["require", "exports"], function (require
         },
         {
             es: "En 2010, yo tenía 49 años y quería participar en una carrera de 80 kilómetros en un cerro.",
-            en: "In 2010, I was 49 years old and wanted to participate in a race of 80 km on a hill."
+            en: "In 2010, I was 49 years old and wanted to participate in a race of 80 km on a mountain."
         },
         {
             es: "Pensaba que estaba listo para ese tipo de aventura.",
@@ -2018,7 +2021,7 @@ define("quizlet/stories/el rescatado", ["require", "exports"], function (require
         },
         {
             es: "La carrera era en un cerro que se llama Champaquí.",
-            en: "The race was on a hill called Champaquí."
+            en: "The race was on a mountain called Champaquí."
         },
         {
             es: "Tiene una elevación de casi 3 mil metros y está lleno de bosques.",
@@ -2030,7 +2033,7 @@ define("quizlet/stories/el rescatado", ["require", "exports"], function (require
         },
         {
             es: "Nos quedamos en un hostal en San Javier, la ciudad más cercana al cerro.",
-            en: "We stayed in a hostel in San Javier, the city closest to the hill"
+            en: "We stayed in a hostel in San Javier, the city closest to the mountain."
         },
         {
             es: "Esa noche hablé con mi esposa y con mis hijos.",
@@ -2061,14 +2064,17 @@ define("quizlet/packs/stories-packet", ["require", "exports", "quizlet/stories/e
     el_rescatado_1 = __importDefault(el_rescatado_1);
     return el_rescatado_1["default"].map(function (v) { return ({ a: v.es, q: v.en }); });
 });
-define("quizlet/packs/index", ["require", "exports", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/packs/dialog", "quizlet/packs/stories-packet"], function (require, exports, pronoun_packet_1, sustantivo_packet_1, question_packet_1, dialog_1, stories_packet_1) {
+define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/packs/oraci\u00F3n-packet", "quizlet/packs/opuesto-packet", "quizlet/packs/dialog", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, question_packet_1, oraci_n_packet_1, opuesto_packet_1, dialog_1, qa_1) {
     "use strict";
+    n_meros_packet_1 = __importDefault(n_meros_packet_1);
     pronoun_packet_1 = __importDefault(pronoun_packet_1);
     sustantivo_packet_1 = __importDefault(sustantivo_packet_1);
     question_packet_1 = __importDefault(question_packet_1);
+    oraci_n_packet_1 = __importDefault(oraci_n_packet_1);
+    opuesto_packet_1 = __importDefault(opuesto_packet_1);
     dialog_1 = __importDefault(dialog_1);
-    stories_packet_1 = __importDefault(stories_packet_1);
-    return stories_packet_1["default"].concat(dialog_1["default"], pronoun_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"]);
+    qa_1 = __importDefault(qa_1);
+    return [].concat(dialog_1["default"], qa_1["default"], pronoun_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"], opuesto_packet_1["default"], n_meros_packet_1["default"], oraci_n_packet_1["default"]);
 });
 define("quizlet/topical/food", ["require", "exports"], function (require, exports) {
     "use strict";
