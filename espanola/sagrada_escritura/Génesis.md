@@ -9,7 +9,7 @@
 | es                   | en                      |
 | -------------------- | ----------------------- |
 | En el principio      | In the beginning        |
-| créo Dios            | God created             |
+| creó Dios            | God created             |
 | los cielos           | the heavens             |
 | y la tierra.         | and the earth.          |
 | Y la tierra          | And the earth           |
