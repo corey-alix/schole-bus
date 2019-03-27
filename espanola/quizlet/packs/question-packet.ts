@@ -1,22 +1,16 @@
-export = [
+export =[
 	{ a: "¿Quién eres tú?", q: "who are you?" },
-	{ a: "¿Que eres?", q: "what are you?" },
+	{ a: "¿Qué eres?", q: "what are you?" },
 	{ a: "¿Dónde estás?", q: "Where are you?" },
 	{ a: "¿Cuándo corres?", q: "When will you run?" },
 	{ a: "¿Por qué caminas?", q: "Why do you walk?" },
 	{ a: "¿Con o sin?", q: "With or without?" },
-	{ a: "Quándo?", q: "When?" },
+	{ a: "Cuándo?", q: "When?" },
 	{ a: "Lunes o Martes?", q: "Monday or Tuesday?" },
-	{ a: "Miercoles o Jueves?", q: "Wednesday or Thursday?" },
+	{ a: "Miércoles o Jueves?", q: "Wednesday or Thursday?" },
 	{ a: "Viernes y Sábado o Domingo", q: "Friday and Saturday or Sunday" },
 	{ a: "El partido es mañana", q: "The game is tomorrow" },
 	{ a: "El español es divertido.", q: "Spanish is fun." },
 	{ a: "Feliz fin de semana!", q: "Happy weekend!" },
 	{ a: "Disfruta el viernes!", q: "Enjoy your Friday!" },
-	{ a: "", q: "" },
-	{ a: "", q: "" },
-	{ a: "", q: "" },
-	{ a: "", q: "" },
-	{ a: "", q: "" },
-	{ a: "", q: "" }
 ];

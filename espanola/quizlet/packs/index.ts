@@ -8,11 +8,11 @@ import dialog from "./dialog";
 import qa from "../qa";
 import stories from "./stories-packet";
 export = ([] as Array<{ a: string; q: string }>).concat(
+	questions,
 	dialog,
 	qa,
 	pronombres,
 	nouns,
-	questions,
 	opuesto,
 	numeros,
 	oracións,

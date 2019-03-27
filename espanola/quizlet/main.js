@@ -361,7 +361,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             .map(function (v) { return (parseInt(v).toString() === v ? nums_1.nums[parseInt(v)].es : v); })
             .join(" ");
         a = a.toLowerCase();
-        a = a.replace(/[.,?¿¡ ]/g, "");
+        a = a.replace(/[.,?¿¡! ]/g, "");
         a = a.replace(/á/g, "a");
         a = a.replace(/é/g, "e");
         a = a.replace(/í/g, "i");
@@ -396,6 +396,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             var _this = _super.call(this, domNode) || this;
             _this.score = [0, 0];
             _this.handlers = [];
+            var answer = _this.getAttribute("answer") || "";
             _this.label = document.createElement("label");
             _this.input = document.createElement("input");
             _this.input.type = "text";
@@ -404,10 +405,9 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             _this.help.tabIndex = -1; // no tab
             _this.help.type = "button";
             _this.help.innerHTML = "�";
+            _this.input.placeholder = answer;
             _this.handlers.push(system_events_3.SystemEvents.watch("speech-detected", function (value) {
-                if (!_this.hasFocus())
-                    return;
-                var answer = _this.getAttribute("answer") || "";
+                //if (!this.hasFocus()) return;
                 if (areEqual(value.result, answer)) {
                     _this.input.value = answer;
                     if (_this.validate()) {
@@ -779,16 +779,10 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
         from(node.children).forEach(function (n) { return visit(n, cb); });
     }
     function showHint(hint) {
-        var h;
         from(document.getElementsByTagName("hint-slider")).forEach(function (n) {
-            h && clearTimeout(h);
             n.innerHTML = hint;
             n.classList.add("visible");
             n.classList.remove("hidden");
-            h = setTimeout(function () {
-                n.classList.remove("visible");
-                n.classList.add("hidden");
-            }, Math.max(2000, hint.length * 500));
         });
     }
     {
@@ -1541,7 +1535,7 @@ define("quizlet/packs/dialog", ["require", "exports"], function (require, export
         { es: "Señor, usted usa el teléfono?", en: "Sir, are you using the telephone?" },
         { es: "Yo necesito mi boleto.", en: "I need my ticket." },
         { es: "Ella tiene una maleta.", en: "She has a suitcase." },
-        { es: "Usted tiene una carera?", en: "Do you have a purse?" },
+        { es: "Usted tiene una bolsa?", en: "Do you have a bag?" },
         { es: "Quién habla español?", en: "Who speaks spanish?" },
         { es: "Quién come una ensalada?", en: "Who is eating a salad?" },
         { es: "La mujer vive en Inglaterra.", en: "The woman lives in England." },
@@ -1870,25 +1864,19 @@ define("quizlet/packs/question-packet", ["require", "exports"], function (requir
     "use strict";
     return [
         { a: "¿Quién eres tú?", q: "who are you?" },
-        { a: "¿Que eres?", q: "what are you?" },
+        { a: "¿Qué eres?", q: "what are you?" },
         { a: "¿Dónde estás?", q: "Where are you?" },
         { a: "¿Cuándo corres?", q: "When will you run?" },
         { a: "¿Por qué caminas?", q: "Why do you walk?" },
         { a: "¿Con o sin?", q: "With or without?" },
-        { a: "Quándo?", q: "When?" },
+        { a: "Cuándo?", q: "When?" },
         { a: "Lunes o Martes?", q: "Monday or Tuesday?" },
-        { a: "Miercoles o Jueves?", q: "Wednesday or Thursday?" },
+        { a: "Miércoles o Jueves?", q: "Wednesday or Thursday?" },
         { a: "Viernes y Sábado o Domingo", q: "Friday and Saturday or Sunday" },
         { a: "El partido es mañana", q: "The game is tomorrow" },
         { a: "El español es divertido.", q: "Spanish is fun." },
         { a: "Feliz fin de semana!", q: "Happy weekend!" },
         { a: "Disfruta el viernes!", q: "Enjoy your Friday!" },
-        { a: "", q: "" },
-        { a: "", q: "" },
-        { a: "", q: "" },
-        { a: "", q: "" },
-        { a: "", q: "" },
-        { a: "", q: "" }
     ];
 });
 define("sagrada_escritura/oracion", ["require", "exports", "quizlet/fun"], function (require, exports, fun_4) {
@@ -2074,7 +2062,7 @@ define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros
     opuesto_packet_1 = __importDefault(opuesto_packet_1);
     dialog_1 = __importDefault(dialog_1);
     qa_1 = __importDefault(qa_1);
-    return [].concat(dialog_1["default"], qa_1["default"], pronoun_packet_1["default"], sustantivo_packet_1["default"], question_packet_1["default"], opuesto_packet_1["default"], n_meros_packet_1["default"], oraci_n_packet_1["default"]);
+    return [].concat(question_packet_1["default"], dialog_1["default"], qa_1["default"], pronoun_packet_1["default"], sustantivo_packet_1["default"], opuesto_packet_1["default"], n_meros_packet_1["default"], oraci_n_packet_1["default"]);
 });
 define("quizlet/topical/food", ["require", "exports"], function (require, exports) {
     "use strict";

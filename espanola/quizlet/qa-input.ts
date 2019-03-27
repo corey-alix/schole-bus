@@ -11,7 +11,7 @@ function soundex(a: string) {
 		.map(v => (parseInt(v).toString() === v ? nums[parseInt(v)].es : v))
 		.join(" ");
 	a = a.toLowerCase();
-	a = a.replace(/[.,?¿¡ ]/g, "");
+	a = a.replace(/[.,?¿¡! ]/g, "");
 	a = a.replace(/á/g, "a");
 	a = a.replace(/é/g, "e");
 	a = a.replace(/í/g, "i");
@@ -99,6 +99,8 @@ export class QaInput extends WebComponent {
 
 	constructor(domNode: HTMLElement) {
 		super(domNode);
+		let answer = this.getAttribute("answer") || "";
+
 		this.label = document.createElement("label");
 		this.input = document.createElement("input");
 		this.input.type = "text";
@@ -107,11 +109,11 @@ export class QaInput extends WebComponent {
 		this.help.tabIndex = -1; // no tab
 		this.help.type = "button";
 		this.help.innerHTML = "�";
+		this.input.placeholder = answer;
 
 		this.handlers.push(
 			SystemEvents.watch("speech-detected", (value: { result: string }) => {
-				if (!this.hasFocus()) return;
-				let answer = this.getAttribute("answer") || "";
+				//if (!this.hasFocus()) return;
 				if (areEqual(value.result, answer)) {
 					this.input.value = answer;
 					if (this.validate()) {
