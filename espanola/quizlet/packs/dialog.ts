@@ -65,7 +65,7 @@ const dialog = [
 	{ es: "Yo soy de España", en: "I am from Spain" },
 	{ es: "Lo siento, estoy mal", en: "I am sorry, I'm not well" },
 	{ es: "Tú usas el carro?", en: "Do you use the car?" },
-	{ es: "Señor, usted usa el teléfono?", en: "Sir, are you using the telephone?" },
+	{ es: "Señor, ¿estás usando el teléfono?", en: "Sir, are you using the telephone?" },
 	{ es: "Yo necesito mi boleto.", en: "I need my ticket." },
 	{ es: "Ella tiene una maleta.", en: "She has a suitcase." },
 	{ es: "Usted tiene una bolsa?", en: "Do you have a bag?" },

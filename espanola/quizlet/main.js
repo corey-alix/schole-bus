@@ -1532,7 +1532,7 @@ define("quizlet/packs/dialog", ["require", "exports"], function (require, export
         { es: "Yo soy de España", en: "I am from Spain" },
         { es: "Lo siento, estoy mal", en: "I am sorry, I'm not well" },
         { es: "Tú usas el carro?", en: "Do you use the car?" },
-        { es: "Señor, usted usa el teléfono?", en: "Sir, are you using the telephone?" },
+        { es: "Señor, ¿estás usando el teléfono?", en: "Sir, are you using the telephone?" },
         { es: "Yo necesito mi boleto.", en: "I need my ticket." },
         { es: "Ella tiene una maleta.", en: "She has a suitcase." },
         { es: "Usted tiene una bolsa?", en: "Do you have a bag?" },
@@ -1764,7 +1764,7 @@ define("verbos/index", ["require", "exports"], function (require, exports) {
             hemos: { es: "hemos dicho", en: "we have said" }
         }
     ];
-    return verbos.concat(regular("caminar", { infinitive: "walk" }), regular("correr", { infinitive: "run", ing: "running" }), regular("escribir", { infinitive: "write", ing: "writing" }), regular("escuchar", { infinitive: "listen" }), regular("descubrir", { infinitive: "discover" }), regular("dormir", { infinitive: "sleep" }), regular("comer", { infinitive: "eat" }));
+    return verbos.concat(regular("caminar", { infinitive: "walk" }), regular("correr", { infinitive: "run", ing: "running" }), regular("escribir", { infinitive: "write", ing: "writing" }), regular("escuchar", { infinitive: "listen" }), regular("descubrir", { infinitive: "discover" }), regular("comer", { infinitive: "eat" }));
 });
 define("quizlet/packs/has-packet", ["require", "exports", "verbos/index"], function (require, exports, index_2) {
     "use strict";
@@ -1873,7 +1873,8 @@ define("quizlet/packs/question-packet", ["require", "exports"], function (requir
         { a: "Lunes o Martes?", q: "Monday or Tuesday?" },
         { a: "Miércoles o Jueves?", q: "Wednesday or Thursday?" },
         { a: "Viernes y Sábado o Domingo", q: "Friday and Saturday or Sunday" },
-        { a: "El partido es mañana", q: "The game is tomorrow" },
+        { a: "¿El partido es mañana?", q: "The match is tomorrow?" },
+        { a: "¿quieres jugar un juego?", q: "do you want to play a game?" },
         { a: "El español es divertido.", q: "Spanish is fun." },
         { a: "Feliz fin de semana!", q: "Happy weekend!" },
         { a: "Disfruta el viernes!", q: "Enjoy your Friday!" },

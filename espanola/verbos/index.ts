@@ -236,6 +236,5 @@ export = verbos.concat(
 	regular("escribir", { infinitive: "write", ing: "writing" }),
 	regular("escuchar", { infinitive: "listen" }),
 	regular("descubrir", { infinitive: "discover" }),
-	regular("dormir", { infinitive: "sleep" }),
 	regular("comer", { infinitive: "eat" })
 );
