@@ -1146,7 +1146,7 @@ define("sentences/index", ["require", "exports", "sentences/opuesto"], function 
         { es: "El queso es de Chihuahua.", en: "The cheese is from Chihuahua." },
         { es: "El chihuahua es muy blanco.", en: "The chihuahua is very white" },
         { es: "¿La niña es tu hija?", en: "The girl is your daughter?" },
-        { es: "He está con el pastor.", en: "Él is with the pastor." },
+        { es: "Él está con el pastor.", en: "He is with the pastor." },
         { es: "¡Muy bien!", en: "Very good!" },
         { es: "Somos hijos de Dios por medio de Cristo.", en: "We are children of God through Christ." },
         { es: "Somos de Estados Unidos.", en: "We are from the United States." },
