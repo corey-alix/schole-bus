@@ -361,7 +361,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             .map(function (v) { return (parseInt(v).toString() === v ? nums_1.nums[parseInt(v)].es : v); })
             .join(" ");
         a = a.toLowerCase();
-        a = a.replace(/[.,?¿¡! ]/g, "");
+        a = a.replace(/[.,?¿¡!" ]/g, "");
         a = a.replace(/á/g, "a");
         a = a.replace(/é/g, "e");
         a = a.replace(/í/g, "i");
@@ -1133,7 +1133,7 @@ define("sentences/index", ["require", "exports", "sentences/opuesto"], function 
         { es: "Hasta luego.", en: "See you later." },
         { es: "Ella es mi hermana en Cristo.", en: "She is my sister in Christ." },
         { es: "Cantar a Dios es importante.", en: "Singing to God is important." },
-        { es: "Gracia por todo.", en: "Thank you for everything." },
+        { es: "Gracias por todo.", en: "Thank you for everything." },
         { es: "Gracias por cantar.", en: "Thank you for singing." },
         { es: "Gracias por estudiar conmigo.", en: "Thank you for studying with me." },
         { es: "¡Muy gracias!", en: "Thank you so much!" },
@@ -1146,7 +1146,7 @@ define("sentences/index", ["require", "exports", "sentences/opuesto"], function 
         { es: "El queso es de Chihuahua.", en: "The cheese is from Chihuahua." },
         { es: "El chihuahua es muy blanco.", en: "The chihuahua is very white" },
         { es: "¿La niña es tu hija?", en: "The girl is your daughter?" },
-        { es: "Todd está con el pastor.", en: "Todd is with the pastor." },
+        { es: "He está con el pastor.", en: "Él is with the pastor." },
         { es: "¡Muy bien!", en: "Very good!" },
         { es: "Somos hijos de Dios por medio de Cristo.", en: "We are children of God through Christ." },
         { es: "Somos de Estados Unidos.", en: "We are from the United States." },
@@ -1908,7 +1908,7 @@ define("sagrada_escritura/oracion", ["require", "exports", "quizlet/fun"], funct
         { es: "Eres poderoso.", en: "You are powerful." },
         { es: "Tú eres mi roca.", en: "You are my rock." },
         { es: "Tú eres nuestro Salvador.", en: "You are our Savior." },
-        { es: "No hay otra nombre.", en: "There is no other name." },
+        { es: "No hay otro nombre.", en: "There is no other name." },
         { es: "Adoramos tu nombre.", en: "We adore your name." },
         { es: "Grande es tu fidelidad.", en: "Great is your faithfulness." },
         { es: "Te Alabamos.", en: "We praise you." },

@@ -27,7 +27,7 @@ const adoración = [
 	{ es: "Eres poderoso.", en: "You are powerful." },
 	{ es: "Tú eres mi roca.", en: "You are my rock." },
 	{ es: "Tú eres nuestro Salvador.", en: "You are our Savior." },
-	{ es: "No hay otra nombre.", en: "There is no other name." },
+	{ es: "No hay otro nombre.", en: "There is no other name." },
 	{ es: "Adoramos tu nombre.", en: "We adore your name." },
 	{ es: "Grande es tu fidelidad.", en: "Great is your faithfulness." },
 	{ es: "Te Alabamos.", en: "We praise you." },
