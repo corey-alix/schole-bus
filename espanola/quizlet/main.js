@@ -25,6 +25,13 @@ define("quizlet/webcomponent", ["require", "exports"], function (require, export
             domNode.setAttribute("registry-key", nextkey + "");
             registry[nextkey++] = this;
         }
+        WebComponent.prototype.destroy = function () {
+            var i = registry.indexOf(this);
+            if (i < 0)
+                return;
+            registry.splice(i, 1);
+            this.domNode.remove();
+        };
         WebComponent.prototype.connectedCallback = function () {
             // added to dom
         };
@@ -126,9 +133,10 @@ define("quizlet/console-log", ["require", "exports", "quizlet/webcomponent", "qu
         function ConsoleLog(domNode) {
             var _this = _super.call(this, domNode) || this;
             system_events_1.SystemEvents.watch("log", function (value) {
-                var logItem = document.createElement("div");
-                logItem.innerHTML = value.message;
-                domNode.insertBefore(logItem, domNode.firstChild);
+                console.log(value.message);
+                // let logItem = document.createElement("div");
+                // logItem.innerHTML = value.message;
+                // domNode.insertBefore(logItem, domNode.firstChild);
             });
             return _this;
         }
@@ -283,13 +291,12 @@ define("quizlet/listener", ["require", "exports", "quizlet/console-log", "quizle
                             var transcript = result[j].transcript;
                             console.log(transcript, result[j]);
                             var confidence = result[j].confidence;
-                            if (0.5 < confidence) {
-                                console_log_1.log(transcript + " (" + asPercent(confidence) + ")");
-                            }
-                            if (0.8 < confidence) {
-                                system_events_2.SystemEvents.trigger("speech-detected", { result: transcript });
-                                return;
-                            }
+                            console_log_1.log(transcript + " (" + asPercent(confidence) + ")");
+                            system_events_2.SystemEvents.trigger("speech-detected", {
+                                result: transcript,
+                                power: confidence * 100
+                            });
+                            return;
                         }
                     }
                 }
@@ -369,13 +376,13 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         a = a.replace(/ú/g, "u");
         return a;
     }
-    function areEqual(a, b) {
+    function areEqual(result, answer) {
         // use a soundex algorithm
-        a = soundex(a);
-        b = soundex(b);
-        return a === b;
+        result = soundex(result);
+        answer = soundex(answer);
+        return 0 <= result.indexOf(answer);
     }
-    webcomponent_3.cssin("qa-input", "qa-input {\n\tpadding-top: 20px;\n}\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tdisplay: none;\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tpadding-top: 20px;\n}\nqa-input.complete label {\n\tdisplay: block;\n}\nqa-input.complete input {\n\tdisplay: none;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: gray;\n\tposition: relative;\n    bottom: 3px;\n\tleft: 10px;\n}\nqa-input button[disabled] {\n\tcolor: green;\n}");
+    webcomponent_3.cssin("qa-input", "qa-input {\n\tpadding-top: 20px;\n}\n\nqa-input .power-level {\n\tborder: 1px solid green;\n\tdisplay: inline-block;\n}\n\nqa-input .correct {\n\tcolor: green;\n\tborder: 1px solid green;\n}\nqa-input .wrong {\n\tborder: 1px solid red;\n}\nqa-input label {\n\tdisplay: none;\n\tfont-size: xx-large;\n\twhitespace:wrap;\n\tpadding-top: 20px;\n}\nqa-input.complete label {\n\tdisplay: block;\n}\nqa-input.complete input {\n\tdisplay: none;\n}\nqa-input input {\n\tfont-size: x-large;\n\tdisplay: block;\n\tvertical-align: top;\n\tbackground-color: black;\n\tborder: none;\n\tcolor: gray;\n\tpadding-left: 10px;\n\tmin-height: 64px;\n\tmax-height: 64px;\n\twidth: 100%;\n\tpadding: 20px;\n}\nqa-input button {\n    background: transparent;\n    border: none;\n    color: gray;\n\tposition: relative;\n    bottom: 3px;\n\tleft: 10px;\n}\nqa-input button[disabled] {\n\tcolor: green;\n}");
     function dump(o) {
         var result = {};
         for (var p in o) {
@@ -390,6 +397,19 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
     function hasFocus(element) {
         return document.activeElement === element;
     }
+    var PowerLevel = /** @class */ (function (_super) {
+        __extends(PowerLevel, _super);
+        function PowerLevel(domNode) {
+            var _this = _super.call(this, domNode) || this;
+            domNode.classList.add("power-level", "hidden");
+            return _this;
+        }
+        PowerLevel.prototype.setPower = function (power) {
+            this.domNode.classList.remove("hidden");
+            this.domNode.style.width = power + "%";
+        };
+        return PowerLevel;
+    }(webcomponent_3.WebComponent));
     var QaInput = /** @class */ (function (_super) {
         __extends(QaInput, _super);
         function QaInput(domNode) {
@@ -406,12 +426,18 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             _this.help.type = "button";
             _this.help.innerHTML = "�";
             _this.input.placeholder = answer;
+            _this.power = new PowerLevel(document.createElement("div"));
             _this.handlers.push(system_events_3.SystemEvents.watch("speech-detected", function (value) {
-                //if (!this.hasFocus()) return;
                 if (areEqual(value.result, answer)) {
-                    _this.input.value = answer;
-                    if (_this.validate()) {
-                        _this.complete();
+                    _this.showPower(value.power);
+                    if (value.power > 85) {
+                        _this.input.value = answer;
+                        if (_this.validate()) {
+                            _this.complete();
+                        }
+                    }
+                    else {
+                        _this.hint();
                     }
                 }
                 else {
@@ -522,6 +548,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
         QaInput.prototype.connectedCallback = function () {
             var _this = this;
             var input = this.input;
+            var power = this.power;
             var answer = this.getAttribute("answer") || "";
             var question = this.getAttribute("question") || "";
             var hint = this.getAttribute("hint") || "";
@@ -588,6 +615,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             shadowRoot.appendChild(label);
             label.appendChild(this.help);
             shadowRoot.appendChild(input);
+            shadowRoot.appendChild(power.domNode);
             this.help.onclick = function () {
                 _this.input.focus();
                 system_events_3.SystemEvents.trigger("hint", { hint: answer });
@@ -613,6 +641,9 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                 return;
             }
             setTimeout(function () { return s && s.focus(); }, 200);
+        };
+        QaInput.prototype.showPower = function (power) {
+            this.power.setPower(power);
         };
         return QaInput;
     }(webcomponent_3.WebComponent));
@@ -668,26 +699,34 @@ define("quizlet/qa-block", ["require", "exports", "quizlet/webcomponent", "quizl
                 require(["quizlet/packs/" + packet], function (data) {
                     var shadowRoot = _this.attachShadow({ mode: "open" });
                     var div = shadowRoot; // could create a div if real shadow
-                    var qa = data.map(function (d) { return ({ a: d.a, q: d.q, score: score(d.q) }); });
-                    var minScore = qa[0].score;
-                    qa.forEach(function (d) { return (minScore = Math.min(minScore, d.score)); });
-                    qa = qa.filter(function (d) { return d.score <= minScore + 100; });
-                    if (qa.length > 10) {
-                        qa = qa.slice(1, 10);
-                    }
-                    qa = fun_1.shuffle(qa).slice(0, 5);
-                    var items = qa.map(function (item) {
-                        var qaItem = document.createElement("qa-input");
-                        qaItem.setAttribute("question", item.q);
-                        qaItem.setAttribute("answer", item.a);
-                        qaItem.setAttribute("score", item.score + "");
-                        var input = new qa_input_1.QaInput(qaItem);
-                        div.appendChild(qaItem);
-                        input.connectedCallback();
-                        return input;
+                    var load = function () {
+                        var qa = data.map(function (d) { return ({ a: d.a, q: d.q, score: score(d.q) }); });
+                        var minScore = qa[0].score;
+                        qa.forEach(function (d) { return (minScore = Math.min(minScore, d.score)); });
+                        qa = qa.filter(function (d) { return d.score <= minScore + 100; });
+                        if (qa.length > 10) {
+                            qa = qa.slice(1, 10);
+                        }
+                        qa = fun_1.shuffle(qa).slice(0, 5);
+                        var items = qa.map(function (item) {
+                            var qaItem = document.createElement("qa-input");
+                            qaItem.setAttribute("question", item.q);
+                            qaItem.setAttribute("answer", item.a);
+                            qaItem.setAttribute("score", item.score + "");
+                            var input = new qa_input_1.QaInput(qaItem);
+                            div.appendChild(qaItem);
+                            input.connectedCallback();
+                            return input;
+                        });
+                        var input = items[0];
+                        input && input.focus();
+                        return items;
+                    };
+                    var inputs = load();
+                    system_events_4.SystemEvents.watch("reload", function (args) {
+                        inputs.forEach(function (i) { return i.destroy(); });
+                        inputs = load();
                     });
-                    var input = items[0];
-                    input && input.focus();
                 });
             });
         };
@@ -824,7 +863,10 @@ define("quizlet/main", ["require", "exports", "quizlet/score-board", "quizlet/qa
     });
     system_events_5.SystemEvents.watch("no-more-input", function () {
         document.body.classList.add("hidden");
-        setTimeout(function () { return location.reload(); }, 2000);
+        setTimeout(function () {
+            system_events_5.SystemEvents.trigger("reload", {});
+            document.body.classList.remove("hidden");
+        }, 2000);
     });
     system_events_5.SystemEvents.watch("xp", function (result) {
         storage_2.storage.setScore(result);
@@ -1170,7 +1212,7 @@ define("sentences/index", ["require", "exports", "sentences/opuesto"], function 
         { es: "¿Cuándo vamos a la iglesia?", en: "When are we going to church?" },
         { es: "¿Donde estamos comiendo?", en: "Where are we eating?" },
         { es: "¿Dónde vives?", en: "Where do you live?" },
-        { es: "¿Dónde está Albert?", en: "Where is Albert?" },
+        { es: "¿Dónde está ella?", en: "Where is she?" },
         { es: "¿A dónde él va?", en: "Where is he going?" },
         { es: "¿Dónde está el baño?", en: "Where is the bathroom?" },
         { es: "¿Dónde está el niño?", en: "Where is the boy?" },
@@ -1462,6 +1504,16 @@ define("quizlet/qa", ["require", "exports", "verbos/haber", "verbos/poder", "ver
     scores = scores.slice(1, 11);
     scores = fun_2.shuffle(scores);
     return scores.slice(0, 5);
+});
+define("quizlet/packs/cincos", ["require", "exports"], function (require, exports) {
+    "use strict";
+    var cincos = [
+        { es: "en el principio", en: "In the beginning" },
+        { es: "creo Dios", en: "God created" },
+        { es: "los cielos", en: "the heavens" },
+        { es: "y la tierra.", en: "and the earth." }
+    ];
+    return cincos.map(function (q) { return ({ a: q.es, q: q.en }); });
 });
 define("quizlet/packs/dialog", ["require", "exports"], function (require, exports) {
     "use strict";
@@ -1936,7 +1988,7 @@ define("sagrada_escritura/oracion", ["require", "exports", "quizlet/fun"], funct
             en: "Thank you my family, my friends, and your church."
         },
         { es: "Gracias por amarme.", en: "Thank you for loving me." },
-        { es: "Gracias por tu amor para mi.", en: "Thank you for your love of me." }
+        { es: "Gracias por tu amor para mí.", en: "Thank you for your love of me." }
     ];
     var suplication = [
         { es: "Bendiga nuestros amigos cubanos.", en: "Bless our Cuban friends." },
@@ -2053,7 +2105,7 @@ define("quizlet/packs/stories-packet", ["require", "exports", "quizlet/stories/e
     el_rescatado_1 = __importDefault(el_rescatado_1);
     return el_rescatado_1["default"].map(function (v) { return ({ a: v.es, q: v.en }); });
 });
-define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/packs/oraci\u00F3n-packet", "quizlet/packs/opuesto-packet", "quizlet/packs/dialog", "quizlet/qa"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, question_packet_1, oraci_n_packet_1, opuesto_packet_1, dialog_1, qa_1) {
+define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros-packet", "quizlet/packs/pronoun-packet", "quizlet/packs/sustantivo-packet", "quizlet/packs/question-packet", "quizlet/packs/oraci\u00F3n-packet", "quizlet/packs/opuesto-packet", "quizlet/packs/dialog", "quizlet/qa", "quizlet/packs/cincos"], function (require, exports, n_meros_packet_1, pronoun_packet_1, sustantivo_packet_1, question_packet_1, oraci_n_packet_1, opuesto_packet_1, dialog_1, qa_1, cincos_1) {
     "use strict";
     n_meros_packet_1 = __importDefault(n_meros_packet_1);
     pronoun_packet_1 = __importDefault(pronoun_packet_1);
@@ -2063,7 +2115,8 @@ define("quizlet/packs/index", ["require", "exports", "quizlet/packs/n\u00FAmeros
     opuesto_packet_1 = __importDefault(opuesto_packet_1);
     dialog_1 = __importDefault(dialog_1);
     qa_1 = __importDefault(qa_1);
-    return [].concat(question_packet_1["default"], dialog_1["default"], qa_1["default"], pronoun_packet_1["default"], sustantivo_packet_1["default"], opuesto_packet_1["default"], n_meros_packet_1["default"], oraci_n_packet_1["default"]);
+    cincos_1 = __importDefault(cincos_1);
+    return [].concat(cincos_1["default"], question_packet_1["default"], dialog_1["default"], qa_1["default"], pronoun_packet_1["default"], sustantivo_packet_1["default"], opuesto_packet_1["default"], n_meros_packet_1["default"], oraci_n_packet_1["default"]);
 });
 define("quizlet/topical/food", ["require", "exports"], function (require, exports) {
     "use strict";

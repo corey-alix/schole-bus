@@ -2,9 +2,17 @@ let nextkey = 0;
 const registry: Array<WebComponent> = [];
 
 export class WebComponent {
+
 	constructor(public domNode: HTMLElement) {
 		domNode.setAttribute("registry-key", nextkey + "");
 		registry[nextkey++] = this;
+	}
+
+	destroy() {
+		let i = registry.indexOf(this);
+		if (i < 0) return;
+		registry.splice(i, 1);
+		this.domNode.remove();
 	}
 
 	connectedCallback() {
@@ -31,7 +39,7 @@ export class WebComponent {
 		this.attributeChangedCallback();
 	}
 
-	public attributeChangedCallback() {}
+	public attributeChangedCallback() { }
 }
 
 export function getComponent(domNode: HTMLElement) {

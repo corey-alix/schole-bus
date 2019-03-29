@@ -19,11 +19,11 @@ function soundex(a: string) {
 	a = a.replace(/ú/g, "u");
 	return a;
 }
-function areEqual(a: string, b: string) {
+function areEqual(result: string, answer: string) {
 	// use a soundex algorithm
-	a = soundex(a);
-	b = soundex(b);
-	return a === b;
+	result = soundex(result);
+	answer = soundex(answer);
+	return 0 <= result.indexOf(answer);
 }
 
 cssin(
@@ -31,6 +31,12 @@ cssin(
 	`qa-input {
 	padding-top: 20px;
 }
+
+qa-input .power-level {
+	border: 1px solid green;
+	display: inline-block;
+}
+
 qa-input .correct {
 	color: green;
 	border: 1px solid green;
@@ -90,10 +96,24 @@ function hasFocus(element: HTMLElement) {
 	return document.activeElement === element;
 }
 
+class PowerLevel extends WebComponent {
+	constructor(domNode: HTMLElement) {
+		super(domNode);
+		domNode.classList.add("power-level", "hidden");
+	}
+
+	setPower(power: number): any {
+		this.domNode.classList.remove("hidden");
+		this.domNode.style.width = `${power}%`;
+	}
+}
+
 export class QaInput extends WebComponent {
 	input: HTMLInputElement;
 	label: HTMLLabelElement;
 	help: HTMLButtonElement;
+	power: PowerLevel;
+
 	score = [0, 0];
 	public handlers: Array<() => void> = [];
 
@@ -110,14 +130,19 @@ export class QaInput extends WebComponent {
 		this.help.type = "button";
 		this.help.innerHTML = "�";
 		this.input.placeholder = answer;
+		this.power = new PowerLevel(document.createElement("div"));
 
 		this.handlers.push(
-			SystemEvents.watch("speech-detected", (value: { result: string }) => {
-				//if (!this.hasFocus()) return;
+			SystemEvents.watch("speech-detected", (value: { result: string, power: number }) => {
 				if (areEqual(value.result, answer)) {
-					this.input.value = answer;
-					if (this.validate()) {
-						this.complete();
+					this.showPower(value.power);
+					if (value.power > 85) {
+						this.input.value = answer;
+						if (this.validate()) {
+							this.complete();
+						}
+					} else {
+						this.hint();
 					}
 				} else {
 					if (value.result === "ayúdame") {
@@ -233,6 +258,7 @@ export class QaInput extends WebComponent {
 
 	connectedCallback() {
 		const input = this.input;
+		const power = this.power;
 		const answer = this.getAttribute("answer") || "";
 		const question = this.getAttribute("question") || "";
 		const hint = this.getAttribute("hint") || "";
@@ -303,6 +329,7 @@ export class QaInput extends WebComponent {
 		shadowRoot.appendChild(label);
 		label.appendChild(this.help);
 		shadowRoot.appendChild(input);
+		shadowRoot.appendChild(power.domNode);
 
 		this.help.onclick = () => {
 			this.input.focus();
@@ -331,6 +358,10 @@ export class QaInput extends WebComponent {
 		}
 
 		setTimeout(() => s && s.focus(), 200);
+	}
+
+	showPower(power: number): any {
+		this.power.setPower(power);
 	}
 }
 

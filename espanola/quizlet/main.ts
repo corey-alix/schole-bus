@@ -72,7 +72,10 @@ SystemEvents.watch("hint", (result: { hint: string }) => {
 
 SystemEvents.watch("no-more-input", () => {
 	document.body.classList.add("hidden");
-	setTimeout(() => location.reload(), 2000);
+	setTimeout(() => {
+		SystemEvents.trigger("reload", {});
+		document.body.classList.remove("hidden");
+	}, 2000);
 });
 
 SystemEvents.watch("xp", (result: { question: string; score: number }) => {
@@ -91,7 +94,7 @@ SystemEvents.watch("listen", () => {
 	listener.listen();
 });
 
-SystemEvents.watch("speech-detected", (result: { result: string }) => {
+SystemEvents.watch("speech-detected", (result: { result: string, power: number }) => {
 	showHint(result.result);
 });
 

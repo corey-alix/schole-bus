@@ -172,7 +172,7 @@ const baseline = [
 	{ es: "¿Cuándo vamos a la iglesia?", en: "When are we going to church?" },
 	{ es: "¿Donde estamos comiendo?", en: "Where are we eating?" },
 	{ es: "¿Dónde vives?", en: "Where do you live?" },
-	{ es: "¿Dónde está Albert?", en: "Where is Albert?" },
+	{ es: "¿Dónde está ella?", en: "Where is she?" },
 	{ es: "¿A dónde él va?", en: "Where is he going?" },
 	{ es: "¿Dónde está el baño?", en: "Where is the bathroom?" },
 	{ es: "¿Dónde está el niño?", en: "Where is the boy?" },

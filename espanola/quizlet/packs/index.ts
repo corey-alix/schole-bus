@@ -7,7 +7,9 @@ import opuesto from "./opuesto-packet";
 import dialog from "./dialog";
 import qa from "../qa";
 import stories from "./stories-packet";
+import cincos from "./cincos";
 export = ([] as Array<{ a: string; q: string }>).concat(
+	cincos,
 	questions,
 	dialog,
 	qa,

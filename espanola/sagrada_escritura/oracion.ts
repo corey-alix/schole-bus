@@ -57,7 +57,7 @@ const gracias = [
 		en: "Thank you my family, my friends, and your church."
 	},
 	{ es: "Gracias por amarme.", en: "Thank you for loving me." },
-	{ es: "Gracias por tu amor para mi.", en: "Thank you for your love of me." }
+	{ es: "Gracias por tu amor para mí.", en: "Thank you for your love of me." }
 ];
 
 const suplication = [

@@ -34,13 +34,12 @@ class Listener {
 						let transcript = result[j].transcript;
 						console.log(transcript, result[j]);
 						let confidence = result[j].confidence;
-						if (0.5 < confidence) {
-							log(`${transcript} (${asPercent(confidence)})`);
-						}
-						if (0.8 < confidence) {
-							SystemEvents.trigger("speech-detected", { result: transcript });
-							return;
-						}
+						log(`${transcript} (${asPercent(confidence)})`);
+						SystemEvents.trigger("speech-detected", {
+							result: transcript,
+							power: confidence * 100
+						});
+						return;
 					}
 				}
 			}
