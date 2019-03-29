@@ -1,64 +1,72 @@
 <!DOCTYPE html>
 <html lang="EN" class="schole soho">
-	<head>
-		<meta charset="utf-8" />
-		<title>Fill in the blank</title>
-		<link rel="stylesheet" href="dark-theme.css" />
-		<script src="../../dist/require.js"></script>
-		<script src="main.js"></script>
-		<script defer>
-			require(["quizlet/main"]);
-		</script>
-		<style>
-			qa-block {
-				display: grid;
-			}
-			qa-input {
-				display: block;
-			}
-			input {
-				font-size: x-large;
-			}
-			score-board {
-				font-size: xx-large;
-				color: white;
-				width: 100%;
-				text-align: center;
-				padding: 20px;
-				display: inline-block;
-			}
-			.center-frame {
-				position: absolute;
-				top: 20px;
-				left: 20px;
-				bottom: 20px;
-				right: 20px;
-				padding: 20px;
-			}
-			hint-slider {
-				font-size: xx-large;
-				color: white;
-			}
 
-			.visible {
-				visibility: visible;
-				opacity: 1;
-				transition: opacity 2s linear;
-			}
+<head>
+	<meta charset="utf-8" />
+	<title>Fill in the blank</title>
+	<link rel="stylesheet" href="dark-theme.css" />
+	<script src="../../dist/require.js"></script>
+	<script src="main.js"></script>
+	<script defer>
+		require(["quizlet/main"]);
+	</script>
+	<style>
+		qa-block {
+			display: grid;
+		}
 
-			.hidden {
-				visibility: hidden;
-				opacity: 0;
-				transition: visibility 0s 2s, opacity 2s linear;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="center-frame">
-			<qa-block packet="index"></qa-block>
-			<score-board score="0"></score-board>
-			<hint-slider></hint-slider>
-			<console-log>Press F1 for audio</console-log>
-		</div>
-	</body>
+		qa-input {
+			display: block;
+		}
+
+		input {
+			font-size: x-large;
+		}
+
+		score-board {
+			font-size: xx-large;
+			color: white;
+			width: 100%;
+			text-align: center;
+			padding: 20px;
+			display: inline-block;
+		}
+
+		.center-frame {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			bottom: 20px;
+			right: 20px;
+			padding: 20px;
+		}
+
+		hint-slider {
+			font-size: xx-large;
+			color: white;
+		}
+
+		.visible {
+			visibility: visible;
+			opacity: 1;
+			transition: opacity 2s linear;
+		}
+
+		.hidden {
+			visibility: hidden;
+			opacity: 0;
+			transition: visibility 0s 2s, opacity 2s linear;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="center-frame">
+		<qa-block packet="index"></qa-block>
+		<score-board score="0"></score-board>
+		<hint-slider></hint-slider>
+		<console-log><br />Press F1 for audio</console-log>
+	</div>
+</body>
+
 </html>

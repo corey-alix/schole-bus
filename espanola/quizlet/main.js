@@ -427,10 +427,13 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
             _this.help.innerHTML = "�";
             _this.input.placeholder = answer;
             _this.power = new PowerLevel(document.createElement("div"));
+            var matchCount = 0;
+            var lastAnswer = "";
             _this.handlers.push(system_events_3.SystemEvents.watch("speech-detected", function (value) {
-                if (areEqual(value.result, answer)) {
+                if (areEqual(value.result, answer) || areEqual(lastAnswer + value.result, answer)) {
+                    matchCount++;
                     _this.showPower(value.power);
-                    if (value.power > 85) {
+                    if (value.power > 60 || matchCount > 2) {
                         _this.input.value = answer;
                         if (_this.validate()) {
                             _this.complete();
@@ -441,6 +444,7 @@ define("quizlet/qa-input", ["require", "exports", "quizlet/webcomponent", "quizl
                     }
                 }
                 else {
+                    lastAnswer = value.result;
                     if (value.result === "ayúdame") {
                         _this.hint();
                     }
@@ -663,16 +667,26 @@ define("quizlet/storage", ["require", "exports"], function (require, exports) {
             };
         };
         LocalStorage.prototype.upgradeScoreboard = function () {
-            return JSON.parse(localStorage.getItem("scoreboard") || "{}");
+            var result = JSON.parse(localStorage.getItem("scoreboard") || "{}");
+            Object.keys(result).forEach(function (k) {
+                if (typeof result[k] === "number") {
+                    var score = result[k];
+                    result[k] = { score: score, power: 0 };
+                }
+            });
+            return result;
         };
         LocalStorage.prototype.save = function () {
             localStorage.setItem("scoreboard", JSON.stringify(this.data.scoreboard));
         };
         LocalStorage.prototype.getScore = function (data) {
-            return this.data.scoreboard[data.question] || 0;
+            return (this.data.scoreboard[data.question] || { score: 0 }).score;
         };
         LocalStorage.prototype.setScore = function (data) {
-            this.data.scoreboard[data.question] = (this.data.scoreboard[data.question] || 0) + data.score;
+            this.data.scoreboard[data.question] = {
+                score: this.getScore(data) + data.score,
+                power: data.power || 0
+            };
             this.save();
         };
         return LocalStorage;
@@ -1595,7 +1609,10 @@ define("quizlet/packs/dialog", ["require", "exports"], function (require, export
         { es: "Tú tienes mi dirección?", en: "Do you have my address?" },
         { es: "Señor, yo tengo una pregunta.", en: "Sir, I have a question." },
         { es: "La mujer italiana es mi madre.", en: "The italian woman is my mother." },
-        { es: "Vives en una ciudad pequeña?", en: "Do you live in a small city?" }
+        { es: "Vives en una ciudad pequeña?", en: "Do you live in a small city?" },
+        { es: "El español es divertido.", en: "Spanish is fun." },
+        { es: "Feliz fin de semana!", en: "Happy weekend!" },
+        { es: "Disfruta el viernes!", en: "Enjoy your Friday!" }
     ];
     return dialog.map(function (q) { return ({ a: q.es, q: q.en }); });
 });
@@ -1927,9 +1944,9 @@ define("quizlet/packs/question-packet", ["require", "exports"], function (requir
         { a: "Viernes y Sábado o Domingo", q: "Friday and Saturday or Sunday" },
         { a: "¿El partido es mañana?", q: "The match is tomorrow?" },
         { a: "¿quieres jugar un juego?", q: "do you want to play a game?" },
-        { a: "El español es divertido.", q: "Spanish is fun." },
-        { a: "Feliz fin de semana!", q: "Happy weekend!" },
-        { a: "Disfruta el viernes!", q: "Enjoy your Friday!" },
+        { a: "¿Cual arbol?", q: "Which tree?" },
+        { a: "¿Las ramas más bajas del árbol?", q: "The lowest branches of the tree?" },
+        { a: "¿Donde esta la sierra?", q: "Where is the saw?" },
     ];
 });
 define("sagrada_escritura/oracion", ["require", "exports", "quizlet/fun"], function (require, exports, fun_4) {

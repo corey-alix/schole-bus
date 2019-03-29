@@ -11,7 +11,7 @@ export =[
 	{ a: "Viernes y Sábado o Domingo", q: "Friday and Saturday or Sunday" },
 	{ a: "¿El partido es mañana?", q: "The match is tomorrow?" },
 	{ a: "¿quieres jugar un juego?", q: "do you want to play a game?" },
-	{ a: "El español es divertido.", q: "Spanish is fun." },
-	{ a: "Feliz fin de semana!", q: "Happy weekend!" },
-	{ a: "Disfruta el viernes!", q: "Enjoy your Friday!" },
+	{ a: "¿Cual arbol?", q: "Which tree?" },
+	{ a: "¿Las ramas más bajas del árbol?", q: "The lowest branches of the tree?" },
+	{ a: "¿Donde esta la sierra?", q: "Where is the saw?" },
 ];

@@ -1,4 +1,4 @@
-const dialog = [
+const dialog: Array<{ es: string; en: string }> = [
 	{ es: "Hola, como está usted?", en: "Hello, how are you?" },
 	{ es: "Hola, cómo estás?", en: "Hello, how are you?" },
 	{ es: "Como está ella?", en: "How is she?" },
@@ -76,7 +76,9 @@ const dialog = [
 	{ es: "Tú tienes mi dirección?", en: "Do you have my address?" },
 	{ es: "Señor, yo tengo una pregunta.", en: "Sir, I have a question." },
 	{ es: "La mujer italiana es mi madre.", en: "The italian woman is my mother." },
-	{ es: "Vives en una ciudad pequeña?", en: "Do you live in a small city?" }
-];
+	{ es: "Vives en una ciudad pequeña?", en: "Do you live in a small city?" },
+	{ es: "El español es divertido.", en: "Spanish is fun." },
+	{ es: "Feliz fin de semana!", en: "Happy weekend!" },
+	{ es: "Disfruta el viernes!", en: "Enjoy your Friday!" }];
 
 export = dialog.map(q => ({ a: q.es, q: q.en }));

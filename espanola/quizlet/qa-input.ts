@@ -132,11 +132,14 @@ export class QaInput extends WebComponent {
 		this.input.placeholder = answer;
 		this.power = new PowerLevel(document.createElement("div"));
 
+		let matchCount = 0;
+		let lastAnswer = "";
 		this.handlers.push(
 			SystemEvents.watch("speech-detected", (value: { result: string, power: number }) => {
-				if (areEqual(value.result, answer)) {
+				if (areEqual(value.result, answer) || areEqual(lastAnswer + value.result, answer)) {
+					matchCount++;
 					this.showPower(value.power);
-					if (value.power > 85) {
+					if (value.power > 60 || matchCount > 2) {
 						this.input.value = answer;
 						if (this.validate()) {
 							this.complete();
@@ -145,6 +148,7 @@ export class QaInput extends WebComponent {
 						this.hint();
 					}
 				} else {
+					lastAnswer = value.result;
 					if (value.result === "ayúdame") {
 						this.hint();
 					}

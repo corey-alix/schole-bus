@@ -1,7 +1,7 @@
 import { Dictionary } from "./system-events";
 
 class LocalStorage {
-	public data: { scoreboard: Dictionary<number> };
+	public data: { scoreboard: Dictionary<{ score: number; power: number }> };
 
 	constructor() {
 		this.data = this.upgrade();
@@ -14,7 +14,14 @@ class LocalStorage {
 	}
 
 	private upgradeScoreboard() {
-		return JSON.parse(localStorage.getItem("scoreboard") || "{}");
+		let result = JSON.parse(localStorage.getItem("scoreboard") || "{}");
+		Object.keys(result).forEach(k => {
+			if (typeof result[k] === "number") {
+				let score = result[k];
+				result[k] = { score: score, power: 0 };
+			}
+		})
+		return result;
 	}
 
 	private save() {
@@ -22,11 +29,18 @@ class LocalStorage {
 	}
 
 	public getScore(data: { question: string }) {
-		return this.data.scoreboard[data.question] || 0;
+		return (this.data.scoreboard[data.question] || { score: 0 }).score;
 	}
 
-	public setScore(data: { question: string; score: number }) {
-		this.data.scoreboard[data.question] = (this.data.scoreboard[data.question] || 0) + data.score;
+	public setScore(data: {
+		question: string;
+		score: number;
+		power?: number;
+	}) {
+		this.data.scoreboard[data.question] = {
+			score: this.getScore(data) + data.score,
+			power: data.power || 0
+		};
 		this.save();
 	}
 }
