@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/1.13.1/mapbox-gl.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl-leaflet/0.0.15/leaflet-mapbox-gl.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/1.13.1/mapbox-gl.min.css"
+    />
+    <title>Google Map URL Parser</title>
+    <style>
+      body {
+        background-color: black;
+        color: white;
+      }
+      .map {
+        position: absolute;
+        left: 1rem;
+        right: 2rem;
+        top: 4rem;
+        bottom: 1rem;
+        border: 1px solid white;
+        padding: 1rem;
+      }
+      #url {
+        width: 20rem;
+      }
+    </style>
+  </head>
+  <body>
+    <label
+      >Enter Google Maps URL<br />
+      <input
+        type="text"
+        id="url"
+        value=""
+      />
+    </label>
+    <div class="map">Map Goes Here</div>
+    <script type="module">
+      import { run } from "./index.js";
+      run();
+    </script>
+  </body>
+</html>
