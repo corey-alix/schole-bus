@@ -1,15 +1,5 @@
 .dark body {
   background-color: black;
-  color: white;
-}
-
-.dark input {
-  background-color: black;
-  color: white;
-}
-
-.dark .maptiler-geocoder-results {
-  color: black;
 }
 
 #search {
