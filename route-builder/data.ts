@@ -8,6 +8,7 @@ export const data = [
     lon: -97.387217,
     lat: 37.6853439,
     text: "Wichita",
+    features: ["showers", "lodging"]
   },
   {
     lon: -96.6421455,

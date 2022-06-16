@@ -1,33 +1,32 @@
 import { data } from "./data.js";
-export function run() {
-    console.log("run");
-    const map = createMap();
-    const markers = JSON.parse(localStorage.getItem("markers") ||
-        "[]");
-    if (!markers.length) {
-        data.forEach((d) => markers.push(d));
+const globals = {
+    mapKey: "",
+};
+const markers = loadMarkers();
+function promptFor(key) {
+    globals[key] =
+        localStorage.getItem(key) || "";
+    if (!globals[key]) {
+        globals[key] =
+            prompt(`Enter your ${key}`) || "";
+        localStorage.setItem(key, globals[key]);
     }
-    markers.forEach((marker) => addMarker({
-        text: marker.text,
-        center: [
-            marker.lon,
-            marker.lat,
-        ],
-    }, map));
-    if (markers.length) {
-        const marker = markers[markers.length - 1];
-        map.setCenter([
-            marker.lon,
-            marker.lat,
-        ]);
-    }
-    map.on("load", () => {
-        showMarkers(markers, map);
-        const polyline = [];
-        markers.forEach((marker) => polyline.push([
-            marker.lon,
-            marker.lat,
-        ]));
+    return globals[key];
+}
+function showAllMarkers(map) {
+    const bounds = new mapboxgl.LngLatBounds();
+    markers.forEach((m) => bounds.extend(asPoint(m)));
+    map.fitBounds(bounds, {
+        padding: {
+            top: 50,
+            bottom: 50,
+            left: 50,
+            right: 50,
+        },
+    });
+    const polyline = markers.map((marker) => [marker.lon, marker.lat]);
+    const source = map.getSource("route");
+    if (!source) {
         map.addSource("route", {
             type: "geojson",
             data: {
@@ -39,6 +38,63 @@ export function run() {
                 },
             },
         });
+    }
+    else {
+        source.setData({
+            type: "Feature",
+            properties: {},
+            geometry: {
+                type: "LineString",
+                coordinates: polyline,
+            },
+        });
+    }
+}
+function addMarker(item, map) {
+    const { text, lon, lat } = item;
+    const popup = new mapboxgl.Popup({
+        offset: 25,
+    }).setText(text);
+    const marker = new mapboxgl.Marker({
+        draggable: true,
+        text: text,
+    });
+    // set marker text
+    marker
+        .setLngLat([lon, lat])
+        .setPopup(popup)
+        .addTo(map);
+    marker.on("dragend", () => {
+        const lngLat = marker.getLngLat();
+        item.lat = lngLat.lat;
+        item.lon = lngLat.lng;
+        showAllMarkers(map);
+        saveMarkers();
+    });
+    return marker;
+}
+function createMap() {
+    // creates a maptiler map
+    const map = new mapboxgl.Map({
+        container: "map",
+        style: `https://api.maptiler.com/maps/fd41a7e9-86be-4da8-aff1-f8edfcf37a4b/style.json?key=${globals.mapKey}`,
+        center: [-83.5, 35],
+        zoom: 12,
+    });
+    return map;
+}
+function asPoint(marker) {
+    return [marker.lon, marker.lat];
+}
+export function run() {
+    promptFor("mapKey");
+    const map = createMap();
+    if (!markers.length) {
+        data.forEach((d) => markers.push(d));
+    }
+    markers.forEach((marker) => addMarker(marker, map));
+    map.on("load", () => {
+        showAllMarkers(map);
         map.addLayer({
             id: "route",
             type: "line",
@@ -49,26 +105,22 @@ export function run() {
             },
             paint: {
                 "line-color": "#888",
-                "line-width": 8,
+                "line-width": 4,
             },
         });
     });
     const input = document.getElementById("search");
     input.addEventListener("change", async (e) => {
         const value = input.value;
-        // if value is a comma separated list of numbers
+        // if value is a comma-separated list of numbers
         if (value.match(/^[-0-9.]+, [-0-9.]+$/)) {
             // get the numbers
             const numbers = value
+                .trim()
                 .split(",")
                 .map((n) => parseFloat(n));
             // if there are two numbers create a marker
             if (numbers.length === 2) {
-                const marker = {
-                    lon: numbers[0],
-                    lat: numbers[1],
-                    text: value,
-                };
                 input.value = numbers
                     .reverse()
                     .join(",");
@@ -77,98 +129,32 @@ export function run() {
     });
     const geocoder = new maptiler.Geocoder({
         input: "search",
-        key: "f0zkb15NK1sqOcE72HCf",
+        key: globals.mapKey,
         language: "en",
         bbox: [-135, 20, -80, 50],
     });
     geocoder.on("select", function (item) {
-        console.log("Selected", item);
-        console.log("relevance and center", item.relevance, item.center);
         const center = item.center;
         // add a marker at the center
-        addMarker(item, map);
-        markers.push({
+        const marker = {
             lon: center[0],
             lat: center[1],
             text: item.text,
-        });
-        localStorage.setItem("markers", JSON.stringify(markers));
-        map.setCenter(asPoint(markers[markers.length - 1]));
-        const bounds = map
-            .getBounds()
-            .toArray();
+        };
+        addMarker(marker, map);
+        markers.push(marker);
+        saveMarkers();
+        const bounds = map.getBounds();
         if (markers.length > 0)
-            bounds.push(asPoint(markers[markers.length - 1]));
-        if (markers.length > 1)
-            bounds.push(asPoint(markers[markers.length - 2]));
-        map.fitBounds(bounds, {
-            padding: {
-                top: 10,
-                bottom: 25,
-                left: 15,
-                right: 5,
-            },
-        });
+            bounds.extend(asPoint(markers[markers.length - 1]));
+        showAllMarkers(map);
     });
 }
-function showMarkers(markers, map) {
-    if (markers.length > 1) {
-        const bounds = [
-            asPoint(markers[markers.length - 2]),
-            asPoint(markers[markers.length - 1]),
-        ];
-        map.fitBounds(bounds, {
-            padding: {
-                top: 10,
-                bottom: 25,
-                left: 15,
-                right: 5,
-            },
-        });
-    }
+function saveMarkers() {
+    localStorage.setItem("markers", JSON.stringify(markers));
 }
-function addMarker(item, map) {
-    const { text, center } = item;
-    const popup = new mapboxgl.Popup({
-        offset: 25,
-    }).setText(text);
-    const marker = new mapboxgl.Marker({
-        draggable: true,
-        text: text,
-    });
-    // set marker text
-    marker
-        .setLngLat(center)
-        .setPopup(popup)
-        .addTo(map);
-}
-function createMap() {
-    // creates a maptiler map
-    const map = new mapboxgl.Map({
-        container: "map",
-        style: "https://api.maptiler.com/maps/fd41a7e9-86be-4da8-aff1-f8edfcf37a4b/style.json?key=f0zkb15NK1sqOcE72HCf",
-        center: [-83.5, 35],
-        zoom: 12,
-    });
-    return map;
-}
-function asPoint(marker) {
-    return [marker.lon, marker.lat];
-}
-function promptForAccessKey() {
-    if (!localStorage.getItem("accessKey")) {
-        const key = prompt("Please enter your access key:", "");
-        if (key) {
-            localStorage.setItem("accessKey", key);
-        }
-    }
-    return localStorage.getItem("accessKey");
-}
-async function geoLocate(address) {
-    const accessKey = promptForAccessKey();
-    const url = `http://open.mapquestapi.com/geocoding/v1/address?key=${accessKey}&location=${address}`;
-    const location = await fetch(url);
-    const data = (await location.json());
-    return data;
+function loadMarkers() {
+    return JSON.parse(localStorage.getItem("markers") ||
+        "[]");
 }
 //# sourceMappingURL=index.js.map

@@ -1,16 +1,26 @@
 .dark body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
   background-color: black;
+  margin: 1rem;
+}
+
+.dark label {
+  color: white;
 }
 
 #search {
-  width: calc(100% - 1rem);
+  width: min(24rem, 100vw);
 }
 
-#map {
+.map {
   position: absolute;
-  top: 4rem;
-  bottom: 1rem;
-  left: 1rem;
-  right: 1rem;
-  border: 1rem solid white;
+  top: 2rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
